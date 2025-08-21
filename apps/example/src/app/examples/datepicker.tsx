@@ -10,11 +10,11 @@ export default function Calendar() {
       mode="single"
       date={selected}
       onChange={({ date }) => setSelected(date)}
-      styles={defaultStyles}
-      classNames={{
-        day_cell: 'text-foreground',
-        day_label: 'text-foreground',
-        day: 'text-foreground',
+      styles={{
+        ...defaultStyles,
+        day_label: {
+          color: 'white',
+        },
       }}
     />
   );

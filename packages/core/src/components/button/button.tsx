@@ -6,7 +6,7 @@ import { useColor } from '../../lib/hooks/useColor';
 
 // Button container variants (theme-token based)
 const buttonVariants = cva(
-  'group flex flex-row items-center justify-center rounded-radius ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 active:translate-y-0.5 disabled:opacity-50 disabled:pointer-events-none transition-all',
+  'group flex flex-row items-center justify-center rounded-radius ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 active:translate-y-0.5 disabled:opacity-50 transition-all',
   {
     variants: {
       variant: {

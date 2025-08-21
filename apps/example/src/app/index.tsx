@@ -38,4 +38,8 @@ const components = [
     title: 'Input',
     description: 'A text input component',
   },
+  {
+    title: 'DatePicker',
+    description: 'A date picker component',
+  },
 ];

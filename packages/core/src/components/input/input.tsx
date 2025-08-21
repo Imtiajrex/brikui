@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { Text as RNText, TextInput as RNTextInput, View, Platform } from 'react-native';
+import { TextInput as RNTextInput, View } from 'react-native';
 import { cva, type VariantProps, cn } from '../../lib/utils/utils';
 import { useColor } from '../../lib/hooks/useColor';
+import { Field } from '../field';
 
 // Container (field) variants
 const inputVariants = cva('flex-row items-center gap-2 rounded-input border transition-all ', {
@@ -86,82 +87,54 @@ const Input = React.forwardRef<React.ComponentRef<typeof RNTextInput>, InputProp
   ) => {
     const computedPlaceholder = useColor('text-muted-foreground');
     const [focused, setFocused] = React.useState(false);
-    const focusRingWeb = error
-      ? 'ring-2 ring-destructive ring-offset-2 ring-offset-background border-destructive'
-      : 'ring-2 ring-ring ring-offset-2 ring-offset-background border-ring';
-    const focusBorderNative = error ? ' border-destructive' : 'border-ring';
-
     return (
-      <View className={cn('w-full flex flex-col gap-1.5', className)}>
-        {label ? (
-          <View className=" flex-row items-center gap-1">
-            <RNText
-              className={cn('text-sm font-medium text-foreground leading-none', labelClassName)}
-            >
-              {label}
-            </RNText>
-            {withAsterisk ? (
-              <RNText accessibilityElementsHidden className="text-destructive leading-none">
-                *
-              </RNText>
-            ) : null}
+      <Field
+        className={className}
+        label={label}
+        description={description}
+        error={error}
+        withAsterisk={withAsterisk}
+        disabled={disabled}
+        invalid={!!error}
+        focused={focused}
+        labelClassName={labelClassName}
+        descriptionClassName={descriptionClassName}
+        errorClassName={errorClassName}
+        containerClassName={cn(inputVariants({ variant, fullWidth, invalid: !!error, disabled }))}
+      >
+        {leftSection ? (
+          <View className={cn('text-muted-foreground z-10 pl-2', leftSectionClassName)}>
+            {leftSection}
           </View>
         ) : null}
-
-        {description ? (
-          <RNText
-            className={cn('text-xs text-muted-foreground leading-none', descriptionClassName)}
-          >
-            {description}
-          </RNText>
-        ) : null}
-
-        <View
+        <RNTextInput
+          ref={ref}
+          accessibilityLabel={props.accessibilityLabel ?? label}
+          editable={!disabled}
+          placeholder={placeholder}
+          placeholderTextColor={placeholderTextColor ?? computedPlaceholder}
+          onFocus={(e: any) => {
+            if (!disabled) setFocused(true);
+            onFocus?.(e);
+          }}
+          onBlur={(e: any) => {
+            setFocused(false);
+            onBlur?.(e);
+          }}
           className={cn(
-            inputVariants({ variant, fullWidth, invalid: !!error, disabled }),
-            focused && !disabled && (Platform.OS === 'web' ? focusRingWeb : focusBorderNative)
+            'flex-1 w-full px-2 h-full text-foreground text-sm',
+            !leftSection && 'rounded-l-input',
+            !rightSection && 'rounded-r-input',
+            inputClassName
           )}
-        >
-          {leftSection ? (
-            <View className={cn('text-muted-foreground z-10 pl-2', leftSectionClassName)}>
-              {leftSection}
-            </View>
-          ) : null}
-          <RNTextInput
-            ref={ref}
-            accessibilityLabel={props.accessibilityLabel ?? label}
-            editable={!disabled}
-            placeholder={placeholder}
-            placeholderTextColor={placeholderTextColor ?? computedPlaceholder}
-            onFocus={(e: any) => {
-              if (!disabled) setFocused(true);
-              onFocus?.(e);
-            }}
-            onBlur={(e: any) => {
-              setFocused(false);
-              onBlur?.(e);
-            }}
-            className={cn(
-              'flex-1 w-full px-2 h-full text-foreground text-sm',
-              !leftSection && 'rounded-l-input',
-              !rightSection && 'rounded-r-input',
-              inputClassName
-            )}
-            {...props}
-          />
-          {rightSection ? (
-            <View className={cn('text-muted-foreground z-10 pr-2', rightSectionClassName)}>
-              {rightSection}
-            </View>
-          ) : null}
-        </View>
-
-        {error ? (
-          <RNText className={cn(' text-xs text-destructive leading-none', errorClassName)}>
-            {error}
-          </RNText>
+          {...props}
+        />
+        {rightSection ? (
+          <View className={cn('text-muted-foreground z-10 pr-2', rightSectionClassName)}>
+            {rightSection}
+          </View>
         ) : null}
-      </View>
+      </Field>
     );
   }
 );
