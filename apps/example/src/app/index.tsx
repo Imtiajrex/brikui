@@ -54,4 +54,12 @@ const components = [
     title: 'Switch',
     description: 'A toggle switch component',
   },
+  {
+    title: 'PinInput',
+    description: 'A segmented PIN/OTP input',
+  },
+  {
+    title: 'Slider',
+    description: 'A reanimated powered slider',
+  },
 ];

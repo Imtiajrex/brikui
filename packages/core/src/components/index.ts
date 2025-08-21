@@ -3,5 +3,8 @@ export * from './portal';
 export * from './input';
 export * from './field';
 export * from './password-input';
+export * from './pin-input';
 export * from './textarea';
 export * from './switch';
+export * from './slider';
+export * from './range-slider';

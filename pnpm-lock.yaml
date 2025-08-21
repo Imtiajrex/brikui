@@ -180,6 +180,9 @@ importers:
       react-native-actions-sheet:
         specifier: ^0.9.7
         version: 0.9.7(react-native-gesture-handler@2.24.0(react-native@0.79.5(@babel/core@7.26.0)(@react-native-community/cli@13.6.9)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native-safe-area-context@5.4.0(react-native@0.79.5(@babel/core@7.26.0)(@react-native-community/cli@13.6.9)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.5(@babel/core@7.26.0)(@react-native-community/cli@13.6.9)(@types/react@19.0.14)(react@19.0.0))
+      react-native-awesome-slider:
+        specifier: ^2.9.0
+        version: 2.9.0(react-native-gesture-handler@2.24.0(react-native@0.79.5(@babel/core@7.26.0)(@react-native-community/cli@13.6.9)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native-reanimated@3.17.5(@babel/core@7.26.0)(react-native@0.79.5(@babel/core@7.26.0)(@react-native-community/cli@13.6.9)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.5(@babel/core@7.26.0)(@react-native-community/cli@13.6.9)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       react-native-ui-datepicker:
         specifier: ^3.1.2
         version: 3.1.2(react-native@0.79.5(@babel/core@7.26.0)(@react-native-community/cli@13.6.9)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
@@ -3668,6 +3671,15 @@ packages:
       react-native: '*'
       react-native-gesture-handler: '*'
       react-native-safe-area-context: '*'
+
+  react-native-awesome-slider@2.9.0:
+    resolution: {integrity: sha512-sc5qgX4YtM6IxjtosjgQLdsal120MvU+YWs0F2MdgQWijps22AXLDCUoBnZZ8vxVhVyJ2WnnIPrmtVBvVJjSuQ==}
+    engines: {node: '>= 18.0.0'}
+    peerDependencies:
+      react: '*'
+      react-native: '*'
+      react-native-gesture-handler: '>=2.0.0'
+      react-native-reanimated: '>=3.0.0'
 
   react-native-css-interop@0.1.20:
     resolution: {integrity: sha512-afFcrXkFEv35pkMgc9R5k79d6KyZpTtDgci0tM9NTs76/0NZcQu2YuEXoC1r4Efg/2PsWI/1/GJKVXww7RQNDg==}
@@ -8727,6 +8739,13 @@ snapshots:
       react-native: 0.79.5(@babel/core@7.26.0)(@react-native-community/cli@13.6.9)(@types/react@19.0.14)(react@19.0.0)
       react-native-gesture-handler: 2.24.0(react-native@0.79.5(@babel/core@7.26.0)(@react-native-community/cli@13.6.9)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       react-native-safe-area-context: 5.4.0(react-native@0.79.5(@babel/core@7.26.0)(@react-native-community/cli@13.6.9)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+
+  react-native-awesome-slider@2.9.0(react-native-gesture-handler@2.24.0(react-native@0.79.5(@babel/core@7.26.0)(@react-native-community/cli@13.6.9)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native-reanimated@3.17.5(@babel/core@7.26.0)(react-native@0.79.5(@babel/core@7.26.0)(@react-native-community/cli@13.6.9)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.5(@babel/core@7.26.0)(@react-native-community/cli@13.6.9)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
+    dependencies:
+      react: 19.0.0
+      react-native: 0.79.5(@babel/core@7.26.0)(@react-native-community/cli@13.6.9)(@types/react@19.0.14)(react@19.0.0)
+      react-native-gesture-handler: 2.24.0(react-native@0.79.5(@babel/core@7.26.0)(@react-native-community/cli@13.6.9)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+      react-native-reanimated: 3.17.5(@babel/core@7.26.0)(react-native@0.79.5(@babel/core@7.26.0)(@react-native-community/cli@13.6.9)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
 
   react-native-css-interop@0.1.20(react-native-reanimated@3.17.5(@babel/core@7.26.0)(react-native@0.79.5(@babel/core@7.26.0)(@react-native-community/cli@13.6.9)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native-safe-area-context@5.4.0(react-native@0.79.5(@babel/core@7.26.0)(@react-native-community/cli@13.6.9)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native-svg@15.11.2(react-native@0.79.5(@babel/core@7.26.0)(@react-native-community/cli@13.6.9)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.5(@babel/core@7.26.0)(@react-native-community/cli@13.6.9)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)(tailwindcss@3.4.14):
     dependencies:
