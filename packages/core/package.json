@@ -33,6 +33,7 @@
     "react-hook-form": "^7.53.2",
     "react-native-actions-sheet": "^0.9.7",
     "react-native-awesome-slider": "^2.9.0",
+    "react-native-sticky-range-slider": "^0.1.7",
     "react-native-ui-datepicker": "^3.1.2",
     "sonner": "^1.7.0",
     "sonner-native": "^0.16.1",

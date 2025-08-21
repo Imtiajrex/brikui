@@ -1,0 +1,164 @@
+import * as React from 'react';
+import { View, Text as RNText } from 'react-native';
+import StickyRangeSlider from 'react-native-sticky-range-slider';
+import { cva, cn, type VariantProps } from '../../lib/utils/utils';
+import { Field } from '../field';
+
+const containerVariants = cva('flex-row items-center gap-2 rounded-input border transition-all', {
+  variants: {
+    fullWidth: {
+      true: 'w-full',
+      false: '',
+    },
+    invalid: {
+      true: 'border-destructive',
+      false: 'border-input',
+    },
+    disabled: {
+      true: 'opacity-50',
+      false: '',
+    },
+    size: {
+      sm: 'h-9',
+      default: 'h-10',
+      lg: 'h-12',
+    },
+  },
+  defaultVariants: {
+    fullWidth: true,
+    invalid: false,
+    disabled: false,
+    size: 'default',
+  },
+});
+
+type RangeSliderProps = VariantProps<typeof containerVariants> & {
+  // library props
+  min: number;
+  max: number;
+  step?: number;
+  minRange?: number;
+  low: number;
+  high: number;
+  disableRange?: boolean;
+  onValueChange?: (low: number, high: number) => void;
+  // renderers overrides
+  renderThumb?: (type: 'high' | 'low') => React.ReactNode;
+  renderRail?: () => React.ReactNode;
+  renderRailSelected?: () => React.ReactNode;
+  renderLowValue?: (value: number) => React.ReactNode;
+  renderHighValue?: (value: number) => React.ReactNode;
+  // Field props
+  label?: string;
+  description?: string;
+  error?: string;
+  withAsterisk?: boolean;
+  // classNames
+  className?: string; // wrapper block
+  containerClassName?: string; // row container
+  labelClassName?: string;
+  descriptionClassName?: string;
+  errorClassName?: string;
+  style?: any;
+};
+
+const DefaultThumb = (type: 'high' | 'low') => (
+  <View
+    className={cn(
+      'w-5 h-5 rounded-full border-2',
+      type === 'high' ? 'bg-primary border-primary' : 'bg-foreground border-foreground'
+    )}
+  />
+);
+
+const DefaultRail = () => <View className="flex-1 h-[3px] rounded bg-muted" />;
+const DefaultRailSelected = () => <View className="h-[3px] rounded bg-primary" />;
+const DefaultValue = ({ children }: { children: React.ReactNode }) => (
+  <RNText className="text-xs text-foreground">{children}</RNText>
+);
+
+const RangeSlider = React.forwardRef<View, RangeSliderProps>((props, ref) => {
+  const {
+    min,
+    max,
+    step = 1,
+    minRange,
+    low,
+    high,
+    disableRange,
+    onValueChange,
+    renderThumb,
+    renderRail,
+    renderRailSelected,
+    renderLowValue,
+    renderHighValue,
+    // Field bits
+    label,
+    description,
+    error,
+    withAsterisk,
+    className,
+    containerClassName,
+    labelClassName,
+    descriptionClassName,
+    errorClassName,
+    style,
+    fullWidth,
+    size,
+    disabled,
+    invalid,
+  } = props;
+
+  const handleValueChanged = React.useCallback(
+    (l: number, h: number) => {
+      onValueChange?.(l, h);
+    },
+    [onValueChange]
+  );
+
+  return (
+    <Field
+      className={className}
+      label={label}
+      description={description}
+      error={error}
+      withAsterisk={withAsterisk}
+      disabled={!!disabled}
+      invalid={!!error || !!invalid}
+      labelClassName={labelClassName}
+      descriptionClassName={descriptionClassName}
+      errorClassName={errorClassName}
+      containerClassName={cn(
+        containerVariants({ fullWidth, size, disabled, invalid: !!error }),
+        containerClassName
+      )}
+    >
+      <View ref={ref} className={cn('flex-1 w-full px-3')} style={style}>
+        <StickyRangeSlider
+          style={{ marginVertical: 8 }}
+          min={min}
+          max={max}
+          step={step}
+          minRange={minRange}
+          low={low}
+          high={high}
+          onValueChanged={handleValueChanged}
+          renderLowValue={renderLowValue ?? ((v: number) => <DefaultValue>{v}</DefaultValue>)}
+          renderHighValue={
+            renderHighValue ??
+            ((v: number) => <DefaultValue>{v === max ? `+${v}` : v}</DefaultValue>)
+          }
+          renderThumb={renderThumb ?? DefaultThumb}
+          renderRail={renderRail ?? DefaultRail}
+          renderRailSelected={renderRailSelected ?? DefaultRailSelected}
+          disableRange={disableRange}
+        />
+      </View>
+    </Field>
+  );
+});
+
+RangeSlider.displayName = 'RangeSlider';
+
+export { RangeSlider };
+export type { RangeSliderProps };

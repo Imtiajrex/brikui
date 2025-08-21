@@ -62,4 +62,16 @@ const components = [
     title: 'Slider',
     description: 'A reanimated powered slider',
   },
+  {
+    title: 'Range-Slider',
+    description: 'A sticky range slider',
+  },
+  {
+    title: 'Segmented-Control',
+    description: 'A segmented switch between multiple options',
+  },
+  {
+    title: 'Badge',
+    description: 'A small count or labeling component',
+  },
 ];

@@ -183,6 +183,9 @@ importers:
       react-native-awesome-slider:
         specifier: ^2.9.0
         version: 2.9.0(react-native-gesture-handler@2.24.0(react-native@0.79.5(@babel/core@7.26.0)(@react-native-community/cli@13.6.9)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native-reanimated@3.17.5(@babel/core@7.26.0)(react-native@0.79.5(@babel/core@7.26.0)(@react-native-community/cli@13.6.9)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.5(@babel/core@7.26.0)(@react-native-community/cli@13.6.9)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+      react-native-sticky-range-slider:
+        specifier: ^0.1.7
+        version: 0.1.7(react-native@0.79.5(@babel/core@7.26.0)(@react-native-community/cli@13.6.9)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       react-native-ui-datepicker:
         specifier: ^3.1.2
         version: 3.1.2(react-native@0.79.5(@babel/core@7.26.0)(@react-native-community/cli@13.6.9)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
@@ -3736,6 +3739,12 @@ packages:
 
   react-native-screens@4.11.1:
     resolution: {integrity: sha512-F0zOzRVa3ptZfLpD0J8ROdo+y1fEPw+VBFq1MTY/iyDu08al7qFUO5hLMd+EYMda5VXGaTFCa8q7bOppUszhJw==}
+    peerDependencies:
+      react: '*'
+      react-native: '*'
+
+  react-native-sticky-range-slider@0.1.7:
+    resolution: {integrity: sha512-ab7KgwubSJOmelrH6pMg8hWIVlD3IF3hhigVj1nRR5U8tnkNleCN/4aFm8WckHxeaFgfgX9Zrg2L/dNGNjtm2w==}
     peerDependencies:
       react: '*'
       react-native: '*'
@@ -8820,6 +8829,11 @@ snapshots:
       react-native: 0.79.5(@babel/core@7.26.0)(@react-native-community/cli@13.6.9)(@types/react@19.0.14)(react@19.0.0)
       react-native-is-edge-to-edge: 1.2.1(react-native@0.79.5(@babel/core@7.26.0)(@react-native-community/cli@13.6.9)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       warn-once: 0.1.1
+
+  react-native-sticky-range-slider@0.1.7(react-native@0.79.5(@babel/core@7.26.0)(@react-native-community/cli@13.6.9)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
+    dependencies:
+      react: 19.0.0
+      react-native: 0.79.5(@babel/core@7.26.0)(@react-native-community/cli@13.6.9)(@types/react@19.0.14)(react@19.0.0)
 
   react-native-svg@15.11.2(react-native@0.79.5(@babel/core@7.26.0)(@react-native-community/cli@13.6.9)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
     dependencies:

@@ -1,0 +1,159 @@
+import * as React from 'react';
+import { Pressable, View, Text as RNText } from 'react-native';
+import { cva, cn, type VariantProps } from '../../lib/utils/utils';
+
+type Item = string | { label: React.ReactNode; value: string; disabled?: boolean };
+
+const containerVariants = cva('border rounded-input bg-muted transition-all', {
+  variants: {
+    orientation: {
+      horizontal: 'flex-row',
+      vertical: 'flex-col',
+    },
+    fullWidth: {
+      true: 'w-full',
+      false: '',
+    },
+    withItemBorders: {
+      true: 'p-0',
+      false: 'p-1',
+    },
+  },
+  defaultVariants: {
+    orientation: 'horizontal',
+    fullWidth: true,
+    withItemBorders: false,
+  },
+});
+
+const itemVariants = cva('items-center justify-center', {
+  variants: {
+    size: {
+      sm: 'px-2 h-8',
+      md: 'px-3 h-9',
+      lg: 'px-4 h-11',
+    },
+    selected: {
+      true: 'bg-primary',
+      false: '',
+    },
+    disabled: {
+      true: 'opacity-50',
+      false: '',
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+    selected: false,
+    disabled: false,
+  },
+});
+
+const labelVariants = cva('text-sm', {
+  variants: {
+    selected: {
+      true: 'text-primary-foreground',
+      false: 'text-foreground',
+    },
+  },
+  defaultVariants: { selected: false },
+});
+
+type BaseProps = React.ComponentPropsWithoutRef<typeof View>;
+
+type SegmentedControlProps = Omit<BaseProps, 'onLayout'> &
+  VariantProps<typeof containerVariants> &
+  VariantProps<typeof itemVariants> & {
+    data: Item[];
+    value?: string;
+    defaultValue?: string;
+    onChange?: (value: string) => void;
+    radius?: number; // overrides rounded-input
+    className?: string; // container
+    itemClassName?: string;
+    labelClassName?: string;
+  };
+
+const normalize = (item: Item): { label: React.ReactNode; value: string; disabled?: boolean } =>
+  typeof item === 'string' ? { label: item, value: item } : item;
+
+const SegmentedControl = React.forwardRef<View, SegmentedControlProps>((props, ref) => {
+  const {
+    data,
+    value,
+    defaultValue,
+    onChange,
+    className,
+    itemClassName,
+    labelClassName,
+    fullWidth,
+    withItemBorders,
+    orientation = 'horizontal',
+    size = 'md',
+    radius,
+    ...rest
+  } = props;
+
+  const [internal, setInternal] = React.useState<string | undefined>(
+    defaultValue ?? (data.length > 0 ? normalize(data[0]).value : undefined)
+  );
+  const val = value ?? internal;
+
+  const isVertical = orientation === 'vertical';
+
+  return (
+    <View
+      ref={ref}
+      className={cn(containerVariants({ orientation, fullWidth, withItemBorders }), className)}
+      style={radius != null ? { borderRadius: radius } : undefined}
+      {...rest}
+    >
+      {data.map((it, i) => {
+        const { label, value: v, disabled } = normalize(it);
+        const selected = v === val;
+        const isFirst = i === 0;
+        const borderStyle = withItemBorders
+          ? isVertical
+            ? { borderTopWidth: isFirst ? 0 : 1 }
+            : { borderLeftWidth: isFirst ? 0 : 1 }
+          : null;
+        return (
+          <Pressable
+            key={v}
+            accessible
+            accessibilityRole="button"
+            accessibilityState={{ selected, disabled: !!disabled }}
+            onPress={() => {
+              if (disabled) return;
+              if (value == null) setInternal(v);
+              onChange?.(v);
+            }}
+            className={cn(
+              'flex-1',
+              itemVariants({ size, selected, disabled }),
+              !withItemBorders && 'rounded-md',
+              itemClassName,
+              withItemBorders && 'border-border'
+            )}
+            style={[
+              borderStyle as any,
+              radius != null && !withItemBorders ? { borderRadius: radius - 4 } : null,
+              isVertical ? { width: '100%' } : null,
+            ]}
+          >
+            {typeof label === 'string' || typeof label === 'number' ? (
+              <RNText className={cn(labelVariants({ selected }), labelClassName)}>{label}</RNText>
+            ) : (
+              label
+            )}
+          </Pressable>
+        );
+      })}
+    </View>
+  );
+});
+
+SegmentedControl.displayName = 'SegmentedControl';
+
+export { SegmentedControl };
+export type { SegmentedControlProps };
