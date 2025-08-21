@@ -6,7 +6,7 @@ import { cva, cn, type VariantProps } from '../../lib/utils/utils';
 
 type Item = string | { label: React.ReactNode; value: string; disabled?: boolean };
 
-const containerVariants = cva('border rounded-input bg-muted transition-all', {
+const containerVariants = cva('border rounded-input overflow-hidden bg-muted transition-all', {
   variants: {
     orientation: {
       horizontal: 'flex-row',

@@ -15,3 +15,5 @@ export * from './alert';
 export * from './skeleton';
 export * from './popover';
 export * from './base';
+export * from './timeline';
+export * from './timeline';

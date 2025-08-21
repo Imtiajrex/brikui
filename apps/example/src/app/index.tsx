@@ -90,4 +90,8 @@ const components = [
     title: 'Popover',
     description: 'Contextual floating content',
   },
+  {
+    title: 'Timeline',
+    description: 'Display a sequence of events',
+  },
 ];
