@@ -53,7 +53,7 @@ yarn add react react-native nativewind
      content: [
        './App.{js,jsx,ts,tsx}',
        './src/**/*.{js,jsx,ts,tsx}',
-       './node_modules/@nativebricks/**/*.{js,jsx,ts,tsx}',
+       './node_modules/@brikui/**/*.{js,jsx,ts,tsx}',
      ],
      theme: {
        extend: {},
@@ -108,7 +108,7 @@ export default App;
 
 ## Documentation
 
-Find comprehensive documentation, including component APIs and examples, on the [NativeBricks Documentation Site](https://nativebricks.dev).
+Find comprehensive documentation, including component APIs and examples, on the [NativeBricks Documentation Site](https://brikui.dev).
 
 ## Roadmap
 

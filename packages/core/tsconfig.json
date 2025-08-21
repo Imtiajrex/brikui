@@ -7,7 +7,7 @@
     "./src/**/*.ts",
     "./src/**/*.tsx",
     "nativewind-env.d.ts",
-    "src/contexts/Theme.tsx",
+    "src/contexts/ThemeProvider.tsx",
     "plugin.ts"
   ]
 }

@@ -1,3 +1,4 @@
+import { router } from 'expo-router';
 import { ScrollView, Text } from 'react-native';
 import { Pressable } from 'react-native-gesture-handler';
 export default function Index() {
@@ -7,7 +8,9 @@ export default function Index() {
         <Pressable
           className="p-4 mb-4 bg-gray-100 rounded-lg"
           key={component.title}
-          onPress={() => console.log(`Navigating to ${component.title}`)}
+          onPress={() => {
+            router.push(`/examples/${component.title.toLowerCase()}`);
+          }}
         >
           <Text className="text-lg font-semibold">{component.title}</Text>
           <Text className="text-gray-600">{component.description}</Text>

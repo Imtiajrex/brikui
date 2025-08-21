@@ -1,6 +1,6 @@
 {
   "expo": {
-    "scheme": "nativebricks",
+    "scheme": "brikui",
     "userInterfaceStyle": "automatic",
     "web": {
       "output": "startic",
@@ -20,9 +20,9 @@
       "backgroundColor": "#16295A"
     },
     "name": "Native Bricks UI",
-    "slug": "nativebricks",
+    "slug": "brikui",
     "android": {
-      "package": "com.imtiajrex.nativebricks"
+      "package": "com.imtiajrex.brikui"
     }
   }
 }

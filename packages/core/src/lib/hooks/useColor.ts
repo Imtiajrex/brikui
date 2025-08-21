@@ -1,7 +1,8 @@
-import { useTw } from '../../contexts/Theme';
+import { useTw } from '../../contexts/ThemeProvider';
 
 export const useColor = (color: string) => {
   const tw = useTw();
+  if (!tw) return color;
   const localColor =
     color.includes('bg-') || color.includes('text-') || color.includes('border-')
       ? color

@@ -1,8 +1,8 @@
-import Colors from '@/constants/Colors';
+import { themes } from '@/constants/color-theme';
 import { DefaultTheme, ThemeProvider as NavigationThemeProvider } from '@react-navigation/native';
 import { ThemeProvider, useColor, useColorScheme } from 'brikui';
 import { Slot } from 'expo-router';
-import { LogBox } from 'react-native';
+import { LogBox, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import 'react-native-reanimated';
 import { configureReanimatedLogger, ReanimatedLogLevel } from 'react-native-reanimated';
@@ -27,7 +27,7 @@ LogBox.ignoreLogs([
 export default function Layout() {
   return (
     <GestureHandlerRootView>
-      <ThemeProvider tailwindConfig={require('../../tailwind.config')} colors={Colors}>
+      <ThemeProvider themes={themes}>
         <Root />
       </ThemeProvider>
     </GestureHandlerRootView>
@@ -35,21 +35,23 @@ export default function Layout() {
 }
 const Root = () => {
   return (
-    <NavigationThemeProvider
-      value={{
-        ...DefaultTheme,
-        colors: {
-          background: useColor('background'),
-          border: useColor('border'),
-          card: useColor('card'),
-          primary: useColor('primary'),
-          text: useColor('foreground'),
-          notification: useColor('foreground'),
-        },
-        dark: useColorScheme().colorScheme === 'dark',
-      }}
-    >
-      <Slot />
-    </NavigationThemeProvider>
+    <View className="light flex-1 bg-background">
+      <NavigationThemeProvider
+        value={{
+          ...DefaultTheme,
+          colors: {
+            background: useColor('background'),
+            border: useColor('border'),
+            card: useColor('card'),
+            primary: useColor('primary'),
+            text: useColor('foreground'),
+            notification: useColor('foreground'),
+          },
+          dark: useColorScheme().colorScheme === 'dark',
+        }}
+      >
+        <Slot />
+      </NavigationThemeProvider>
+    </View>
   );
 };

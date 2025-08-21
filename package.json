@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "nativebricksui",
+  "name": "brikuiui",
   "scripts": {
     "start": "turbo start --filter=\"{./apps/example}...\"",
     "lint": "turbo lint",
