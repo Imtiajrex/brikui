@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Pressable, Text as RNText } from 'react-native';
-import { cn } from '../../lib/utils/utils';
+import { Text } from '../base/text';
+import { Pressable } from '../base/pressable';
 import { Input } from '../input';
 import type { InputProps } from '../input';
 
@@ -50,8 +50,8 @@ const PasswordInput = React.forwardRef<React.ComponentRef<typeof Input>, Passwor
       defaultVisible = false,
       onVisibleChange,
       toggleClassName,
-      showNode = <RNText className="text-xs text-primary">Show</RNText>,
-      hideNode = <RNText className="text-xs text-primary">Hide</RNText>,
+      showNode = <Text className="text-xs text-primary">Show</Text>,
+      hideNode = <Text className="text-xs text-primary">Hide</Text>,
       ...props
     },
     ref

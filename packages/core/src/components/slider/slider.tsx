@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { View } from '../base/view';
 import { Slider as AwesomeSlider, SliderThemeType } from 'react-native-awesome-slider';
 import type { SharedValue } from 'react-native-reanimated';
 import { cva, cn, type VariantProps } from '../../lib/utils/utils';
@@ -54,7 +54,7 @@ type SliderProps = VariantProps<typeof sliderVariants> & {
   theme?: SliderThemeType;
 };
 
-const Slider = React.forwardRef<View, SliderProps>(
+const Slider = React.forwardRef<React.ComponentRef<typeof View>, SliderProps>(
   (
     {
       progress,

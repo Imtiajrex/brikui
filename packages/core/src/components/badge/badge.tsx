@@ -1,6 +1,8 @@
 import * as React from 'react';
-import { View, Text as RNText } from 'react-native';
+import { View } from '../base/view';
 import { cva, cn, type VariantProps } from '../../lib/utils/utils';
+import { renderNode } from '../../lib/utils/renderNode';
+import { Text } from '../base/text';
 
 // Badge variants similar to Mantine: filled, light, outline, dot, transparent, default.
 const badgeVariants = cva(
@@ -58,6 +60,7 @@ type BadgeProps = React.ComponentPropsWithoutRef<typeof View> &
   VariantProps<typeof badgeTextVariants> & {
     leftSection?: React.ReactNode;
     rightSection?: React.ReactNode;
+    dotClassName?: string;
   };
 
 const Dot = ({ className }: { className?: string }) => (
@@ -75,6 +78,7 @@ const Badge = React.forwardRef<View, BadgeProps>((props, ref) => {
     rightSection,
     uppercase,
     withBorder,
+    dotClassName,
     ...rest
   } = props;
 
@@ -82,15 +86,15 @@ const Badge = React.forwardRef<View, BadgeProps>((props, ref) => {
     <View
       ref={ref}
       accessibilityRole="text"
-      className={cn(badgeVariants({ variant, size, radius, withBorder, uppercase }), className)}
+      className={cn(
+        badgeVariants({ variant, size, radius, withBorder, uppercase }),
+        badgeTextVariants({ size, uppercase }),
+        className
+      )}
       {...rest}
     >
-      {variant === 'dot' ? <Dot /> : leftSection}
-      {typeof children === 'string' || typeof children === 'number' ? (
-        <RNText className={cn(badgeTextVariants({ size, uppercase }))}>{children}</RNText>
-      ) : (
-        children
-      )}
+      {variant === 'dot' ? <Dot className={dotClassName} /> : leftSection}
+      <Text>{children}</Text>
       {rightSection}
     </View>
   );

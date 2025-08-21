@@ -1,5 +1,7 @@
 import * as React from 'react';
-import { ActivityIndicator, Pressable as RNPressable, Text as RNText, View } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
+import { Pressable } from '../base/pressable';
+import { Text } from '../base/text';
 import { cva, type VariantProps, cn } from '../../lib/utils/utils';
 import { useExtractTextClasses } from '../../lib/hooks/useExtractTextClasses';
 import { useColor } from '../../lib/hooks/useColor';
@@ -72,7 +74,7 @@ const buttonTextVariants = cva('whitespace-nowrap text-sm font-medium transition
   },
 });
 
-type ButtonProps = React.ComponentPropsWithoutRef<typeof RNPressable> &
+type ButtonProps = React.ComponentPropsWithoutRef<typeof Pressable> &
   VariantProps<typeof buttonVariants> & {
     children?: React.ReactNode;
     isLoading?: boolean;
@@ -80,7 +82,7 @@ type ButtonProps = React.ComponentPropsWithoutRef<typeof RNPressable> &
     right?: React.ReactNode;
   };
 
-const Button = React.forwardRef<React.ElementRef<typeof RNPressable>, ButtonProps>(
+const Button = React.forwardRef<React.ComponentRef<typeof Pressable>, ButtonProps>(
   (
     { className, variant, size, isLoading, left, right, children, fullWidth, disabled, ...props },
     ref
@@ -92,31 +94,27 @@ const Button = React.forwardRef<React.ElementRef<typeof RNPressable>, ButtonProp
     const spinnerColor = useColor(textClasses);
 
     return (
-      <RNPressable
+      <Pressable
         ref={ref}
         accessibilityRole="button"
         className={cn(buttonVariants({ variant, size, fullWidth }), className)}
         disabled={isLoading || disabled}
         {...props}
       >
-        <View
-          className={cn('flex-row items-center justify-center', size === 'icon' ? '' : 'gap-2')}
-        >
-          {isLoading ? (
-            <ActivityIndicator size="small" animating color={spinnerColor} />
-          ) : (
-            <>
-              {left}
-              {typeof children === 'string' || typeof children === 'number' ? (
-                <RNText className={textClasses}>{children}</RNText>
-              ) : (
-                children
-              )}
-              {right}
-            </>
-          )}
-        </View>
-      </RNPressable>
+        {isLoading ? (
+          <ActivityIndicator size="small" animating color={spinnerColor} />
+        ) : (
+          <>
+            {left}
+            {typeof children === 'string' || typeof children === 'number' ? (
+              <Text className={textClasses}>{children}</Text>
+            ) : (
+              children
+            )}
+            {right}
+          </>
+        )}
+      </Pressable>
     );
   }
 );

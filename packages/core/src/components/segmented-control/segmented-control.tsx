@@ -1,5 +1,7 @@
 import * as React from 'react';
-import { Pressable, View, Text as RNText } from 'react-native';
+import { View } from '../base/view';
+import { Pressable } from '../base/pressable';
+import { Text } from '../base/text';
 import { cva, cn, type VariantProps } from '../../lib/utils/utils';
 
 type Item = string | { label: React.ReactNode; value: string; disabled?: boolean };
@@ -142,7 +144,7 @@ const SegmentedControl = React.forwardRef<View, SegmentedControlProps>((props, r
             ]}
           >
             {typeof label === 'string' || typeof label === 'number' ? (
-              <RNText className={cn(labelVariants({ selected }), labelClassName)}>{label}</RNText>
+              <Text className={cn(labelVariants({ selected }), labelClassName)}>{label}</Text>
             ) : (
               label
             )}

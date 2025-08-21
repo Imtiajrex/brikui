@@ -1,5 +1,8 @@
 import * as React from 'react';
-import { Pressable, View, Text, Platform } from 'react-native';
+import { Platform } from 'react-native';
+import { Pressable } from '../base/pressable';
+import { View } from '../base/view';
+import { Text } from '../base/text';
 import Animated, {
   Layout,
   LinearTransition,
@@ -80,7 +83,7 @@ type SwitchProps = Omit<BaseProps, 'onPress'> &
     labelClassName?: string; // for both labels
   };
 
-const Switch = React.forwardRef<React.ElementRef<typeof Pressable>, SwitchProps>(
+const Switch = React.forwardRef<React.ComponentRef<typeof Pressable>, SwitchProps>(
   (
     {
       checked,

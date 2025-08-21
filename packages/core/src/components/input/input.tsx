@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { TextInput as RNTextInput, View } from 'react-native';
+import { TextInput as RNTextInput } from 'react-native';
+import { View } from '../base/view';
 import { cva, type VariantProps, cn } from '../../lib/utils/utils';
 import { useColor } from '../../lib/hooks/useColor';
 import { Field } from '../field';

@@ -1,5 +1,7 @@
 import * as React from 'react';
-import { Platform, View, Text as RNText } from 'react-native';
+import { Platform } from 'react-native';
+import { Text } from '../base/text';
+import { View } from '../base/view';
 import { cn } from '../../lib/utils/utils';
 
 type FieldProps = {
@@ -46,23 +48,21 @@ const Field = ({
     <View className={cn('w-full flex flex-col gap-1.5', className)}>
       {label ? (
         <View className="flex-row items-center gap-1">
-          <RNText
-            className={cn('text-sm font-medium text-foreground leading-none', labelClassName)}
-          >
+          <Text className={cn('text-sm font-medium text-foreground leading-none', labelClassName)}>
             {label}
-          </RNText>
+          </Text>
           {withAsterisk ? (
-            <RNText accessibilityElementsHidden className="text-destructive leading-none">
+            <Text accessibilityElementsHidden className="text-destructive leading-none">
               *
-            </RNText>
+            </Text>
           ) : null}
         </View>
       ) : null}
 
       {description ? (
-        <RNText className={cn('text-xs text-muted-foreground leading-none', descriptionClassName)}>
+        <Text className={cn('text-xs text-muted-foreground leading-none', descriptionClassName)}>
           {description}
-        </RNText>
+        </Text>
       ) : null}
 
       <View
@@ -78,9 +78,7 @@ const Field = ({
       </View>
 
       {error ? (
-        <RNText className={cn('text-xs text-destructive leading-none', errorClassName)}>
-          {error}
-        </RNText>
+        <Text className={cn('text-xs text-destructive leading-none', errorClassName)}>{error}</Text>
       ) : null}
     </View>
   );

@@ -1,6 +1,9 @@
 import * as React from 'react';
-import { Pressable, Text as RNText, TextInput, View } from 'react-native';
+import { TextInput } from 'react-native';
 import { cn } from '../../lib/utils/utils';
+import { Pressable } from '../base/pressable';
+import { View } from '../base/view';
+import { Text } from '../base/text';
 
 type PinInputBaseProps = {
   length?: number;
@@ -200,12 +203,12 @@ const PinInputCell = ({ index, className, textClassName, style }: PinInputCellPr
       )}
       style={[{ width: d.box, height: d.box, borderRadius: d.radius }, style]}
     >
-      <RNText
+      <Text
         className={cn(filled ? 'text-foreground' : 'text-muted-foreground', textClassName)}
         style={{ fontSize: d.font, lineHeight: d.font * 1.2 }}
       >
         {show}
-      </RNText>
+      </Text>
     </View>
   );
 };

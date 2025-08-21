@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { View, Text as RNText } from 'react-native';
+import { View } from '../base/view';
+import { Text } from '../base/text';
 import StickyRangeSlider from 'react-native-sticky-range-slider';
 import { cva, cn, type VariantProps } from '../../lib/utils/utils';
 import { Field } from '../field';
@@ -74,89 +75,91 @@ const DefaultThumb = (type: 'high' | 'low') => (
 const DefaultRail = () => <View className="flex-1 h-[3px] rounded bg-muted" />;
 const DefaultRailSelected = () => <View className="h-[3px] rounded bg-primary" />;
 const DefaultValue = ({ children }: { children: React.ReactNode }) => (
-  <RNText className="text-xs text-foreground">{children}</RNText>
+  <Text className="text-xs text-foreground">{children}</Text>
 );
 
-const RangeSlider = React.forwardRef<View, RangeSliderProps>((props, ref) => {
-  const {
-    min,
-    max,
-    step = 1,
-    minRange,
-    low,
-    high,
-    disableRange,
-    onValueChange,
-    renderThumb,
-    renderRail,
-    renderRailSelected,
-    renderLowValue,
-    renderHighValue,
-    // Field bits
-    label,
-    description,
-    error,
-    withAsterisk,
-    className,
-    containerClassName,
-    labelClassName,
-    descriptionClassName,
-    errorClassName,
-    style,
-    fullWidth,
-    size,
-    disabled,
-    invalid,
-  } = props;
+const RangeSlider = React.forwardRef<React.ComponentRef<typeof View>, RangeSliderProps>(
+  (props, ref) => {
+    const {
+      min,
+      max,
+      step = 1,
+      minRange,
+      low,
+      high,
+      disableRange,
+      onValueChange,
+      renderThumb,
+      renderRail,
+      renderRailSelected,
+      renderLowValue,
+      renderHighValue,
+      // Field bits
+      label,
+      description,
+      error,
+      withAsterisk,
+      className,
+      containerClassName,
+      labelClassName,
+      descriptionClassName,
+      errorClassName,
+      style,
+      fullWidth,
+      size,
+      disabled,
+      invalid,
+    } = props;
 
-  const handleValueChanged = React.useCallback(
-    (l: number, h: number) => {
-      onValueChange?.(l, h);
-    },
-    [onValueChange]
-  );
+    const handleValueChanged = React.useCallback(
+      (l: number, h: number) => {
+        onValueChange?.(l, h);
+      },
+      [onValueChange]
+    );
 
-  return (
-    <Field
-      className={className}
-      label={label}
-      description={description}
-      error={error}
-      withAsterisk={withAsterisk}
-      disabled={!!disabled}
-      invalid={!!error || !!invalid}
-      labelClassName={labelClassName}
-      descriptionClassName={descriptionClassName}
-      errorClassName={errorClassName}
-      containerClassName={cn(
-        containerVariants({ fullWidth, size, disabled, invalid: !!error }),
-        containerClassName
-      )}
-    >
-      <View ref={ref} className={cn('flex-1 w-full px-3')} style={style}>
-        <StickyRangeSlider
-          style={{ marginVertical: 8 }}
-          min={min}
-          max={max}
-          step={step}
-          minRange={minRange}
-          low={low}
-          high={high}
-          onValueChanged={handleValueChanged}
-          renderLowValue={renderLowValue ?? ((v: number) => <DefaultValue>{v}</DefaultValue>)}
-          renderHighValue={
-            renderHighValue ??
-            ((v: number) => <DefaultValue>{v === max ? `+${v}` : v}</DefaultValue>)
-          }
-          renderThumb={renderThumb ?? DefaultThumb}
-          renderRail={renderRail ?? DefaultRail}
-          renderRailSelected={renderRailSelected ?? DefaultRailSelected}
-          disableRange={disableRange}
-        />
-      </View>
-    </Field>
-  );
-});
+    return (
+      <Field
+        className={className}
+        label={label}
+        description={description}
+        error={error}
+        withAsterisk={withAsterisk}
+        disabled={!!disabled}
+        invalid={!!error || !!invalid}
+        labelClassName={labelClassName}
+        descriptionClassName={descriptionClassName}
+        errorClassName={errorClassName}
+        containerClassName={cn(
+          containerVariants({ fullWidth, size, disabled, invalid: !!error }),
+          containerClassName
+        )}
+      >
+        <View ref={ref} className={cn('flex-1 w-full px-3')} style={style}>
+          <StickyRangeSlider
+            style={{ marginVertical: 8 }}
+            min={min}
+            max={max}
+            step={step}
+            minRange={minRange}
+            low={low}
+            high={high}
+            onValueChanged={handleValueChanged}
+            renderLowValue={renderLowValue ?? ((v: number) => <DefaultValue>{v}</DefaultValue>)}
+            renderHighValue={
+              renderHighValue ??
+              ((v: number) => <DefaultValue>{v === max ? `+${v}` : v}</DefaultValue>)
+            }
+            renderThumb={renderThumb ?? DefaultThumb}
+            renderRail={renderRail ?? DefaultRail}
+            renderRailSelected={renderRailSelected ?? DefaultRailSelected}
+            disableRange={disableRange}
+          />
+        </View>
+      </Field>
+    );
+  }
+);
 
 RangeSlider.displayName = 'RangeSlider';
 
