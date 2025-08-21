@@ -13,3 +13,5 @@ export * from './badge';
 export * from './pagination';
 export * from './alert';
 export * from './skeleton';
+export * from './popover';
+export * from './base';

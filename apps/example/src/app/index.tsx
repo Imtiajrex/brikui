@@ -86,4 +86,8 @@ const components = [
     title: 'Skeleton',
     description: 'Show loading placeholder UI',
   },
+  {
+    title: 'Popover',
+    description: 'Contextual floating content',
+  },
 ];

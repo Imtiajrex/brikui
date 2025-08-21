@@ -183,6 +183,9 @@ importers:
       react-native-awesome-slider:
         specifier: ^2.9.0
         version: 2.9.0(react-native-gesture-handler@2.24.0(react-native@0.79.5(@babel/core@7.26.0)(@react-native-community/cli@13.6.9)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native-reanimated@3.17.5(@babel/core@7.26.0)(react-native@0.79.5(@babel/core@7.26.0)(@react-native-community/cli@13.6.9)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.5(@babel/core@7.26.0)(@react-native-community/cli@13.6.9)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+      react-native-popable:
+        specifier: ^0.4.3
+        version: 0.4.3(react-native@0.79.5(@babel/core@7.26.0)(@react-native-community/cli@13.6.9)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       react-native-sticky-range-slider:
         specifier: ^0.1.7
         version: 0.1.7(react-native@0.79.5(@babel/core@7.26.0)(@react-native-community/cli@13.6.9)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
@@ -3720,6 +3723,12 @@ packages:
 
   react-native-is-edge-to-edge@1.2.1:
     resolution: {integrity: sha512-FLbPWl/MyYQWz+KwqOZsSyj2JmLKglHatd3xLZWskXOpRaio4LfEDEz8E/A6uD8QoTHW6Aobw1jbEwK7KMgR7Q==}
+    peerDependencies:
+      react: '*'
+      react-native: '*'
+
+  react-native-popable@0.4.3:
+    resolution: {integrity: sha512-khoK9TVLfJV+mBO5FTRx0eZip7djYVDfjaTRDhFPgVq2Exq9X6139Rfjg1sWHPvAQ2VCszTuC45o6iT373kFPw==}
     peerDependencies:
       react: '*'
       react-native: '*'
@@ -8793,6 +8802,11 @@ snapshots:
       react-native: 0.79.5(@babel/core@7.26.0)(@react-native-community/cli@13.6.9)(@types/react@19.0.14)(react@19.0.0)
 
   react-native-is-edge-to-edge@1.2.1(react-native@0.79.5(@babel/core@7.26.0)(@react-native-community/cli@13.6.9)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
+    dependencies:
+      react: 19.0.0
+      react-native: 0.79.5(@babel/core@7.26.0)(@react-native-community/cli@13.6.9)(@types/react@19.0.14)(react@19.0.0)
+
+  react-native-popable@0.4.3(react-native@0.79.5(@babel/core@7.26.0)(@react-native-community/cli@13.6.9)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
     dependencies:
       react: 19.0.0
       react-native: 0.79.5(@babel/core@7.26.0)(@react-native-community/cli@13.6.9)(@types/react@19.0.14)(react@19.0.0)
