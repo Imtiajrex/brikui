@@ -9,7 +9,6 @@ export type TextProps = React.ComponentPropsWithoutRef<typeof RNText> & { asChil
 
 const Text = React.forwardRef<RNText, TextProps>(({ className, children, ...rest }, ref) => {
   const inherited = useTextClass();
-  console.log('inherited', children, inherited);
   return (
     <TextClassContext.Provider value={cn(inherited, className)}>
       <RNText
