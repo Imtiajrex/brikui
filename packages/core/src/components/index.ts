@@ -12,3 +12,4 @@ export * from './segmented-control';
 export * from './badge';
 export * from './pagination';
 export * from './alert';
+export * from './skeleton';

@@ -82,4 +82,8 @@ const components = [
     title: 'Alert',
     description: 'Provide contextual feedback messages',
   },
+  {
+    title: 'Skeleton',
+    description: 'Show loading placeholder UI',
+  },
 ];
