@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { Button } from 'brikui';
+import { ChevronDown } from 'brikui/src/lib/icons/ChevronDown';
 
 export default function ButtonExamples() {
   const [loading, setLoading] = useState(false);
@@ -25,7 +26,9 @@ export default function ButtonExamples() {
         <Button size="default">Default</Button>
         <Button size="lg">Large</Button>
         <Button size="xl">XL</Button>
-        <Button size="icon" accessibilityLabel="Icon" />
+        <Button size="icon" accessibilityLabel="Icon">
+          <ChevronDown color={'white'} />
+        </Button>
       </View>
 
       <View className="gap-3">

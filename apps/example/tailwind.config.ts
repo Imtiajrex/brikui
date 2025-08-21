@@ -1,5 +1,5 @@
 import type { Config } from 'tailwindcss';
-
+const { hairlineWidth } = require('nativewind/theme');
 export default {
   darkMode: 'class',
   content: ['./src/**/*.{js,jsx,ts,tsx}', '../../packages/core/src/**/*.{js,jsx,ts,tsx}'],
@@ -8,34 +8,43 @@ export default {
     extend: {
       colors: {
         primary: {
-          DEFAULT: 'var(--color-primary-default)',
-          light: 'var(--color-primary-light)',
+          DEFAULT: 'var(--color-primary)',
+          foreground: 'var(--color-primary-foreground)',
         },
         secondary: {
-          DEFAULT: 'var(--color-secondary-default)',
-          light: 'var(--color-secondary-light)',
+          DEFAULT: 'var(--color-secondary)',
+          foreground: 'var(--color-secondary-foreground)',
         },
-        tertiary: {
-          DEFAULT: 'var(--color-tertiary-default)',
-          light: 'var(--color-tertiary-light)',
+        destructive: {
+          DEFAULT: 'var(--color-destructive)',
+          foreground: 'var(--color-destructive-foreground)',
+        },
+        success: {
+          DEFAULT: 'var(--color-success)',
+          foreground: 'var(--color-success-foreground)',
         },
         accent: {
-          DEFAULT: 'var(--color-accent-default)',
-          light: 'var(--color-accent-light)',
+          DEFAULT: 'var(--color-accent)',
+          foreground: 'var(--color-accent-foreground)',
         },
-        grey: {
-          DEFAULT: 'var(--color-grey-default)',
+        muted: {
+          DEFAULT: 'var(--color-muted)',
+          foreground: 'var(--color-muted-foreground)',
         },
-        slate: {
-          DEFAULT: 'var(--color-slate-default)',
-        },
-        dark: {
-          DEFAULT: 'var(--color-dark-default)',
-        },
-        light: {
-          DEFAULT: 'var(--color-light-default)',
+        card: {
+          DEFAULT: 'var(--color-card)',
+          foreground: 'var(--color-card-foreground)',
         },
         overlay: 'var(--color-overlay)',
+        background: 'var(--color-background)',
+        foreground: 'var(--color-foreground)',
+      },
+      borderRadius: {
+        radius: 'var(--radius)',
+        input: 'var(--input-radius)',
+      },
+      borderWidth: {
+        hairline: hairlineWidth(),
       },
     },
   },

@@ -1,12 +1,13 @@
 import { router } from 'expo-router';
-import { ScrollView, Text } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 import { Pressable } from 'react-native-gesture-handler';
 export default function Index() {
   return (
     <ScrollView contentContainerClassName="pt-safe web:pt-12 pb-24 max-w-2xl mx-auto w-full">
+      <Header />
       {components.map((component) => (
         <Pressable
-          className="p-4 mb-4 bg-gray-100 rounded-lg"
+          className="p-4 mb-4 bg-card rounded-lg hover:bg-accent active:bg-accent transition-all"
           key={component.title}
           onPress={() => {
             router.push(`/examples/${component.title.toLowerCase()}`);
@@ -19,6 +20,14 @@ export default function Index() {
     </ScrollView>
   );
 }
+
+const Header = () => {
+  return (
+    <View className="mb-4">
+      <Text className="text-lg font-semibold text-center flex-1">BrikUI Components</Text>
+    </View>
+  );
+};
 
 const components = [
   {

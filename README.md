@@ -1,6 +1,6 @@
-# NativeBricks
+# BrikUI
 
-NativeBricks is a powerful, easy-to-use Tailwind CSS-inspired UI library for React Native, built on top of NativeWind. It allows developers to build beautiful, responsive, and performant mobile interfaces with minimal effort.
+BrikUI is a powerful, easy-to-use Tailwind CSS-inspired UI library for React Native, built on top of NativeWind. It allows developers to build beautiful, responsive, and performant mobile interfaces with minimal effort.
 
 ## Features
 
@@ -11,7 +11,7 @@ NativeBricks is a powerful, easy-to-use Tailwind CSS-inspired UI library for Rea
 
 ## Installation
 
-To get started with NativeBricks, install the core package:
+To get started with BrikUI, install the core package:
 
 ```bash
 npm install brikui
@@ -65,7 +65,7 @@ yarn add react react-native nativewind
 2. **NativeWind Setup**:
    Follow the NativeWind setup instructions [here](https://www.nativewind.dev/quick-start).
 
-3. **Import NativeBricks Components**:
+3. **Import BrikUI Components**:
    Start using pre-built components in your project by importing them from `brikui`:
 
    ```javascript
@@ -76,7 +76,7 @@ yarn add react react-native nativewind
 
 ### Example
 
-Here’s a quick example to demonstrate the power of NativeBricks:
+Here’s a quick example to demonstrate the power of BrikUI:
 
 ```javascript
 import React from 'react';
@@ -92,7 +92,7 @@ const App = () => {
           className="bg-blue-500 text-white"
           onPress={() =>
             alert({
-              title: 'Hello, NativeBricks!',
+              title: 'Hello, BrikUI!',
             })
           }
         >
@@ -108,7 +108,7 @@ export default App;
 
 ## Documentation
 
-Find comprehensive documentation, including component APIs and examples, on the [NativeBricks Documentation Site](https://brikui.dev).
+Find comprehensive documentation, including component APIs and examples, on the [BrikUI Documentation Site](https://brikui.dev).
 
 ## Roadmap
 
@@ -118,7 +118,7 @@ Find comprehensive documentation, including component APIs and examples, on the 
 
 ## License
 
-NativeBricks is licensed under the [MIT License](LICENSE).
+BrikUI is licensed under the [MIT License](LICENSE).
 
 ---
 

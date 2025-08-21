@@ -1,4 +1,4 @@
-import { themes } from '@/constants/color-theme';
+import { themes } from '@/constants/theme';
 import { DefaultTheme, ThemeProvider as NavigationThemeProvider } from '@react-navigation/native';
 import { ThemeProvider, useColor, useColorScheme } from 'brikui';
 import { Slot } from 'expo-router';
@@ -8,6 +8,8 @@ import 'react-native-reanimated';
 import { configureReanimatedLogger, ReanimatedLogLevel } from 'react-native-reanimated';
 import '../components/gesture-handler';
 import '../global.css';
+import { useEffect } from 'react';
+import { colorScheme } from 'nativewind';
 
 // This is the default configuration
 configureReanimatedLogger({
@@ -34,6 +36,9 @@ export default function Layout() {
   );
 }
 const Root = () => {
+  useEffect(() => {
+    colorScheme.set('light');
+  }, []);
   return (
     <View className="light flex-1 bg-background">
       <NavigationThemeProvider

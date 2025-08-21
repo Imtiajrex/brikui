@@ -1,45 +1,40 @@
-import { createContext, useEffect, useMemo } from 'react';
-import { View } from 'react-native';
 import { useColorScheme } from 'nativewind';
+import { createContext, useContext, useMemo } from 'react';
+import { View } from 'react-native';
 import { create as createTw, TailwindFn } from 'twrnc';
-import { create } from 'zustand';
 
 interface ThemeProviderProps {
   children: React.ReactNode;
-  themes: Record<ThemeType, any>;
+  themes: Record<ThemeType, Record<string, string>>;
 }
 type ThemeType = 'light' | 'dark';
 export const ThemeContext = createContext<{
   theme: ThemeType;
+  tw: TailwindFn | null;
 }>({
   theme: 'light',
-});
-const currentThemeStore = create<{
-  theme: any;
-  setTheme: (theme: any) => void;
-  tw: TailwindFn | null;
-}>((set) => ({
-  theme: undefined,
-  setTheme: (theme) => set({ theme }),
   tw: null,
-}));
+});
 export const useTw = () => {
-  const { tw } = currentThemeStore.getState();
-  return tw;
+  const theme = useContext(ThemeContext);
+  return theme.tw;
 };
 export const ThemeProvider = ({ children, themes }: ThemeProviderProps) => {
   const { colorScheme } = useColorScheme();
   const currentTheme = themes[colorScheme!];
 
-  useEffect(() => {
-    currentThemeStore.setState({
-      tw: createTw({ theme: { colors: currentTheme }, plugins: [] }),
-      theme: currentTheme,
+  const tw = useMemo(() => {
+    const colors = Object.fromEntries(
+      Object.entries(currentTheme).map(([key, value]) => [key.replace('--color-', ''), value])
+    );
+    return createTw({
+      theme: { colors: colors },
+      plugins: [],
     });
-  }, [currentTheme, colorScheme]);
+  }, [colorScheme]);
 
   return (
-    <ThemeContext.Provider value={{ theme: colorScheme! }}>
+    <ThemeContext.Provider value={{ theme: colorScheme!, tw }}>
       <View style={currentTheme} className="flex-1">
         {children}
       </View>

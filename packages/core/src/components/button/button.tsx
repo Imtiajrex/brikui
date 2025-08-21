@@ -19,7 +19,7 @@ const buttonVariants = cva(
         // Non-solid styles
         outline: 'border border-input bg-background active:bg-accent',
         ghost: 'bg-transparent active:bg-accent',
-        link: 'bg-transparent',
+        link: 'bg-transparent font-bold',
         muted: 'bg-muted',
       },
       size: {

@@ -37,8 +37,8 @@
 
 @layer base {
   :root {
-    --radius: 0.5rem;
-    --input-radius: 0.5rem;
+    --radius: 1.25rem;
+    --input-radius: 1.25rem;
   }
 }
 
