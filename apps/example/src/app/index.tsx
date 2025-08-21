@@ -78,4 +78,8 @@ const components = [
     title: 'Pagination',
     description: 'Navigate between pages of content',
   },
+  {
+    title: 'Alert',
+    description: 'Provide contextual feedback messages',
+  },
 ];
