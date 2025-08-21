@@ -74,4 +74,8 @@ const components = [
     title: 'Badge',
     description: 'A small count or labeling component',
   },
+  {
+    title: 'Pagination',
+    description: 'Navigate between pages of content',
+  },
 ];

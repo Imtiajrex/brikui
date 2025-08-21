@@ -6,7 +6,6 @@ export default function Calendar() {
   const { colorScheme } = useColorScheme();
   const defaultStyles = useDefaultStyles(colorScheme);
   const [selected, setSelected] = useState<DateType>();
-  console.log(colorScheme, defaultStyles);
 
   return (
     <DateTimePicker
