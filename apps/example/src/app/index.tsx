@@ -34,4 +34,8 @@ const components = [
     title: 'Button',
     description: 'A button component',
   },
+  {
+    title: 'Input',
+    description: 'A text input component',
+  },
 ];

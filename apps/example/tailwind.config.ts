@@ -38,6 +38,10 @@ export default {
         overlay: 'var(--color-overlay)',
         background: 'var(--color-background)',
         foreground: 'var(--color-foreground)',
+        border: {
+          DEFAULT: 'var(--color-border)',
+          input: 'var(--color-border-input)',
+        },
       },
       borderRadius: {
         radius: 'var(--radius)',

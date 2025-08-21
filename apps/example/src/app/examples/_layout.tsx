@@ -10,7 +10,6 @@ export default function _layout() {
       <Stack
         screenOptions={{
           headerShown: true,
-          headerTitle: 'Examples',
           headerTitleAlign: 'center',
           headerStyle: { backgroundColor: 'transparent' },
           headerTintColor: '#212529',
