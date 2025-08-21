@@ -1,8 +1,10 @@
+import { useColorScheme } from 'brikui';
 import { useState } from 'react';
 import DateTimePicker, { DateType, useDefaultStyles } from 'react-native-ui-datepicker';
 
 export default function Calendar() {
-  const defaultStyles = useDefaultStyles();
+  const { colorScheme } = useColorScheme();
+  const defaultStyles = useDefaultStyles(colorScheme);
   const [selected, setSelected] = useState<DateType>();
 
   return (

@@ -50,4 +50,8 @@ const components = [
     title: 'Textarea',
     description: 'A multi-line text input',
   },
+  {
+    title: 'Switch',
+    description: 'A toggle switch component',
+  },
 ];
