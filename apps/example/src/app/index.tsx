@@ -46,4 +46,8 @@ const components = [
     title: 'PasswordInput',
     description: 'A password input component',
   },
+  {
+    title: 'Textarea',
+    description: 'A multi-line text input',
+  },
 ];
