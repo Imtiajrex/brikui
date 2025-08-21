@@ -1,0 +1,52 @@
+{
+  "private": false,
+  "name": "brikui",
+  "version": "0.0.93",
+  "description": "Native Bricks Core",
+  "author": "Imtiaj Bin Aoual <imtiajbinaoual@gmail.com>",
+  "license": "MIT",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts",
+    "lint": "eslint --fix --ext js,ts,tsx ."
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.26.0",
+    "@tsconfig/recommended": "^1.0.3",
+    "tsup": "^8.5.0",
+    "typescript": "^5.9.2",
+    "dom-helpers": "^5.2.1",
+    "nativewind": "^4.1.21",
+    "react-native": "0.79.5",
+    "react-native-gesture-handler": "^2.24.0",
+    "react-native-reanimated": "~3.17.5",
+    "react-native-safe-area-context": "5.4.0"
+  },
+  "dependencies": {
+    "react-native-actions-sheet": "^0.9.7",
+    "tailwind-merge": "^2.5.4",
+    "lucide-react-native": "^0.460.0",
+    "clsx": "^2.1.1",
+    "dayjs": "^1.11.13",
+    "@miblanchard/react-native-slider": "^2.6.0",
+    "@tabler/icons-react-native": "^3.19.0",
+    "twrnc": "^4.6.0",
+    "sonner": "^1.7.0",
+    "class-variance-authority": "^0.7.0",
+    "@shopify/flash-list": "^1.7.6",
+    "react-hook-form": "^7.53.2",
+    "sonner-native": "^0.16.1",
+    "zod": "^3.23.8",
+    "zustand": "^5.0.0"
+  },
+  "peerDependencies": {
+    "nativewind": "*",
+    "react": "*",
+    "react-dom": "*",
+    "react-native": "*",
+    "tailwindcss": "*",
+    "react-native-reanimated": "*",
+    "react-native-safe-area-context": "*",
+    "react-native-gesture-handler": "*"
+  }
+}

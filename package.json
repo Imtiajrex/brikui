@@ -1,0 +1,28 @@
+{
+  "private": true,
+  "name": "nativebricksui",
+  "scripts": {
+    "start": "turbo start --filter=\"{./apps/example}...\"",
+    "lint": "turbo lint",
+    "test": "turbo test",
+    "build": "turbo build",
+    "clean": "turbo clean:modules && turbo clean:apps && pnpm install",
+    "clean:modules": "rm -rf node_modules && rm -rf apps/*/node_modules && rm -rf packages/*/node_modules",
+    "clean:apps": "rm -rf apps/*/ios && rm -rf apps/*/android && rm -rf apps/*/.expo"
+  },
+  "devDependencies": {
+    "turbo": "^1.10.7",
+    "typescript": "^5.9.2"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "prettier": {
+    "printWidth": 100,
+    "tabWidth": 2,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "packageManager": "pnpm@9.15.4+sha512.b2dc20e2fc72b3e18848459b37359a32064663e5627a51e4c74b2c29dd8e8e0491483c3abb40789cfd578bf362fb6ba8261b05f0387d76792ed6e23ea3b1b6a0"
+}

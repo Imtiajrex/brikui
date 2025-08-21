@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+}
+/* width */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+  transition: all;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0);
+}
+
+::-webkit-scrollbar-track:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 25px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+    --input-radius: 0.5rem;
+  }
+}
+
+.container {
+  @apply max-w-4xl flex-1 mx-auto gap-4 p-4 pt-10 w-full bg-background;
+}

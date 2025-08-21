@@ -1,0 +1,28 @@
+{
+  "expo": {
+    "scheme": "nativebricks",
+    "userInterfaceStyle": "automatic",
+    "web": {
+      "output": "startic",
+      "bundler": "metro"
+    },
+    "plugins": [
+      [
+        "expo-router",
+        {
+          "origin": "http://localhost:8081"
+        }
+      ]
+    ],
+    "splash": {
+      "image": "./src/assets/images/splash.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#16295A"
+    },
+    "name": "Native Bricks UI",
+    "slug": "nativebricks",
+    "android": {
+      "package": "com.imtiajrex.nativebricks"
+    }
+  }
+}
