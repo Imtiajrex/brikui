@@ -42,4 +42,8 @@ const components = [
     title: 'DatePicker',
     description: 'A date picker component',
   },
+  {
+    title: 'PasswordInput',
+    description: 'A password input component',
+  },
 ];
