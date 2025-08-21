@@ -10,7 +10,7 @@ export default function InputExamples() {
   const hasValue = value.trim().length > 0;
 
   return (
-    <ScrollView contentContainerClassName="p-4 gap-6" className="flex-1">
+    <ScrollView contentContainerClassName="p-4 pt-12 gap-6" className="flex-1">
       <View className="gap-4">
         <Input label="Default" placeholder="Your name" value={value} onChangeText={setValue} />
         <Input

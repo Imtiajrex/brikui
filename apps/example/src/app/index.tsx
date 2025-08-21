@@ -1,9 +1,9 @@
 import { router } from 'expo-router';
 import { ScrollView, Text, View } from 'react-native';
-import { Pressable } from 'react-native-gesture-handler';
+import { Pressable } from 'react-native';
 export default function Index() {
   return (
-    <ScrollView contentContainerClassName="pt-safe web:pt-12 pb-24 max-w-2xl mx-auto w-full">
+    <ScrollView contentContainerClassName="pt-safe px-4 web:pt-12 pb-24 max-w-2xl mx-auto w-full">
       <Header />
       {components.map((component) => (
         <Pressable

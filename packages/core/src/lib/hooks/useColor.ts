@@ -1,15 +1,18 @@
-import { useTw } from '../../contexts/ThemeProvider';
+import { useTheme, useTw } from '../../contexts/ThemeProvider';
 
 export const useColor = (color: string) => {
-  const tw = useTw();
-  if (!tw) return color;
+  const theme = useTheme();
   const localColor =
     color.includes('bg-') || color.includes('text-') || color.includes('border-')
       ? color
       : `text-${color}`;
-  const style = tw.style(localColor);
-  if (localColor.includes('bg-')) return String(style.backgroundColor);
-  else if (localColor.includes('text-')) return String(style.color);
-  else if (localColor.includes('border-')) return String(style.borderColor);
-  return tw.color(color);
+  const classNameSplit = localColor.split(' ');
+  const colorClassName = classNameSplit
+    .find((c) => c.startsWith('bg-') || c.startsWith('text-') || c.startsWith('border-'))
+    ?.replace(/^bg-/, '')
+    .replace(/^text-/, '')
+    .replace(/^border-/, '');
+
+  const colorValue = theme[`--color-${colorClassName}`! as keyof typeof theme];
+  return colorValue;
 };

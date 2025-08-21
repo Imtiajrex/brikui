@@ -1,4 +1,4 @@
-import { useColorScheme } from 'nativewind';
+import { useColorScheme, vars } from 'nativewind';
 import { createContext, useContext, useMemo } from 'react';
 import { View } from 'react-native';
 import { create as createTw, TailwindFn } from 'twrnc';
@@ -10,11 +10,17 @@ interface ThemeProviderProps {
 type ThemeType = 'light' | 'dark';
 export const ThemeContext = createContext<{
   theme: ThemeType;
+  currentTheme: Record<string, string>;
   tw: TailwindFn | null;
 }>({
   theme: 'light',
+  currentTheme: {},
   tw: null,
 });
+export const useTheme = () => {
+  const theme = useContext(ThemeContext);
+  return theme.currentTheme;
+};
 export const useTw = () => {
   const theme = useContext(ThemeContext);
   return theme.tw;
@@ -34,8 +40,8 @@ export const ThemeProvider = ({ children, themes }: ThemeProviderProps) => {
   }, [colorScheme]);
 
   return (
-    <ThemeContext.Provider value={{ theme: colorScheme!, tw }}>
-      <View style={currentTheme} className="flex-1">
+    <ThemeContext.Provider value={{ theme: colorScheme!, tw, currentTheme }}>
+      <View style={vars(currentTheme)} className="flex-1">
         {children}
       </View>
     </ThemeContext.Provider>

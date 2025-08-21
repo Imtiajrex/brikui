@@ -1,7 +1,7 @@
 import { vars } from 'nativewind';
 
 export const themes = {
-  light: vars({
+  light: {
     // New token format
     '--color-primary': '#3d13d4',
     '--color-primary-foreground': '#ffffff',
@@ -21,9 +21,10 @@ export const themes = {
     '--color-accent-foreground': '#1E1E1E',
     '--color-border-input': '#c9c9c9',
     '--color-border': '#919191',
+    '--color-ring': '#3d13d4',
     '--color-overlay': 'rgba(0, 0, 0, .05)',
-  }),
-  dark: vars({
+  },
+  dark: {
     // New token format
     '--color-primary': '#a78bfa',
     '--color-primary-foreground': '#1a1a1a',
@@ -42,7 +43,8 @@ export const themes = {
     '--color-accent': '#8b5cf6',
     '--color-accent-foreground': '#f5f5f5',
     '--color-border-input': '#d6d6d6',
+    '--color-ring': '#a78bfa',
     '--color-border': '#919191',
     '--color-overlay': 'rgba(255, 255, 255, .08)',
-  }),
+  },
 };

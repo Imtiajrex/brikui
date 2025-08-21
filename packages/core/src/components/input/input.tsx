@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text as RNText, TextInput as RNTextInput, View } from 'react-native';
+import { Text as RNText, TextInput as RNTextInput, View, Platform } from 'react-native';
 import { cva, type VariantProps, cn } from '../../lib/utils/utils';
 import { useColor } from '../../lib/hooks/useColor';
 
@@ -78,21 +78,30 @@ const Input = React.forwardRef<React.ComponentRef<typeof RNTextInput>, InputProp
       disabled,
       placeholder,
       placeholderTextColor,
+      onFocus,
+      onBlur,
       ...props
     },
     ref
   ) => {
     const computedPlaceholder = useColor('text-muted-foreground');
+    const [focused, setFocused] = React.useState(false);
+    const focusRingWeb = error
+      ? 'ring-2 ring-destructive ring-offset-2 ring-offset-background border-destructive'
+      : 'ring-2 ring-ring ring-offset-2 ring-offset-background border-ring';
+    const focusBorderNative = error ? ' border-destructive' : 'border-ring';
 
     return (
-      <View className={cn('w-full flex flex-col gap-1 leading-3', className)}>
+      <View className={cn('w-full flex flex-col gap-1.5', className)}>
         {label ? (
           <View className=" flex-row items-center gap-1">
-            <RNText className={cn('text-sm font-medium text-foreground', labelClassName)}>
+            <RNText
+              className={cn('text-sm font-medium text-foreground leading-none', labelClassName)}
+            >
               {label}
             </RNText>
             {withAsterisk ? (
-              <RNText accessibilityElementsHidden className="text-destructive">
+              <RNText accessibilityElementsHidden className="text-destructive leading-none">
                 *
               </RNText>
             ) : null}
@@ -100,12 +109,19 @@ const Input = React.forwardRef<React.ComponentRef<typeof RNTextInput>, InputProp
         ) : null}
 
         {description ? (
-          <RNText className={cn('text-xs text-muted-foreground', descriptionClassName)}>
+          <RNText
+            className={cn('text-xs text-muted-foreground leading-none', descriptionClassName)}
+          >
             {description}
           </RNText>
         ) : null}
 
-        <View className={cn(inputVariants({ variant, fullWidth, invalid: !!error, disabled }))}>
+        <View
+          className={cn(
+            inputVariants({ variant, fullWidth, invalid: !!error, disabled }),
+            focused && !disabled && (Platform.OS === 'web' ? focusRingWeb : focusBorderNative)
+          )}
+        >
           {leftSection ? (
             <View className={cn('text-muted-foreground z-10 pl-2', leftSectionClassName)}>
               {leftSection}
@@ -117,6 +133,14 @@ const Input = React.forwardRef<React.ComponentRef<typeof RNTextInput>, InputProp
             editable={!disabled}
             placeholder={placeholder}
             placeholderTextColor={placeholderTextColor ?? computedPlaceholder}
+            onFocus={(e: any) => {
+              if (!disabled) setFocused(true);
+              onFocus?.(e);
+            }}
+            onBlur={(e: any) => {
+              setFocused(false);
+              onBlur?.(e);
+            }}
             className={cn(
               'flex-1 w-full px-2 h-full text-foreground text-sm',
               !leftSection && 'rounded-l-input',
@@ -133,7 +157,9 @@ const Input = React.forwardRef<React.ComponentRef<typeof RNTextInput>, InputProp
         </View>
 
         {error ? (
-          <RNText className={cn(' text-xs text-destructive', errorClassName)}>{error}</RNText>
+          <RNText className={cn(' text-xs text-destructive leading-none', errorClassName)}>
+            {error}
+          </RNText>
         ) : null}
       </View>
     );

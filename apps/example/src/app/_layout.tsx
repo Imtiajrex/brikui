@@ -1,7 +1,7 @@
 import { themes } from '@/constants/theme';
 import { DefaultTheme, ThemeProvider as NavigationThemeProvider } from '@react-navigation/native';
 import { ThemeProvider, useColor, useColorScheme } from 'brikui';
-import { Slot } from 'expo-router';
+import { Slot, Stack } from 'expo-router';
 import { LogBox, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import 'react-native-reanimated';
@@ -55,7 +55,7 @@ const Root = () => {
           dark: useColorScheme().colorScheme === 'dark',
         }}
       >
-        <Slot />
+        <Stack />
       </NavigationThemeProvider>
     </View>
   );

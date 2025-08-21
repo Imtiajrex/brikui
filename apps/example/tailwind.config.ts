@@ -38,10 +38,9 @@ export default {
         overlay: 'var(--color-overlay)',
         background: 'var(--color-background)',
         foreground: 'var(--color-foreground)',
-        border: {
-          DEFAULT: 'var(--color-border)',
-          input: 'var(--color-border-input)',
-        },
+        border: 'var(--color-border)',
+        input: 'var(--color-border-input)',
+        ring: 'var(--color-ring)',
       },
       borderRadius: {
         radius: 'var(--radius)',
