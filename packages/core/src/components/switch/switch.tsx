@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Pressable, View } from 'react-native';
+import { Pressable, View, Text, Platform } from 'react-native';
 import Animated, {
   Layout,
   LinearTransition,
@@ -73,6 +73,7 @@ type SwitchProps = Omit<BaseProps, 'onPress'> &
     onCheckedChange?: (checked: boolean) => void;
     onLabel?: React.ReactNode;
     offLabel?: React.ReactNode;
+    label?: React.ReactNode; // external label beside the switch
     className?: string; // wrapper
     trackClassName?: string;
     thumbClassName?: string;
@@ -88,6 +89,7 @@ const Switch = React.forwardRef<React.ElementRef<typeof Pressable>, SwitchProps>
       size,
       onLabel,
       offLabel,
+      label: sideLabel,
       className,
       trackClassName,
       thumbClassName,
@@ -100,7 +102,7 @@ const Switch = React.forwardRef<React.ElementRef<typeof Pressable>, SwitchProps>
     const [internal, setInternal] = React.useState<boolean>(defaultChecked ?? false);
     const isOn = checked ?? internal;
 
-    const { w, h, pad, thumb, label } = dims[(size ?? 'md') as SwitchSize];
+    const { w, h, pad, thumb, label: labelSizeClass } = dims[(size ?? 'md') as SwitchSize];
     // Distance the thumb travels between OFF and ON
     const travelX = w - thumb - 2 * pad;
 
@@ -150,7 +152,11 @@ const Switch = React.forwardRef<React.ElementRef<typeof Pressable>, SwitchProps>
         >
           {offLabel ? (
             <Animated.Text
-              className={cn('text-[10px] absolute right-1.5 text-primary', label, labelClassName)}
+              className={cn(
+                'text-[10px] absolute right-1.5 text-primary',
+                labelSizeClass,
+                labelClassName
+              )}
               style={offLabelAnimatedStyle}
             >
               {offLabel}
@@ -158,7 +164,11 @@ const Switch = React.forwardRef<React.ElementRef<typeof Pressable>, SwitchProps>
           ) : null}
           {onLabel ? (
             <Animated.Text
-              className={cn('text-[10px] absolute left-1.5 text-background', label, labelClassName)}
+              className={cn(
+                'text-[10px] absolute left-1.5 text-background',
+                labelSizeClass,
+                labelClassName
+              )}
               style={onLabelAnimatedStyle}
             >
               {onLabel}
@@ -178,9 +188,20 @@ const Switch = React.forwardRef<React.ElementRef<typeof Pressable>, SwitchProps>
               shadowRadius: 3,
               shadowOffset: { width: 0, height: 1 },
             }}
-            layout={LinearTransition.springify(100).damping(10)}
+            layout={
+              Platform.OS === 'web'
+                ? LinearTransition.springify(100).damping(50)
+                : LinearTransition.springify(500).damping(980)
+            }
           />
         </View>
+        {sideLabel != null ? (
+          typeof sideLabel === 'string' || typeof sideLabel === 'number' ? (
+            <Text>{sideLabel}</Text>
+          ) : (
+            sideLabel
+          )
+        ) : null}
       </Pressable>
     );
   }

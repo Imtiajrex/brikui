@@ -15,8 +15,8 @@ export default function SwitchExamples() {
         <Switch size="xl" />
       </View>
 
-      <View className="gap-4 items-center">
-        <Switch size="md" onLabel="ON" offLabel="OFF" />
+      <View className="gap-4 items-start w-full">
+        <Switch size="md" onLabel="ON" offLabel="OFF" label="Toggle this to ensure toggling!" />
       </View>
     </ScrollView>
   );
