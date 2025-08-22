@@ -6,6 +6,8 @@ import { Pressable } from '../base/pressable';
 import { Text } from '../base/text';
 import { View } from '../base/view';
 import { Button } from '../button/button';
+import { vars } from 'nativewind';
+import { useTheme } from '../../contexts/ThemeProvider';
 
 type ActionConfig = {
   text: string;
@@ -164,32 +166,35 @@ const AlertDialog = React.forwardRef<AlertDialogHandle, AlertDialogProps>(
         },
       ],
     }));
+    const currentTheme = useTheme();
 
     if (!visible) return null;
 
     return (
       <Modal transparent visible={visible} onRequestClose={close} animationType="fade">
-        <Animated.View
-          style={contentAnimated}
-          className="w-full items-center z-50 flex-1 justify-center absolute h-full"
-        >
-          <InternalContent
-            title={title}
-            description={description}
-            confirm={confirm}
-            cancel={cancel}
-            hideOnConfirm={hideOnConfirm}
-            hideOnCancel={hideOnCancel}
-            contentClassName={contentClassName}
-            onClose={close}
+        <View style={vars(currentTheme)} className="flex-1">
+          <Animated.View
+            style={contentAnimated}
+            className="w-full items-center z-50 flex-1 justify-center"
+          >
+            <InternalContent
+              title={title}
+              description={description}
+              confirm={confirm}
+              cancel={cancel}
+              hideOnConfirm={hideOnConfirm}
+              hideOnCancel={hideOnCancel}
+              contentClassName={contentClassName}
+              onClose={close}
+            />
+          </Animated.View>
+          <Pressable
+            className=" absolute top-0 left-0 flex-1 w-full h-full -z-10 bg-black/50"
+            onPress={() => {
+              if (!disableBackdropClose) close();
+            }}
           />
-        </Animated.View>
-        <Pressable
-          className=" absolute top-0 left-0 flex-1 w-full h-full -z-10 bg-black/50"
-          onPress={() => {
-            if (!disableBackdropClose) close();
-          }}
-        />
+        </View>
       </Modal>
     );
   }
