@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ScrollView } from 'react-native';
-import { View, Text, Button, Select } from 'brikui';
+import { View, Text, Button, Select, MultiSelect } from 'brikui';
 
 const frameworks = [
   { label: 'React', value: 'react' },
@@ -14,6 +14,7 @@ const frameworks = [
 
 export default function SelectExamples() {
   const [controlled, setControlled] = useState<string | undefined>('react');
+  const [multiControlled, setMultiControlled] = useState<string[]>(['react', 'expo']);
 
   return (
     <ScrollView contentContainerClassName="p-4 gap-10" className="flex-1">
@@ -93,6 +94,57 @@ export default function SelectExamples() {
           placeholder="Open me"
           matchTriggerWidth={false}
           popoverContentClassName="w-56"
+        />
+      </View>
+
+      {/* MultiSelect Basic */}
+      <View className="gap-3">
+        <Text className="text-lg font-semibold">MultiSelect (basic)</Text>
+        <MultiSelect
+          options={frameworks}
+          placeholder="Choose frameworks"
+          defaultValue={['react', 'expo']}
+          fieldProps={{ label: 'Frameworks' }}
+        />
+      </View>
+
+      {/* MultiSelect Controlled */}
+      <View className="gap-3">
+        <Text className="text-lg font-semibold">MultiSelect (controlled)</Text>
+        <View className="flex-row gap-2 flex-wrap">
+          <Button size="sm" onPress={() => setMultiControlled(['react'])}>
+            React only
+          </Button>
+          <Button size="sm" onPress={() => setMultiControlled(['react', 'expo', 'next'])}>
+            3 items
+          </Button>
+          <Button size="sm" variant="outline" onPress={() => setMultiControlled([])}>
+            Clear
+          </Button>
+        </View>
+        <MultiSelect
+          options={frameworks}
+          value={multiControlled}
+          onChange={(vals: string[]) => setMultiControlled(vals)}
+          placeholder="Pick many"
+          fieldProps={{ label: 'Frameworks (controlled multi)' }}
+        />
+        <Text className="text-xs text-muted-foreground">
+          Values: {multiControlled.length ? multiControlled.join(', ') : 'none'}
+        </Text>
+      </View>
+
+      {/* MultiSelect Custom Trigger Label */}
+      <View className="gap-3">
+        <Text className="text-lg font-semibold">MultiSelect (custom label)</Text>
+        <MultiSelect
+          options={frameworks}
+          defaultValue={['react', 'expo', 'next']}
+          placeholder="Frameworks"
+          renderMultipleLabel={(labels) =>
+            labels.length ? `${labels.length} selected` : 'None selected'
+          }
+          fieldProps={{ label: 'Frameworks (custom trigger)' }}
         />
       </View>
     </ScrollView>

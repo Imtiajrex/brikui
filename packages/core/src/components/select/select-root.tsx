@@ -4,11 +4,11 @@ import { Popover, type PopoverRef } from '../popover/popover';
 import { Field } from '../field/field';
 import { cn } from '../../lib/utils/utils';
 import { SelectCtx } from './context';
-import { SelectProps, SelectContextValue } from './types';
+import { AnySelectProps, SelectProps, MultiSelectProps, SelectContextValue } from './types';
 import { SelectTrigger } from './trigger';
 import { SelectList } from './list';
 
-export function SelectRootInner<T>(props: SelectProps<T>) {
+export function SelectRootInner<T>(props: AnySelectProps<T>) {
   const {
     options,
     value,
@@ -32,21 +32,45 @@ export function SelectRootInner<T>(props: SelectProps<T>) {
     multiple = false,
     ...rest
   } = props as any;
-
+  const isMulti = multiple === true;
   const isControlled = value !== undefined;
-  const [internal, setInternal] = React.useState<T | undefined>(defaultValue);
-  const selected = (multiple ? undefined : isControlled ? value : internal) as T | undefined;
-  const [selectedSet] = React.useState<Set<T>>(() => new Set());
+  const [internalSingle, setInternalSingle] = React.useState<T | undefined>(
+    !isMulti ? (defaultValue as T | undefined) : undefined
+  );
+  const [internalMulti, setInternalMulti] = React.useState<T[]>(
+    isMulti ? (defaultValue as T[]) || [] : []
+  );
+  const selected = (!isMulti ? (isControlled ? (value as T) : internalSingle) : undefined) as
+    | T
+    | undefined;
+  const selectedArray: T[] = isMulti
+    ? isControlled
+      ? (value as T[]) || []
+      : internalMulti
+    : selected !== undefined
+    ? [selected]
+    : [];
+  const selectedSet = React.useMemo(() => new Set<T>(selectedArray), [selectedArray]);
   const popoverRef = React.useRef<PopoverRef>(null);
   const [triggerWidth, setTriggerWidth] = React.useState<number | undefined>(undefined);
 
   const setSelectedSingle = React.useCallback(
     (val: T) => {
-      if (!isControlled) setInternal(val);
-      onChange?.(val);
-      if (!multiple) popoverRef.current?.hide();
+      if (!isControlled) setInternalSingle(val);
+      (onChange as any)?.(val);
+      if (!isMulti) popoverRef.current?.hide();
     },
-    [isControlled, onChange, multiple]
+    [isControlled, onChange, isMulti]
+  );
+
+  const toggleMulti = React.useCallback(
+    (val: T) => {
+      const has = selectedSet.has(val);
+      const next = has ? selectedArray.filter((v) => v !== val) : [...selectedArray, val];
+      if (!isControlled) setInternalMulti(next);
+      (onChange as any)?.(next);
+    },
+    [isControlled, onChange, selectedArray, selectedSet]
   );
 
   const ctxValue = React.useMemo<SelectContextValue<T>>(
@@ -62,20 +86,16 @@ export function SelectRootInner<T>(props: SelectProps<T>) {
       indicator,
       maxHeight,
       matchTriggerWidth,
-      multiple,
+      multiple: isMulti,
       selected,
-      selectedSet: multiple ? selectedSet : undefined,
-      isSelected: (opt) => (multiple ? selectedSet.has(opt.value) : opt.value === selected),
+      selectedSet: isMulti ? selectedSet : undefined,
+      selectedValues: isMulti ? selectedArray : undefined,
+      isSelected: (opt) => (isMulti ? selectedSet.has(opt.value) : opt?.value === selected),
       select: (val: T) => {
-        if (multiple) {
-          if (selectedSet.has(val)) selectedSet.delete(val);
-          else selectedSet.add(val);
-          setInternal((prev) => prev); // trigger re-render
-        } else {
-          setSelectedSingle(val);
-        }
+        if (isMulti) toggleMulti(val);
+        else setSelectedSingle(val);
       },
-      closeAfterSelect: !multiple,
+      closeAfterSelect: !isMulti,
       popoverRef: popoverRef as React.RefObject<PopoverRef>,
       triggerWidth,
       setTriggerWidth: (w) => setTriggerWidth(w),
@@ -92,10 +112,12 @@ export function SelectRootInner<T>(props: SelectProps<T>) {
       indicator,
       maxHeight,
       matchTriggerWidth,
-      multiple,
+      isMulti,
       selected,
       selectedSet,
+      selectedArray,
       setSelectedSingle,
+      toggleMulti,
       triggerWidth,
     ]
   );
@@ -108,6 +130,12 @@ export function SelectRootInner<T>(props: SelectProps<T>) {
       className={className}
       style={style}
       matchTriggerWidth={matchTriggerWidth}
+      multiple={isMulti}
+      selectedLabels={
+        isMulti
+          ? options.filter((o: any) => selectedSet.has(o.value)).map((o: any) => o.label)
+          : undefined
+      }
       {...rest}
     />
   );

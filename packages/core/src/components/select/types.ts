@@ -21,6 +21,9 @@ export interface BaseSelectCommon<T = any> {
   showIndicator?: boolean;
   indicator?: React.ReactNode;
   matchTriggerWidth?: boolean;
+  // Multi-select display helpers (also accepted by single but unused)
+  maxTagCount?: number;
+  renderMultipleLabel?: (labels: string[]) => string;
 }
 
 export interface SelectProps<T = any>
@@ -33,14 +36,31 @@ export interface SelectProps<T = any>
   popoverClassName?: string;
   popoverContentClassName?: string;
   style?: ViewStyle;
-  multiple?: false; // placeholder for future multi
+  multiple?: false;
   disabled?: boolean;
 }
+
+export interface MultiSelectProps<T = any>
+  extends Omit<React.ComponentProps<typeof Pressable>, 'onChange' | 'disabled'>,
+    BaseSelectCommon<T> {
+  value?: T[]; // controlled (multi)
+  defaultValue?: T[];
+  onChange?: (values: T[]) => void;
+  fieldProps?: Omit<FieldProps, 'children'>;
+  popoverClassName?: string;
+  popoverContentClassName?: string;
+  style?: ViewStyle;
+  multiple: true;
+  disabled?: boolean;
+}
+
+export type AnySelectProps<T = any> = SelectProps<T> | MultiSelectProps<T>;
 
 export interface SelectContextValue<T = any> extends BaseSelectCommon<T> {
   multiple: boolean;
   selected?: T; // single
-  selectedSet?: Set<T>; // multi future
+  selectedSet?: Set<T>; // multi
+  selectedValues?: T[]; // convenient array for multi
   isSelected: (opt: SelectOption<T>) => boolean;
   select: (val: T) => void;
   closeAfterSelect: boolean;
