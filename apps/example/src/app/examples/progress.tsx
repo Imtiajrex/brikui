@@ -4,19 +4,6 @@ import { Progress, Button } from 'brikui';
 
 export default function ProgressExamples() {
   const [value, setValue] = useState(25);
-  const [indeterminate, setIndeterminate] = useState(false);
-
-  useEffect(() => {
-    let id: any;
-    if (indeterminate) {
-      // Simulate loading completion after 6s
-      id = setTimeout(() => {
-        setIndeterminate(false);
-        setValue(100);
-      }, 6000);
-    }
-    return () => clearTimeout(id);
-  }, [indeterminate]);
 
   return (
     <ScrollView contentContainerClassName="p-4 gap-8" className="flex-1">
@@ -48,17 +35,6 @@ export default function ProgressExamples() {
 
       <View className="gap-4">
         <Progress label="Striped" striped value={60} showValueLabel />
-        <Progress label="Indeterminate" indeterminate description="Animated loading state" />
-        <Button
-          size="sm"
-          variant="outline"
-          onPress={() => {
-            setIndeterminate(true);
-            setValue(0);
-          }}
-        >
-          Start Indeterminate
-        </Button>
       </View>
 
       <View className="gap-4">

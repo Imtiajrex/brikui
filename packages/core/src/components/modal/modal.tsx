@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Modal as RNModal } from 'react-native';
+import { Dimensions, Modal as RNModal } from 'react-native';
 import Animated, {
   runOnJS,
   useAnimatedStyle,
@@ -93,40 +93,46 @@ export const Modal = React.forwardRef<ModalHandle, ModalProps>(
       if (!disableBackdropClose) setIsOpen(false);
     }, [disableBackdropClose, setIsOpen]);
 
-    const handleRequestClose = React.useCallback(() => setIsOpen(false), [setIsOpen]);
-
-    if (!visible) return null;
+    const handleRequestClose = React.useCallback(() => {
+      setIsOpen(false);
+    }, [setIsOpen]);
 
     return (
-      <RNModal
-        transparent
-        visible={visible}
-        onRequestClose={handleRequestClose}
-        animationType="none"
-      >
-        <View style={vars(theme)} className={cn('flex-1', containerClassName)}>
-          {/* Backdrop */}
-          <Animated.View
-            style={overlayStyle}
-            className={cn('absolute inset-0 bg-black/50', overlayClassName)}
-          />
-          <Pressable className="absolute inset-0" onPress={handleBackdropPress} />
-          {/* Centered content */}
-          <Animated.View
-            style={contentWrapperStyle}
-            className="flex-1 items-center justify-center px-4"
+      <View className="absolute w-0 h-0">
+        <RNModal
+          transparent
+          visible={visible}
+          onRequestClose={handleRequestClose}
+          statusBarTranslucent
+        >
+          <View
+            style={[vars(theme)]}
+            className={cn('flex-1 flex flex-col gap-4', containerClassName)}
           >
-            <View
+            <Pressable
+              onPress={handleBackdropPress}
               className={cn(
-                'relative bg-card border border-border rounded-lg p-6 w-[90%] max-w-md',
-                contentClassName
+                'flex-1 absolute top-0 left-0 w-full h-full bg-black/20',
+                overlayClassName
               )}
+            />
+            {/* Centered content */}
+            <Animated.View
+              style={contentWrapperStyle}
+              className="flex-1 items-center justify-center z-10 px-4"
             >
-              {children}
-            </View>
-          </Animated.View>
-        </View>
-      </RNModal>
+              <View
+                className={cn(
+                  'relative bg-card border border-border rounded-lg p-6 w-[90%] max-w-md',
+                  contentClassName
+                )}
+              >
+                {children}
+              </View>
+            </Animated.View>
+          </View>
+        </RNModal>
+      </View>
     );
   }
 );

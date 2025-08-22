@@ -1,11 +1,11 @@
 import React, { useRef } from 'react';
 import { ScrollView, View, Text } from 'react-native';
-import { Button, AlertDialog } from 'brikui';
+import { Button, AlertDialog, AlertDialogHandle } from 'brikui';
 
 export default function AlertDialogExamples() {
-  const deleteAccountRef = useRef<{ open: () => void; close: () => void }>(null);
-  const confirmActionRef = useRef<{ open: () => void; close: () => void }>(null);
-  const simpleRef = useRef<{ open: () => void; close: () => void }>(null);
+  const deleteAccountRef = useRef<AlertDialogHandle>(null);
+  const confirmActionRef = useRef<AlertDialogHandle>(null);
+  const simpleRef = useRef<AlertDialogHandle>(null);
 
   return (
     <ScrollView contentContainerClassName="p-4 gap-8" className="flex-1">
