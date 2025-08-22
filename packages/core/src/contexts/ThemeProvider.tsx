@@ -3,6 +3,7 @@ import { createContext, useContext, useMemo } from 'react';
 import { View } from 'react-native';
 import { create as createTw, TailwindFn } from 'twrnc';
 import { PortalHost } from '../components';
+import { MenuProvider } from 'react-native-popup-menu';
 
 interface ThemeProviderProps {
   children: React.ReactNode;
@@ -43,8 +44,10 @@ export const ThemeProvider = ({ children, themes }: ThemeProviderProps) => {
   return (
     <ThemeContext.Provider value={{ theme: colorScheme!, tw, currentTheme }}>
       <View style={vars(currentTheme)} className="flex-1">
-        {children}
-        <PortalHost />
+        <MenuProvider>
+          {children}
+          <PortalHost />
+        </MenuProvider>
       </View>
     </ThemeContext.Provider>
   );

@@ -45,6 +45,7 @@ export default {
       borderRadius: {
         radius: 'var(--radius)',
         input: 'var(--input-radius)',
+        popover: 'var(--popover-radius)',
       },
       borderWidth: {
         hairline: hairlineWidth(),

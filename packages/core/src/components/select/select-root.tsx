@@ -7,6 +7,7 @@ import { SelectCtx } from './context';
 import { AnySelectProps, SelectProps, MultiSelectProps, SelectContextValue } from './types';
 import { SelectTrigger } from './trigger';
 import { SelectList } from './list';
+import { Pressable } from '../base';
 
 export function SelectRootInner<T>(props: AnySelectProps<T>) {
   const {
@@ -124,24 +125,8 @@ export function SelectRootInner<T>(props: AnySelectProps<T>) {
 
   const list = <SelectList style={{ maxHeight }} />;
 
-  const trigger = (
-    <SelectTrigger
-      placeholder={placeholder}
-      className={className}
-      style={style}
-      matchTriggerWidth={matchTriggerWidth}
-      multiple={isMulti}
-      selectedLabels={
-        isMulti
-          ? options.filter((o: any) => selectedSet.has(o.value)).map((o: any) => o.label)
-          : undefined
-      }
-      {...rest}
-    />
-  );
-
   const content = (
-    <View style={matchTriggerWidth && triggerWidth ? { width: triggerWidth } : undefined}>
+    <View style={matchTriggerWidth && triggerWidth ? { width: triggerWidth * 0.9 } : undefined}>
       {list}
     </View>
   );
@@ -157,7 +142,21 @@ export function SelectRootInner<T>(props: AnySelectProps<T>) {
       arrowSize={6}
       disabled={!!disabled}
     >
-      {trigger}
+      <Pressable>
+        <SelectTrigger
+          placeholder={placeholder}
+          className={className}
+          style={style}
+          matchTriggerWidth={matchTriggerWidth}
+          multiple={isMulti}
+          selectedLabels={
+            isMulti
+              ? options.filter((o: any) => selectedSet.has(o.value)).map((o: any) => o.label)
+              : undefined
+          }
+          {...rest}
+        />
+      </Pressable>
     </Popover>
   );
 
