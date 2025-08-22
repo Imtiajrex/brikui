@@ -94,4 +94,8 @@ const components = [
     title: 'Timeline',
     description: 'Display a sequence of events',
   },
+  {
+    title: 'Checkbox',
+    description: 'A selectable checkbox component',
+  },
 ];
