@@ -26,10 +26,10 @@ export { PopoverRef };
 type SpringConfig = { tension?: number; friction?: number };
 
 const defaultSpringConfig = {
-  damping: 12,
   mass: 1,
+  duration: 250,
 };
-const defaultTimingConfig = { duration: 50, easing: Easing.bezier(0.25, 0.46, 0.45, 0.94) };
+const defaultTimingConfig = { duration: 200, easing: Easing.bezier(0.25, 0.46, 0.45, 0.94) };
 
 // Context for composability
 interface InternalContext {
