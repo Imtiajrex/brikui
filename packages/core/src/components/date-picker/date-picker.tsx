@@ -65,7 +65,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   onChange,
   placeholder = 'Pick a date',
   disabled,
-  closeOnSelect,
+  closeOnSelect = false,
   format,
   calendarProps,
   fieldProps,
@@ -97,12 +97,8 @@ export const DatePicker: React.FC<DatePickerProps> = ({
 
   const popoverRef = React.useRef<PopoverRef>(null);
 
-  // Default closeOnSelect logic
-  const shouldCloseOnSelect = React.useMemo(() => {
-    if (closeOnSelect !== undefined) return closeOnSelect;
-    if (isMulti) return false;
-    return true; // single & range (range closes on full selection handled below)
-  }, [closeOnSelect, isMulti]);
+  // Honor explicit closeOnSelect (default false for all modes)
+  const shouldCloseOnSelect = closeOnSelect;
 
   const handleChange = React.useCallback(
     (payload: {
