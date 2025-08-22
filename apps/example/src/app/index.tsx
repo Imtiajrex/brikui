@@ -122,4 +122,8 @@ const components = [
     title: 'ActionSheet',
     description: 'iOS style action list',
   },
+  {
+    title: 'Wheel',
+    description: 'Scrollable wheel picker',
+  },
 ];

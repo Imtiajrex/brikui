@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@miblanchard/react-native-slider": "^2.6.0",
+    "@quidone/react-native-wheel-picker": "^1.5.2",
     "@rn-primitives/alert-dialog": "^1.2.0",
     "@rn-primitives/separator": "^1.2.0",
     "@shopify/flash-list": "^1.7.6",
@@ -38,6 +39,7 @@
     "react-native-popable": "^0.4.3",
     "react-native-sticky-range-slider": "^0.1.7",
     "react-native-ui-datepicker": "^3.1.2",
+    "react-native-wheely": "^0.6.0",
     "sonner": "^1.7.0",
     "sonner-native": "^0.16.1",
     "tailwind-merge": "^2.5.4",
