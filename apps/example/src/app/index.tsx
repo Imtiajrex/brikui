@@ -134,4 +134,8 @@ const components = [
     title: 'Time-Picker',
     description: 'Time selection component',
   },
+  {
+    title: 'Time-Picker-Input',
+    description: 'Time picker input field',
+  },
 ];
