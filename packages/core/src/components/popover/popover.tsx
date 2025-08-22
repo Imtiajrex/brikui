@@ -97,6 +97,7 @@ export const PopoverRoot = forwardRef<PopoverHandle, PopoverRootProps>(
       contentClassName,
       arrowClassName,
       backdropClassName,
+      openOnPress = true,
     },
     ref
   ) => {
@@ -189,9 +190,12 @@ export const PopoverRoot = forwardRef<PopoverHandle, PopoverRootProps>(
       [show, hide, toggle, isVisible]
     );
 
-    const tapGesture = Gesture.Tap().onEnd(() => {
-      runOnJS(toggle)();
-    });
+    const tapGesture = React.useMemo(() => {
+      if (!openOnPress) return undefined;
+      return Gesture.Tap().onEnd(() => {
+        runOnJS(toggle)();
+      });
+    }, [openOnPress, toggle]);
 
     React.useEffect(() => {
       if (isVisible) {
@@ -248,11 +252,17 @@ export const PopoverRoot = forwardRef<PopoverHandle, PopoverRootProps>(
 
     return (
       <PopoverCtx.Provider value={ctx}>
-        <GestureDetector gesture={tapGesture}>
+        {openOnPress && tapGesture ? (
+          <GestureDetector gesture={tapGesture}>
+            <View ref={triggerRef} style={triggerStyle} className={triggerClassName}>
+              {children}
+            </View>
+          </GestureDetector>
+        ) : (
           <View ref={triggerRef} style={triggerStyle} className={triggerClassName}>
             {children}
           </View>
-        </GestureDetector>
+        )}
         <PopoverPortal content={content} />
       </PopoverCtx.Provider>
     );

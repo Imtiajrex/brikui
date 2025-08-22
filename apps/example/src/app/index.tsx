@@ -43,6 +43,10 @@ const components = [
     description: 'A calendar component',
   },
   {
+    title: 'Date-Picker-Field',
+    description: 'Date picker input field',
+  },
+  {
     title: 'PasswordInput',
     description: 'A password input component',
   },
