@@ -130,4 +130,8 @@ const components = [
     title: 'Wheel',
     description: 'Scrollable wheel picker',
   },
+  {
+    title: 'Time-Picker',
+    description: 'Time selection component',
+  },
 ];

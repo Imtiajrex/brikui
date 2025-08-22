@@ -26,3 +26,4 @@ export * from './action-sheet';
 export * from './calendar/calendar';
 export * from './wheel-picker/wheel-picker';
 export * from './date-picker/date-picker';
+export * from './time-picker/time-picker';
