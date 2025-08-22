@@ -1,31 +1,63 @@
-import React, { useRef, useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import React, { useRef } from 'react';
+import { ScrollView, View, Text } from 'react-native';
 import { Button, AlertDialog } from 'brikui';
 
 export default function AlertDialogExamples() {
-  const [open, setOpen] = useState(false);
-  const ref = useRef<{ show: () => void; hide: () => void } | null>(null);
+  const deleteAccountRef = useRef<{ open: () => void; close: () => void }>(null);
+  const confirmActionRef = useRef<{ open: () => void; close: () => void }>(null);
+  const simpleRef = useRef<{ open: () => void; close: () => void }>(null);
 
   return (
     <ScrollView contentContainerClassName="p-4 gap-8" className="flex-1">
-      <View className="gap-3">
-        <Button onPress={() => setOpen(true)}>Controlled Open</Button>
+      {/* Basic Alert Dialog */}
+      <View className="gap-4">
+        <Text className="text-lg font-semibold">Basic Alert Dialog</Text>
+
+        <Button onPress={() => deleteAccountRef.current?.open()}>Delete Account</Button>
+
         <AlertDialog
-          isOpen={open}
-          setIsOpen={setOpen}
+          ref={deleteAccountRef}
           title="Are you absolutely sure?"
           description="This action cannot be undone. This will permanently delete your account and remove your data from our servers."
+          confirmText="Delete Account"
+          cancelText="Cancel"
+          onConfirm={() => console.log('Account deleted!')}
+          onCancel={() => console.log('Cancelled')}
         />
       </View>
 
-      <View className="gap-3">
-        <Button onPress={() => ref.current?.show()}>Open via Ref</Button>
+      {/* Confirmation Dialog */}
+      <View className="gap-4">
+        <Text className="text-lg font-semibold">Confirmation Dialog</Text>
+
+        <Button variant="outline" onPress={() => confirmActionRef.current?.open()}>
+          Confirm Action
+        </Button>
+
         <AlertDialog
-          ref={ref as any}
-          title="Delete project?"
-          description="This cannot be undone."
-          confirm={{ text: 'Delete', variant: 'default', onPress: () => {} }}
-          cancel={{ text: 'Cancel' }}
+          ref={confirmActionRef}
+          title="Confirm Action"
+          description="Are you sure you want to proceed with this action?"
+          confirmText="Yes, Continue"
+          cancelText="No, Cancel"
+          onConfirm={() => console.log('Action confirmed!')}
+          onCancel={() => console.log('Action cancelled')}
+        />
+      </View>
+
+      {/* Simple Dialog */}
+      <View className="gap-4">
+        <Text className="text-lg font-semibold">Simple Dialog</Text>
+
+        <Button variant="ghost" onPress={() => simpleRef.current?.open()}>
+          Show Simple Dialog
+        </Button>
+
+        <AlertDialog
+          ref={simpleRef}
+          title="Simple Dialog"
+          description="This is a simple alert dialog with minimal configuration."
+          onConfirm={() => console.log('Simple dialog confirmed')}
         />
       </View>
     </ScrollView>
