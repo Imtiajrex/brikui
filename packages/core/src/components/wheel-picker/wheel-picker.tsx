@@ -1,5 +1,6 @@
 import * as React from 'react';
 import WheelPickerBase from '@quidone/react-native-wheel-picker';
+import { Platform } from 'react-native';
 import { View } from '../base/view';
 import { Text } from '../base/text';
 import { cn } from '../../lib/utils/utils';
@@ -19,6 +20,7 @@ export interface WheelPickerProps {
   visibleItemCount?: number; // override derived visible items (must be odd)
   renderItem?: (value: string | number, active: boolean, index: number) => React.ReactNode;
   overlayClassName?: string; // customize selection overlay lines
+  scrollEndDelay?: number; // ms debounce for web scroll end detection
 }
 
 export const WheelPicker = React.forwardRef<any, WheelPickerProps>(
@@ -37,13 +39,18 @@ export const WheelPicker = React.forwardRef<any, WheelPickerProps>(
       visibleItemCount,
       renderItem,
       overlayClassName,
+      scrollEndDelay = 120,
       ...rest
     },
     ref
   ) => {
     const isControlled = value !== undefined;
     const [internalIndex, setInternalIndex] = React.useState(defaultValue);
-    const index = isControlled ? value! : internalIndex;
+    const index = isControlled ? value! : internalIndex; // committed value
+    const [displayIndex, setDisplayIndex] = React.useState(index); // transient visual highlight
+    React.useEffect(() => {
+      setDisplayIndex(index);
+    }, [index]);
 
     // Build data objects expected by library
     const data = React.useMemo(
@@ -71,7 +78,28 @@ export const WheelPicker = React.forwardRef<any, WheelPickerProps>(
       [height, derivedVisible, itemHeight]
     );
 
-    const handleValueChanged = (e: any) => {
+    const finalizingRef = React.useRef(false); // retained for potential future use
+    // Tracking refs
+    const debounceTimer = React.useRef<any>(null); // debounced commit timer
+    const lastDerivedIndexRef = React.useRef<number | null>(null); // last index derived from any event
+    const lastCommittedRef = React.useRef<number | null>(null); // last index we fired onChange for
+    const lastChangingIndexRef = React.useRef<number | null>(null); // last index from onValueChanging
+    const lastChangingAtRef = React.useRef<number>(0); // timestamp of last onValueChanging
+    const scrollingRef = React.useRef(false); // whether wheel is actively scrolling
+    const freezeUntilRef = React.useRef(0); // time until which we ignore post-commit jitter
+
+    const commitIndex = React.useCallback(
+      (derivedIndex: number) => {
+        if (lastCommittedRef.current === derivedIndex) return;
+        if (!isControlled) setInternalIndex(derivedIndex);
+        lastCommittedRef.current = derivedIndex;
+        onChange?.(derivedIndex, options[derivedIndex]);
+        freezeUntilRef.current = Date.now() + 160; // ignore minor jitter shortly after commit
+      },
+      [isControlled, onChange, options]
+    );
+
+    const deriveIndexFromEvent = (e: any): number => {
       // Support different shapes across platforms
       const item = e?.item ?? e; // some builds might send item directly
       let derivedIndex: number | undefined = undefined;
@@ -85,9 +113,51 @@ export const WheelPicker = React.forwardRef<any, WheelPickerProps>(
       }
       if (derivedIndex === undefined) derivedIndex = 0;
       if (derivedIndex < 0 || derivedIndex >= options.length) derivedIndex = 0;
-      if (!isControlled) setInternalIndex(derivedIndex);
-      onChange?.(derivedIndex, options[derivedIndex]);
+      return derivedIndex;
     };
+
+    const handleValueChanged = (e: any) => {
+      finalizingRef.current = true;
+      // Library fires at rest; treat as authoritative but only commit after ensuring scroll ended.
+      const idx = deriveIndexFromEvent(e);
+      lastDerivedIndexRef.current = idx;
+      lastChangingIndexRef.current = idx;
+      lastChangingAtRef.current = Date.now();
+      scrollingRef.current = false;
+      // Cancel any pending debounce and commit immediately (user released & settled)
+      if (debounceTimer.current) clearTimeout(debounceTimer.current);
+      setDisplayIndex(idx);
+      commitIndex(idx);
+    };
+
+    // Continuous updates: native -> commit instantly, web -> debounce finalize
+    const handleValueChanging = (e: any) => {
+      const idx = deriveIndexFromEvent(e);
+      // Ignore jitter events right after a commit (web snapping bounce)
+      if (Platform.OS === 'web' && Date.now() < freezeUntilRef.current) {
+        return;
+      }
+      scrollingRef.current = true;
+      lastDerivedIndexRef.current = idx;
+      lastChangingIndexRef.current = idx;
+      lastChangingAtRef.current = Date.now();
+      // Only update display highlight; don't change committed index yet (prevents snap)
+      setDisplayIndex(idx);
+      // Web fallback: if no valueChanged event, commit after inactivity
+      if (Platform.OS === 'web') {
+        if (debounceTimer.current) clearTimeout(debounceTimer.current);
+        debounceTimer.current = setTimeout(() => {
+          const idleFor = Date.now() - lastChangingAtRef.current;
+          if (idleFor >= scrollEndDelay - 5) {
+            scrollingRef.current = false;
+            setDisplayIndex(idx);
+            commitIndex(idx);
+          }
+        }, scrollEndDelay);
+      }
+    };
+
+    React.useEffect(() => () => debounceTimer.current && clearTimeout(debounceTimer.current), []);
 
     const renderOverlay = () => (
       <View
@@ -109,9 +179,10 @@ export const WheelPicker = React.forwardRef<any, WheelPickerProps>(
           visibleItemCount={derivedVisible}
           enableScrollByTapOnItem={enableScrollByTapOnItem}
           onValueChanged={handleValueChanged}
+          onValueChanging={handleValueChanging}
           renderItem={(params: any) => {
             const i = params?.index ?? params?.item?.value ?? 0;
-            const active = i === index;
+            const active = i === displayIndex;
             return renderItem ? (
               renderItem(options[i], active, i)
             ) : (
