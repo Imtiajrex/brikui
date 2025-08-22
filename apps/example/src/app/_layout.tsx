@@ -1,15 +1,15 @@
 import { themes } from '@/constants/theme';
 import { DefaultTheme, ThemeProvider as NavigationThemeProvider } from '@react-navigation/native';
 import { ThemeProvider, useColor, useColorScheme } from 'brikui';
-import { Slot, Stack } from 'expo-router';
+import { Stack } from 'expo-router';
+import { colorScheme } from 'nativewind';
+import { useEffect } from 'react';
 import { LogBox, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import 'react-native-reanimated';
 import { configureReanimatedLogger, ReanimatedLogLevel } from 'react-native-reanimated';
 import '../components/gesture-handler';
 import '../global.css';
-import { useEffect } from 'react';
-import { colorScheme } from 'nativewind';
 
 // This is the default configuration
 configureReanimatedLogger({

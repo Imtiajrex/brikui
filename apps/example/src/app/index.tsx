@@ -102,4 +102,8 @@ const components = [
     title: 'Progress',
     description: 'Visualize task completion',
   },
+  {
+    title: 'Alert-Dialog',
+    description: 'Modal confirmation dialog',
+  },
 ];

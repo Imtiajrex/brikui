@@ -2,6 +2,7 @@ import { useColorScheme, vars } from 'nativewind';
 import { createContext, useContext, useMemo } from 'react';
 import { View } from 'react-native';
 import { create as createTw, TailwindFn } from 'twrnc';
+import { PortalHost } from '../components';
 
 interface ThemeProviderProps {
   children: React.ReactNode;
@@ -43,6 +44,7 @@ export const ThemeProvider = ({ children, themes }: ThemeProviderProps) => {
     <ThemeContext.Provider value={{ theme: colorScheme!, tw, currentTheme }}>
       <View style={vars(currentTheme)} className="flex-1">
         {children}
+        <PortalHost />
       </View>
     </ThemeContext.Provider>
   );
