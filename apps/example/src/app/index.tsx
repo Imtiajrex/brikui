@@ -98,4 +98,8 @@ const components = [
     title: 'Checkbox',
     description: 'A selectable checkbox component',
   },
+  {
+    title: 'Progress',
+    description: 'Visualize task completion',
+  },
 ];

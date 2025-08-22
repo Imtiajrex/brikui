@@ -17,3 +17,4 @@ export * from './popover';
 export * from './base';
 export * from './timeline';
 export * from './checkbox';
+export * from './progress';
