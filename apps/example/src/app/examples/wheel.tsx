@@ -7,7 +7,7 @@ export default function WheelExample() {
   const [index, setIndex] = useState(0);
 
   return (
-    <ScrollView contentContainerClassName="p-4 gap-8" className="flex-1">
+    <ScrollView contentContainerClassName="p-4 gap-8" className="flex-1" nestedScrollEnabled>
       <View className="gap-3">
         <Text className="text-lg font-semibold">Basic</Text>
         <WheelPicker options={options} value={index} onChange={(i) => setIndex(i)} />

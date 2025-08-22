@@ -7,7 +7,7 @@ export default function TimePickerExamples() {
   const [time12, setTime12] = React.useState({ hours: 0, minutes: 5 });
 
   return (
-    <ScrollView contentContainerClassName="p-4 gap-10" className="flex-1">
+    <ScrollView contentContainerClassName="p-4 gap-10" className="flex-1" nestedScrollEnabled>
       <View className="gap-3">
         <Text className="text-lg font-semibold">24h Controlled</Text>
         <TimePicker

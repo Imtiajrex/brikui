@@ -41,7 +41,7 @@ const trackVariants = cva(
   }
 );
 
-const thumbVariants = cva('rounded-full bg-background shadow', {
+const thumbVariants = cva('rounded-full bg-background', {
   variants: {
     size: {
       xs: '',
@@ -186,10 +186,6 @@ const Switch = React.forwardRef<React.ComponentRef<typeof Pressable>, SwitchProp
               borderRadius: thumb / 2,
               // Use layout animation via marginLeft change
               marginLeft: isOn ? travelX : 0,
-              shadowColor: '#000',
-              shadowOpacity: 0.08,
-              shadowRadius: 3,
-              shadowOffset: { width: 0, height: 1 },
             }}
             layout={
               Platform.OS === 'web'

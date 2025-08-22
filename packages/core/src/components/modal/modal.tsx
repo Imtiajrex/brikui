@@ -1,6 +1,11 @@
 import * as React from 'react';
 import { Modal as RNModal } from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import Animated, {
+  runOnJS,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
 import { cn } from '../../lib/utils/utils';
 import { Pressable } from '../base/pressable';
 import { View } from '../base/view';
@@ -33,7 +38,7 @@ const useModalAnimation = (isOpen: boolean, duration = 180) => {
       progress.value = withTiming(1, { duration });
     } else {
       progress.value = withTiming(0, { duration: duration * 0.8 }, (finished) => {
-        if (finished) requestAnimationFrame(() => setVisible(false));
+        if (finished) runOnJS(setVisible)(false);
       });
     }
   }, [isOpen, progress, duration]);
@@ -113,7 +118,7 @@ export const Modal = React.forwardRef<ModalHandle, ModalProps>(
           >
             <View
               className={cn(
-                'relative bg-card border border-border rounded-lg p-6 shadow-xl w-[90%] max-w-md',
+                'relative bg-card border border-border rounded-lg p-6 w-[90%] max-w-md',
                 contentClassName
               )}
             >

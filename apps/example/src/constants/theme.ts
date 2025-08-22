@@ -20,7 +20,7 @@ export const themes = {
     '--color-accent': '#d2c9f2',
     '--color-accent-foreground': '#1E1E1E',
     '--color-border-input': '#c9c9c9',
-    '--color-border': '#919191',
+    '--color-border': 'rgba(0, 0, 0, .15)',
     '--color-ring': '#3d13d4',
     '--color-overlay': 'rgba(0, 0, 0, .05)',
   },

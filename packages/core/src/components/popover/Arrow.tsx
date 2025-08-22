@@ -71,11 +71,6 @@ export const PopoverArrow = memo(
         height: size,
         backgroundColor: 'white',
         transform,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 8,
-        elevation: 5,
       } as any;
     }, [placement, triggerPosition, popoverPosition]);
 

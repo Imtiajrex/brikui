@@ -22,6 +22,7 @@ import type {
 import { computePopoverPosition } from './computePosition';
 import { useTheme } from '../../contexts/ThemeProvider';
 import { vars } from 'nativewind';
+import { cn } from '../../lib/utils/utils';
 export { PopoverRef };
 type SpringConfig = { tension?: number; friction?: number };
 
@@ -334,15 +335,10 @@ const PopoverPortal: React.FC<{ content?: React.ReactNode }> = ({ content }) => 
                 backgroundColor: 'white',
                 borderRadius: 12,
                 padding: 8,
-                shadowColor: '#000',
-                shadowOffset: { width: 0, height: 4 },
-                shadowOpacity: 0.15,
-                shadowRadius: 12,
-                elevation: 8,
               },
               contentStyle,
             ]}
-            className={contentClassName}
+            className={cn('border border-border', contentClassName)}
             onLayout={(e) => ctx.setContentSize(e.nativeEvent.layout)}
           >
             {content}

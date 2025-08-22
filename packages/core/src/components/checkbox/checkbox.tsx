@@ -112,6 +112,7 @@ const Checkbox = React.forwardRef<React.ComponentRef<typeof Pressable>, Checkbox
                 size === 'lg' && 'h-4 w-4',
                 indicatorClassName
               )}
+              size={16}
             />
           ) : null}
         </View>
