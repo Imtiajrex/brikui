@@ -8,7 +8,7 @@ import { useColor } from '../../lib/hooks/useColor';
 
 // Button container variants (theme-token based)
 const buttonVariants = cva(
-  'group flex flex-row items-center justify-center rounded-radius ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 active:translate-y-0.5 disabled:opacity-50 transition-all hover:brightness-90 active:brightness-80',
+  'group flex flex-row items-center justify-center rounded-radius  active:translate-y-0.5 disabled:opacity-50 transition-all hover:brightness-90 active:brightness-80 overflow-hidden',
   {
     variants: {
       variant: {
@@ -20,7 +20,7 @@ const buttonVariants = cva(
         destructive: 'bg-destructive',
         // Non-solid styles
         outline: 'border border-input bg-background active:bg-accent',
-        ghost: 'bg-transparent active:bg-accent',
+        ghost: 'bg-transparent active:bg-accent ',
         link: 'bg-transparent font-bold',
         muted: 'bg-muted',
       },
