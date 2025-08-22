@@ -106,4 +106,8 @@ const components = [
     title: 'Alert-Dialog',
     description: 'Modal confirmation dialog',
   },
+  {
+    title: 'Dialog',
+    description: 'General purpose modal dialog',
+  },
 ];
