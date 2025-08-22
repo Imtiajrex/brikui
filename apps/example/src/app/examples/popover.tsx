@@ -80,7 +80,7 @@ export default function PopoverExamples() {
         <Popover
           ref={menuRef}
           placement="bottom"
-          content={<Text className="text-xs">Action 1{'\n'}Action 2</Text>}
+          content={<View className="text-xs">Action 1{'\n'}Action 2</View>}
         >
           <Pressable className="px-4 h-10 rounded-md bg-primary items-center justify-center">
             <Text className="text-primary-foreground">@menu</Text>

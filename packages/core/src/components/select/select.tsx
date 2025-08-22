@@ -44,7 +44,7 @@ export function Select<T = any>(props: SelectProps<T>) {
     defaultValue,
     onChange,
     placeholder = 'Select…',
-    disabled,
+    disabled = false,
     optionClassName,
     optionTextClassName,
     selectedClassName = 'bg-background',
@@ -121,7 +121,7 @@ export function Select<T = any>(props: SelectProps<T>) {
   );
 
   const trigger = (
-    <View
+    <Pressable
       ref={triggerRef}
       className={cn(
         'flex-row items-center justify-between rounded-md border border-input bg-background px-3 py-2 min-h-10',
@@ -132,6 +132,7 @@ export function Select<T = any>(props: SelectProps<T>) {
       onLayout={(e) => {
         if (matchTriggerWidth) setTriggerWidth(e.nativeEvent.layout.width);
       }}
+      onPress={() => popoverRef.current?.show()}
       {...rest}
     >
       <Text
@@ -140,7 +141,7 @@ export function Select<T = any>(props: SelectProps<T>) {
         {selectedOption ? selectedOption.label : placeholder}
       </Text>
       <Text className="ml-2 text-xs text-muted-foreground">▾</Text>
-    </View>
+    </Pressable>
   );
 
   const content = (
