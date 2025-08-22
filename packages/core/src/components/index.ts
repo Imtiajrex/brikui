@@ -23,4 +23,5 @@ export * from './dialog/dialog';
 export * from './select';
 export * from './bottom-sheet';
 export * from './action-sheet';
+export * from './calendar/calendar';
 export * from './wheel-picker/wheel-picker';

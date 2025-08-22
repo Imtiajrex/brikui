@@ -39,8 +39,8 @@ const components = [
     description: 'A text input component',
   },
   {
-    title: 'DatePicker',
-    description: 'A date picker component',
+    title: 'Calendar',
+    description: 'A calendar component',
   },
   {
     title: 'PasswordInput',
