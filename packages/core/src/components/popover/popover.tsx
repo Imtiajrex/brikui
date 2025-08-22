@@ -20,10 +20,15 @@ import type {
   Placement,
 } from './types';
 import { computePopoverPosition } from './computePosition';
+import { useTheme } from '../../contexts/ThemeProvider';
+import { vars } from 'nativewind';
 export { PopoverRef };
 type SpringConfig = { tension?: number; friction?: number };
 
-const defaultSpringConfig = { tension: 1000, friction: 50 };
+const defaultSpringConfig = {
+  damping: 12,
+  mass: 1,
+};
 const defaultTimingConfig = { duration: 50, easing: Easing.bezier(0.25, 0.46, 0.45, 0.94) };
 
 // Context for composability
@@ -280,55 +285,58 @@ const PopoverPortal: React.FC<{ content?: React.ReactNode }> = ({ content }) => 
   const { backdropStyle, popoverStyle } = styles;
   const { backdropClassName, className, contentClassName, arrowClassName } = classNames;
 
+  const currentTheme = useTheme();
   if (!open) return null;
   return (
     <Modal transparent visible animationType="none" onRequestClose={hide}>
-      <Animated.View
-        style={[
-          {
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-          },
-          backdropStyle,
-          overlayStyle,
-        ]}
-        className={backdropClassName}
-      />
-      <Pressable style={{ flex: 1 }} onPress={handleBackdropPress} />
-
-      <Animated.View style={popoverStyle} className={className}>
-        {arrow && (
-          <PopoverArrow
-            placement={actualPlacement}
-            size={arrowSize}
-            triggerPosition={triggerPosition}
-            popoverPosition={popoverPosition}
-            className={arrowClassName}
-          />
-        )}
-        <View
+      <View className="flex-1" style={vars(currentTheme)}>
+        <Pressable
           style={[
             {
-              backgroundColor: 'white',
-              borderRadius: 12,
-              padding: 16,
-              shadowColor: '#000',
-              shadowOffset: { width: 0, height: 4 },
-              shadowOpacity: 0.15,
-              shadowRadius: 12,
-              elevation: 8,
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
             },
-            contentStyle,
+            backdropStyle,
+            overlayStyle,
           ]}
-          className={contentClassName}
-          onLayout={(e) => ctx.setContentSize(e.nativeEvent.layout)}
-        >
-          {content}
-        </View>
-      </Animated.View>
+          className={backdropClassName}
+          onPress={handleBackdropPress}
+        />
+
+        <Animated.View style={popoverStyle} className={className}>
+          {arrow && (
+            <PopoverArrow
+              placement={actualPlacement}
+              size={arrowSize}
+              triggerPosition={triggerPosition}
+              popoverPosition={popoverPosition}
+              className={arrowClassName}
+            />
+          )}
+          <View
+            style={[
+              {
+                backgroundColor: 'white',
+                borderRadius: 12,
+                padding: 8,
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 4 },
+                shadowOpacity: 0.15,
+                shadowRadius: 12,
+                elevation: 8,
+              },
+              contentStyle,
+            ]}
+            className={contentClassName}
+            onLayout={(e) => ctx.setContentSize(e.nativeEvent.layout)}
+          >
+            {content}
+          </View>
+        </Animated.View>
+      </View>
     </Modal>
   );
 };

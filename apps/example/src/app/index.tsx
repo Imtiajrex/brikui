@@ -110,4 +110,8 @@ const components = [
     title: 'Dialog',
     description: 'General purpose modal dialog',
   },
+  {
+    title: 'Select',
+    description: 'Single value dropdown selection',
+  },
 ];

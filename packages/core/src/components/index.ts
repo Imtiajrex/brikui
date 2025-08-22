@@ -20,3 +20,4 @@ export * from './checkbox';
 export * from './progress';
 export * from './alert-dialog/alert-dialog';
 export * from './dialog/dialog';
+export * from './select';

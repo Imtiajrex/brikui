@@ -47,6 +47,8 @@ export interface PopoverProps {
   contentClassName?: string;
   arrowClassName?: string;
   backdropClassName?: string;
+  /** If true (default) the popover toggles when its trigger wrapper is pressed. Disable when child manages opening itself (e.g., nested Pressable) */
+  openOnPress?: boolean;
 }
 
 export interface PopoverRef {
