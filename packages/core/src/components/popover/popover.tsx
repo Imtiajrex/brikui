@@ -26,8 +26,10 @@ export { PopoverRef };
 type SpringConfig = { tension?: number; friction?: number };
 
 const defaultSpringConfig = {
-  mass: 1,
-  duration: 250,
+  clamp: {
+    max: 20,
+  },
+  duration: 200,
 };
 const defaultTimingConfig = { duration: 200, easing: Easing.bezier(0.25, 0.46, 0.45, 0.94) };
 
