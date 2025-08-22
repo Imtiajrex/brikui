@@ -114,4 +114,12 @@ const components = [
     title: 'Select',
     description: 'Single value dropdown selection',
   },
+  {
+    title: 'BottomSheet',
+    description: 'Slide-up panel for actions/content',
+  },
+  {
+    title: 'ActionSheet',
+    description: 'iOS style action list',
+  },
 ];

@@ -25,6 +25,7 @@
   "dependencies": {
     "@miblanchard/react-native-slider": "^2.6.0",
     "@rn-primitives/alert-dialog": "^1.2.0",
+    "@rn-primitives/separator": "^1.2.0",
     "@shopify/flash-list": "^1.7.6",
     "@tabler/icons-react-native": "^3.19.0",
     "class-variance-authority": "^0.7.0",
