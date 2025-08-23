@@ -2,7 +2,7 @@ import { useCallback, useMemo, useRef, useState } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ContentLayout, PlacementType, PopoverRef, TriggerLayout } from './types';
 import { computePopoverPosition } from './positioning';
-import { View } from 'react-native';
+import { Platform, View } from 'react-native';
 
 export interface UsePopoverOptions {
   placement: PlacementType;
@@ -33,7 +33,8 @@ export const usePopover = ({
   const measureTrigger = useCallback(() => {
     if (triggerRef.current) {
       triggerRef.current.measureInWindow((x, y, width, height) => {
-        setTriggerLayout({ pageX: x, pageY: y + insets.top * 2.1, width, height });
+        const offset = Platform.OS === 'android' ? insets.top * 2.1 : insets.top * 1.8;
+        setTriggerLayout({ pageX: x, pageY: y + offset, width, height });
       });
     }
   }, [insets.top]);

@@ -198,7 +198,7 @@ export function SelectRootInner<T>(props: AnySelectProps<T>) {
         ? {
             ...fieldProps,
             containerClassName: cn(
-              'border-none rounded-none bg-transparent h-auto',
+              'border-none border-transparent rounded-none bg-transparent h-auto',
               fieldProps?.containerClassName
             ),
           }
