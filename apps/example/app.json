@@ -19,7 +19,7 @@
       "resizeMode": "cover",
       "backgroundColor": "#16295A"
     },
-    "name": "Native Bricks UI",
+    "name": "Brik UI",
     "slug": "brikui",
     "android": {
       "package": "com.imtiajrex.brikui"
