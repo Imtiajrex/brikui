@@ -111,6 +111,10 @@ const components = [
     description: 'Modal confirmation dialog',
   },
   {
+    title: 'Alert-Dialog-Global',
+    description: 'Global AlertDialog.show() examples',
+  },
+  {
     title: 'Dialog',
     description: 'General purpose modal dialog',
   },
@@ -125,6 +129,10 @@ const components = [
   {
     title: 'ActionSheet',
     description: 'iOS style action list',
+  },
+  {
+    title: 'ActionSheet-Global',
+    description: 'Global ActionSheet.show() examples',
   },
   {
     title: 'Wheel',

@@ -1,4 +1,4 @@
-import { useTheme, useTw } from '../../contexts/ThemeProvider';
+import { useTheme } from '../../contexts/ThemeProvider';
 
 export const useColor = (color: string) => {
   const theme = useTheme();

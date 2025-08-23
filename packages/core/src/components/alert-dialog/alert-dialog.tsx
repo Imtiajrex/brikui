@@ -26,7 +26,7 @@ export type AlertDialogProps = {
 };
 
 // Imperative AlertDialog built on top of imperative Modal
-export const AlertDialog = React.forwardRef<AlertDialogHandle, AlertDialogProps>(
+export const AlertDialogBase = React.forwardRef<AlertDialogHandle, AlertDialogProps>(
   (
     {
       title,
@@ -102,4 +102,4 @@ export const AlertDialog = React.forwardRef<AlertDialogHandle, AlertDialogProps>
   }
 );
 
-AlertDialog.displayName = 'AlertDialog';
+AlertDialogBase.displayName = 'AlertDialog';

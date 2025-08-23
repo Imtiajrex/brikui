@@ -1,6 +1,6 @@
 import { themes } from '@/constants/theme';
 import { DefaultTheme, ThemeProvider as NavigationThemeProvider } from '@react-navigation/native';
-import { ThemeProvider, useColor, useColorScheme } from 'brikui';
+import { ThemeProvider, useColor, useColorScheme, PortalHost, AlertDialog } from 'brikui';
 import { Stack } from 'expo-router';
 import { colorScheme } from 'nativewind';
 import { useEffect } from 'react';
@@ -57,6 +57,9 @@ const Root = () => {
       >
         <Stack />
       </NavigationThemeProvider>
+      {/* Global overlay hosts */}
+      <PortalHost />
+      <AlertDialog.Global />
     </View>
   );
 };

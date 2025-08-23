@@ -2,8 +2,7 @@ import { useColorScheme, vars } from 'nativewind';
 import { createContext, useContext, useMemo } from 'react';
 import { View } from 'react-native';
 import { create as createTw, TailwindFn } from 'twrnc';
-import { PortalHost } from '../components';
-import { MenuProvider } from 'react-native-popup-menu';
+import { GlobalActionSheet, GlobalAlertDialog, PortalHost } from '../components';
 
 interface ThemeProviderProps {
   children: React.ReactNode;
@@ -44,10 +43,10 @@ export const ThemeProvider = ({ children, themes }: ThemeProviderProps) => {
   return (
     <ThemeContext.Provider value={{ theme: colorScheme!, tw, currentTheme }}>
       <View style={vars(currentTheme)} className="flex-1">
-        <MenuProvider>
-          {children}
-          <PortalHost />
-        </MenuProvider>
+        {children}
+        <PortalHost />
+        <GlobalAlertDialog />
+        <GlobalActionSheet.Global />
       </View>
     </ThemeContext.Provider>
   );
