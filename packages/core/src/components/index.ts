@@ -29,3 +29,4 @@ export * from './wheel-picker/wheel-picker';
 export * from './date-picker/date-picker';
 export * from './time-picker/time-picker';
 export * from './time-picker/time-picker-input';
+export * from './form';
