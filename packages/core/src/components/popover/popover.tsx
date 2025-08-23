@@ -1,78 +1,17 @@
 import { vars } from 'nativewind';
-import * as React from 'react';
+import React, { forwardRef, useEffect, useImperativeHandle } from 'react';
 import {
-  forwardRef,
-  useCallback,
-  useEffect,
-  useImperativeHandle,
-  useMemo,
-  useRef,
-  useState,
-  ReactNode,
-  ReactElement,
-} from 'react';
-import {
-  Dimensions,
   Modal,
   Platform,
   StyleSheet,
-  TouchableOpacity,
   TouchableWithoutFeedback,
   View,
-  ViewStyle,
-  ModalProps,
   BackHandler,
 } from 'react-native';
 import { useTheme } from '../../contexts/ThemeProvider';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-
-const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
-
-// Types
-type PlacementType = 'top' | 'bottom' | 'left' | 'right';
-
-interface TriggerLayout {
-  pageX: number;
-  pageY: number;
-  width: number;
-  height: number;
-}
-
-interface ContentLayout {
-  width: number;
-  height: number;
-}
-
-interface Position {
-  top: number;
-  left: number;
-}
-
-interface PopoverProps extends Omit<ModalProps, 'visible' | 'children'> {
-  children: ReactElement;
-  content: ReactNode;
-  placement?: PlacementType;
-  openOnPress?: boolean;
-  arrowSize?: number;
-  arrowColor?: string;
-  showArrow?: boolean;
-  offset?: number;
-  disabled?: boolean;
-  onOpen?: () => void;
-  onClose?: () => void;
-  className?: string;
-  contentClassName?: string;
-  style?: ViewStyle;
-  contentStyle?: ViewStyle;
-  overlayStyle?: ViewStyle;
-}
-
-interface PopoverRef {
-  show: () => void;
-  hide: () => void;
-  toggle: () => void;
-  isVisible: boolean;
-}
+import { Arrow } from './Arrow';
+import { usePopover } from './usePopover';
+import { PopoverProps, PopoverRef } from './types';
 
 const Popover = forwardRef<PopoverRef, PopoverProps>(
   (
@@ -98,141 +37,25 @@ const Popover = forwardRef<PopoverRef, PopoverProps>(
     },
     ref
   ) => {
-    const [isVisible, setIsVisible] = useState<boolean>(false);
-    const [triggerLayout, setTriggerLayout] = useState<TriggerLayout | null>(null);
-    const [contentLayout, setContentLayout] = useState<ContentLayout | null>(null);
-    const [actualPlacement, setActualPlacement] = useState<PlacementType>(placement);
-
-    const triggerRef = useRef<View>(null);
-
-    // Calculate popover position based on trigger and content dimensions
-    const popoverPosition = useMemo((): Position => {
-      if (!triggerLayout || !contentLayout) return { top: 0, left: 0 };
-
-      const { pageX, pageY, width: triggerWidth, height: triggerHeight } = triggerLayout;
-      const { width: contentWidth, height: contentHeight } = contentLayout;
-
-      let top = 0;
-      let left = 0;
-      let finalPlacement: PlacementType = placement;
-
-      // Calculate initial position based on placement
-      switch (placement) {
-        case 'top':
-          top = pageY - contentHeight - offset - (showArrow ? arrowSize : 0);
-          left = pageX + (triggerWidth - contentWidth) / 2;
-          break;
-        case 'bottom':
-          top = pageY + triggerHeight + offset + (showArrow ? arrowSize : 0);
-          left = pageX + (triggerWidth - contentWidth) / 2;
-          break;
-        case 'left':
-          top = pageY + (triggerHeight - contentHeight) / 2;
-          left = pageX - contentWidth - offset - (showArrow ? arrowSize : 0);
-          break;
-        case 'right':
-          top = pageY + (triggerHeight - contentHeight) / 2;
-          left = pageX + triggerWidth + offset + (showArrow ? arrowSize : 0);
-          break;
-        default:
-          top = pageY + triggerHeight + offset + (showArrow ? arrowSize : 0);
-          left = pageX + (triggerWidth - contentWidth) / 2;
-          finalPlacement = 'bottom';
-      }
-
-      // Auto-adjust placement if content goes off-screen
-      const margin = 16; // Screen edge margin
-
-      // Check if content goes off bottom of screen
-      if (finalPlacement === 'bottom' && top + contentHeight > SCREEN_HEIGHT - margin) {
-        finalPlacement = 'top';
-        top = pageY - contentHeight - offset - (showArrow ? arrowSize : 0);
-      }
-
-      // Check if content goes off top of screen
-      if (finalPlacement === 'top' && top < margin) {
-        finalPlacement = 'bottom';
-        top = pageY + triggerHeight + offset + (showArrow ? arrowSize : 0);
-      }
-
-      // Check if content goes off right side of screen
-      if (finalPlacement === 'right' && left + contentWidth > SCREEN_WIDTH - margin) {
-        finalPlacement = 'left';
-        left = pageX - contentWidth - offset - (showArrow ? arrowSize : 0);
-      }
-
-      // Check if content goes off left side of screen
-      if (finalPlacement === 'left' && left < margin) {
-        finalPlacement = 'right';
-        left = pageX + triggerWidth + offset + (showArrow ? arrowSize : 0);
-      }
-
-      // Keep content within horizontal bounds
-      if (left < margin) {
-        left = margin;
-      } else if (left + contentWidth > SCREEN_WIDTH - margin) {
-        left = SCREEN_WIDTH - contentWidth - margin;
-      }
-
-      // Keep content within vertical bounds
-      if (top < margin) {
-        top = margin;
-      } else if (top + contentHeight > SCREEN_HEIGHT - margin) {
-        top = SCREEN_HEIGHT - contentHeight - margin;
-      }
-
-      setActualPlacement(finalPlacement);
-
-      return { top, left };
-    }, [triggerLayout, contentLayout, placement, offset, arrowSize, showArrow]);
-    const safeInsets = useSafeAreaInsets();
-    // Measure trigger element
-    const measureTrigger = useCallback((): void => {
-      if (triggerRef.current) {
-        triggerRef.current.measureInWindow(
-          (x: number, y: number, width: number, height: number) => {
-            setTriggerLayout({ pageX: x, pageY: y + safeInsets.top * 2.1, width, height });
-          }
-        );
-      }
-    }, []);
-
-    // Show popover
-    const show = useCallback((): void => {
-      if (disabled) return;
-
-      measureTrigger();
-      setIsVisible(true);
-      onOpen?.();
-    }, [disabled, measureTrigger, onOpen]);
-
-    // Hide popover
-    const hide = useCallback((): void => {
-      setIsVisible(false);
-      onClose?.();
-    }, [onClose]);
-
-    // Toggle popover
-    const toggle = useCallback((): void => {
-      if (isVisible) {
-        hide();
-      } else {
-        show();
-      }
-    }, [isVisible, show, hide]);
-
-    // Handle trigger press
-    const handleTriggerPress = useCallback((): void => {
-      if (openOnPress) {
-        toggle();
-      }
-    }, [openOnPress, toggle]);
-
-    // Handle content layout
-    const handleContentLayout = useCallback((event: any): void => {
-      const { width, height } = event.nativeEvent.layout;
-      setContentLayout({ width, height });
-    }, []);
+    const {
+      isVisible,
+      actualPlacement,
+      popoverPosition,
+      triggerRef,
+      show,
+      hide,
+      toggle,
+      handleContentLayout,
+      contentLayout,
+    } = usePopover({
+      placement,
+      offset,
+      arrowSize,
+      showArrow,
+      disabled,
+      onOpen,
+      onClose,
+    });
 
     // Expose methods via ref
     useImperativeHandle(
@@ -260,7 +83,12 @@ const Popover = forwardRef<PopoverRef, PopoverProps>(
 
     const triggerElement = React.cloneElement(children, {
       ref: triggerRef,
-      onPress: handleTriggerPress,
+      onPress: (e: any) => {
+        if (openOnPress) toggle();
+        if (typeof (children.props as any).onPress === 'function') {
+          (children.props as any).onPress(e);
+        }
+      },
       ...(children.props as any),
     });
     const currentTheme = useTheme();
@@ -291,6 +119,14 @@ const Popover = forwardRef<PopoverRef, PopoverProps>(
                     className="bg-card rounded-popover p-3 border border-border"
                     onLayout={handleContentLayout}
                   >
+                    {showArrow && (
+                      <Arrow
+                        placement={actualPlacement}
+                        size={arrowSize}
+                        color={arrowColor}
+                        contentLayout={contentLayout}
+                      />
+                    )}
                     {content}
                   </View>
                 </TouchableWithoutFeedback>
@@ -309,8 +145,7 @@ const styles = StyleSheet.create({
   },
   content: {
     position: 'absolute',
-    maxWidth: SCREEN_WIDTH * 0.9,
-    maxHeight: SCREEN_HEIGHT * 0.8,
+    // Dimensions applied at runtime for clamping
   },
   arrowContainer: {
     position: 'absolute',
