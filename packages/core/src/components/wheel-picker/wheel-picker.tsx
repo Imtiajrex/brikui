@@ -3,7 +3,10 @@ import WheelPickerBase from '@quidone/react-native-wheel-picker';
 import { Platform } from 'react-native';
 import { View } from '../base/view';
 import { Text } from '../base/text';
+import { Pressable } from '../base/pressable';
 import { cn } from '../../lib/utils/utils';
+import { ChevronDown, ChevronUp } from 'lucide-react-native';
+import { useColor } from '../../lib/hooks/useColor';
 
 // Public API kept index-based for simplicity; internally maps to library's value API
 export interface WheelPickerProps {
@@ -21,6 +24,7 @@ export interface WheelPickerProps {
   renderItem?: (value: string | number, active: boolean, index: number) => React.ReactNode;
   overlayClassName?: string; // customize selection overlay lines
   scrollEndDelay?: number; // ms debounce for web scroll end detection
+  showWebArrows?: boolean; // show increment/decrement chevrons on web
 }
 
 export const WheelPicker = React.forwardRef<any, WheelPickerProps>(
@@ -40,6 +44,7 @@ export const WheelPicker = React.forwardRef<any, WheelPickerProps>(
       renderItem,
       overlayClassName,
       scrollEndDelay = 120,
+      showWebArrows = true,
       ...rest
     },
     ref
@@ -159,14 +164,37 @@ export const WheelPicker = React.forwardRef<any, WheelPickerProps>(
 
     React.useEffect(() => () => debounceTimer.current && clearTimeout(debounceTimer.current), []);
 
-    const renderOverlay = () => (
-      <View
-        pointerEvents="none"
-        className={cn('absolute left-0 right-0 border-y border-border', overlayClassName)}
-        style={{ top: (pickerHeight - itemHeight) / 2, height: itemHeight }}
-      />
+    // Manual increment / decrement (used by web chevron buttons)
+    const getVisualBaseIndex = React.useCallback(() => {
+      // Prefer the most recent derived index (even mid-scroll)
+      if (lastDerivedIndexRef.current != null) return lastDerivedIndexRef.current;
+      return displayIndex ?? index;
+    }, [displayIndex, index]);
+
+    const adjustIndex = React.useCallback(
+      (delta: number) => {
+        if (!options.length || delta === 0) return;
+        // Cancel any pending debounce since we're forcing a commit
+        if (debounceTimer.current) clearTimeout(debounceTimer.current);
+        const base = getVisualBaseIndex();
+        let next = base + delta;
+        if (next < 0) next = 0;
+        else if (next >= options.length) next = options.length - 1;
+        // Reset scrolling state so future jitter isn't ignored
+        scrollingRef.current = false;
+        freezeUntilRef.current = 0;
+        lastDerivedIndexRef.current = next;
+        lastChangingIndexRef.current = next;
+        lastChangingAtRef.current = Date.now();
+        setDisplayIndex(next);
+        commitIndex(next);
+      },
+      [commitIndex, getVisualBaseIndex, options.length]
     );
 
+    const handleDecrement = React.useCallback(() => adjustIndex(-1), [adjustIndex]);
+    const handleIncrement = React.useCallback(() => adjustIndex(1), [adjustIndex]);
+    const mutedForeground = useColor('muted-foreground');
     return (
       <View
         className={cn('relative items-stretch', containerClassName)}
@@ -180,25 +208,55 @@ export const WheelPicker = React.forwardRef<any, WheelPickerProps>(
           enableScrollByTapOnItem={enableScrollByTapOnItem}
           onValueChanged={handleValueChanged}
           onValueChanging={handleValueChanging}
-          renderItem={(params: any) => {
+          renderItem={(params) => {
             const i = params?.index ?? params?.item?.value ?? 0;
             const active = i === displayIndex;
-            return renderItem ? (
-              renderItem(options[i], active, i)
-            ) : (
-              <Text
-                className={cn(
-                  'text-sm text-foreground text-center mt-2',
-                  itemClassName,
-                  active && activeItemClassName
+            return (
+              <>
+                {renderItem ? (
+                  renderItem(options[i], active, i)
+                ) : (
+                  <Text
+                    className={cn(
+                      'text-sm text-foreground text-center mt-2',
+                      itemClassName,
+                      active && activeItemClassName
+                    )}
+                  >
+                    {options[i] + ''}
+                  </Text>
                 )}
-              >
-                {options[i] + ''}
-              </Text>
+              </>
             );
           }}
           {...rest}
         />
+        {Platform.OS === 'web' && showWebArrows && (
+          <>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Previous"
+              onPress={handleDecrement}
+              className={cn(
+                'absolute top-1 left-1/2 -translate-x-1/2 z-10 p-1 rounded-md hover:bg-accent',
+                overlayClassName
+              )}
+            >
+              <ChevronUp size={16} color={mutedForeground} />
+            </Pressable>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Next"
+              onPress={handleIncrement}
+              className={cn(
+                'absolute bottom-1 left-1/2 -translate-x-1/2 z-10 p-1 rounded-md hover:bg-accent',
+                overlayClassName
+              )}
+            >
+              <ChevronDown size={16} color={mutedForeground} />
+            </Pressable>
+          </>
+        )}
       </View>
     );
   }
