@@ -8,6 +8,8 @@ import { AnySelectProps, SelectProps, MultiSelectProps, SelectContextValue } fro
 import { SelectTrigger } from './trigger';
 import { SelectList } from './list';
 import { Pressable } from '../base';
+import { ChevronDown } from 'lucide-react-native';
+import { useColor } from '../../lib/hooks/useColor';
 
 export function SelectRootInner<T>(props: AnySelectProps<T>) {
   const {
@@ -142,7 +144,7 @@ export function SelectRootInner<T>(props: AnySelectProps<T>) {
       arrowSize={6}
       disabled={!!disabled}
     >
-      <Pressable>
+      <Pressable className="flex-1">
         <SelectTrigger
           placeholder={placeholder}
           className={className}
@@ -162,7 +164,16 @@ export function SelectRootInner<T>(props: AnySelectProps<T>) {
 
   return (
     <SelectCtx.Provider value={ctxValue}>
-      {fieldProps ? <Field {...fieldProps}>{body}</Field> : body}
+      <Field
+        rightSection={
+          <View>
+            <ChevronDown size={16} color={useColor('muted-foreground')} />
+          </View>
+        }
+        {...fieldProps}
+      >
+        {body}
+      </Field>
     </SelectCtx.Provider>
   );
 }

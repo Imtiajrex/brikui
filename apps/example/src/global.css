@@ -46,3 +46,9 @@
 .container {
   @apply max-w-4xl flex-1 mx-auto gap-4 p-4 pt-10 w-full bg-background;
 }
+
+/* disable input focus rings only for input fields */
+input:focus {
+  outline: none;
+  box-shadow: none;
+}

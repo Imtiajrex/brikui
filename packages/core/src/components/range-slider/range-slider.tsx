@@ -5,33 +5,36 @@ import StickyRangeSlider from 'react-native-sticky-range-slider';
 import { cva, cn, type VariantProps } from '../../lib/utils/utils';
 import { Field } from '../field';
 
-const containerVariants = cva('flex-row items-center gap-2 rounded-input border transition-all', {
-  variants: {
-    fullWidth: {
-      true: 'w-full',
-      false: '',
+const containerVariants = cva(
+  'flex-row border-none items-center rounded-none gap-2 pt-4 transition-all overflow-visible',
+  {
+    variants: {
+      fullWidth: {
+        true: 'w-full',
+        false: '',
+      },
+      invalid: {
+        true: 'border-destructive',
+        false: 'border-input',
+      },
+      disabled: {
+        true: 'opacity-50',
+        false: '',
+      },
+      size: {
+        sm: 'min-h-9',
+        default: 'min-h-10',
+        lg: 'min-h-12',
+      },
     },
-    invalid: {
-      true: 'border-destructive',
-      false: 'border-input',
+    defaultVariants: {
+      fullWidth: true,
+      invalid: false,
+      disabled: false,
+      size: 'default',
     },
-    disabled: {
-      true: 'opacity-50',
-      false: '',
-    },
-    size: {
-      sm: 'h-9',
-      default: 'h-10',
-      lg: 'h-12',
-    },
-  },
-  defaultVariants: {
-    fullWidth: true,
-    invalid: false,
-    disabled: false,
-    size: 'default',
-  },
-});
+  }
+);
 
 type RangeSliderProps = VariantProps<typeof containerVariants> & {
   // library props
@@ -135,9 +138,8 @@ const RangeSlider = React.forwardRef<React.ComponentRef<typeof View>, RangeSlide
           containerClassName
         )}
       >
-        <View ref={ref} className={cn('flex-1 w-full px-3')} style={style}>
+        <View ref={ref} className={cn('flex-1 w-full')} style={style}>
           <StickyRangeSlider
-            style={{ marginVertical: 8 }}
             min={min}
             max={max}
             step={step}

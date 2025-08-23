@@ -9,7 +9,7 @@ export default function BadgeExamples() {
       <View className="flex-row flex-wrap gap-3 items-center">
         <Badge variant="default">DEFAULT</Badge>
         <Badge variant="filled">FILLED</Badge>
-        <Badge variant="light">LIGHT</Badge>
+        <Badge variant="accent">LIGHT</Badge>
         <Badge variant="outline">OUTLINE</Badge>
         <Badge variant="transparent">TRANSPARENT</Badge>
         <Badge variant="dot">BADGE</Badge>

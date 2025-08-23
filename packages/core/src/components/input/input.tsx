@@ -1,43 +1,12 @@
 import * as React from 'react';
 import { TextInput as RNTextInput } from 'react-native';
 import { View } from '../base/view';
-import { cva, type VariantProps, cn } from '../../lib/utils/utils';
+import { type VariantProps, cn } from '../../lib/utils/utils';
 import { useColor } from '../../lib/hooks/useColor';
-import { Field } from '../field';
+import { Field, fieldContainerVariants } from '../field';
 
-// Container (field) variants
-const inputVariants = cva('flex-row items-center gap-2 rounded-input border transition-all ', {
-  variants: {
-    variant: {
-      default: 'bg-background border-input',
-      filled: 'bg-muted border-transparent',
-    },
-    fullWidth: {
-      true: 'w-full',
-      false: '',
-    },
-    invalid: {
-      true: 'border-destructive',
-      false: '',
-    },
-    disabled: {
-      true: 'opacity-50',
-      false: '',
-    },
-    size: {
-      sm: 'h-9',
-      default: 'h-10',
-      lg: 'h-12',
-    },
-  },
-  defaultVariants: {
-    variant: 'default',
-    fullWidth: true,
-    invalid: false,
-    disabled: false,
-    size: 'default',
-  },
-});
+// Alias to preserve previous API name; now delegates to fieldContainerVariants
+const inputVariants = fieldContainerVariants;
 
 type InputProps = Omit<React.ComponentPropsWithoutRef<typeof RNTextInput>, 'editable'> &
   VariantProps<typeof inputVariants> & {
@@ -101,13 +70,15 @@ const Input = React.forwardRef<React.ComponentRef<typeof RNTextInput>, InputProp
         labelClassName={labelClassName}
         descriptionClassName={descriptionClassName}
         errorClassName={errorClassName}
-        containerClassName={cn(inputVariants({ variant, fullWidth, invalid: !!error, disabled }))}
+        variant={variant}
+        fullWidth={fullWidth}
+        size={props.size as any}
+        leftSection={leftSection}
+        rightSection={rightSection}
+        leftSectionClassName={leftSectionClassName}
+        rightSectionClassName={rightSectionClassName}
+        containerClassName={undefined}
       >
-        {leftSection ? (
-          <View className={cn('text-muted-foreground z-10 pl-2', leftSectionClassName)}>
-            {leftSection}
-          </View>
-        ) : null}
         <RNTextInput
           ref={ref}
           accessibilityLabel={props.accessibilityLabel ?? label}
@@ -130,11 +101,6 @@ const Input = React.forwardRef<React.ComponentRef<typeof RNTextInput>, InputProp
           )}
           {...props}
         />
-        {rightSection ? (
-          <View className={cn('text-muted-foreground z-10 pr-2', rightSectionClassName)}>
-            {rightSection}
-          </View>
-        ) : null}
       </Field>
     );
   }

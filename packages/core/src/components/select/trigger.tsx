@@ -47,7 +47,7 @@ export const SelectTrigger = React.forwardRef<View, SelectTriggerProps>(
       <Pressable
         ref={triggerRef}
         className={cn(
-          'flex-row items-center justify-between rounded-md border border-input bg-background px-3 py-2 min-h-10',
+          'flex-row flex-1 items-center justify-between rounded-input bg-background px-2 min-h-10',
           disabled && 'opacity-50',
           className
         )}
@@ -62,7 +62,6 @@ export const SelectTrigger = React.forwardRef<View, SelectTriggerProps>(
         <Text className={cn('text-sm text-foreground flex-1', !display && 'text-muted-foreground')}>
           {display ?? placeholder}
         </Text>
-        <Text className="ml-2 text-xs text-muted-foreground">▾</Text>
       </Pressable>
     );
   }

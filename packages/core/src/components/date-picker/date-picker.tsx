@@ -6,6 +6,8 @@ import { Calendar, type CalendarProps } from '../calendar/calendar';
 import { Field, type FieldProps } from '../field/field';
 import { cn } from '../../lib/utils/utils';
 import type { DateType } from 'react-native-ui-datepicker';
+import { Calendar1 } from 'lucide-react-native';
+import { useColor } from '../../lib/hooks/useColor';
 
 export interface DatePickerProps
   extends Omit<React.ComponentProps<typeof Pressable>, 'onChange' | 'children'> {
@@ -187,7 +189,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
         pressableProps.onPress?.(e as any);
       }}
       className={cn(
-        'flex-row items-center justify-between rounded-md border border-input bg-background px-3 py-2 min-h-10',
+        'flex-row items-center flex-1 justify-between rounded-input px-3 py-2 min-h-10',
         disabled && 'opacity-50',
         triggerClassName
       )}
@@ -204,7 +206,6 @@ export const DatePicker: React.FC<DatePickerProps> = ({
       >
         {displayText}
       </Text>
-      <Text className="ml-2 text-xs text-muted-foreground">▾</Text>
     </Pressable>
   );
 
@@ -223,7 +224,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   const body = (
     <Popover
       ref={popoverRef}
-      placement="bottom-start"
+      placement="bottom"
       content={
         <View style={{ width: popoverWidth }} className={cn('p-1', popoverContentClassName)}>
           {calendar}
@@ -238,10 +239,18 @@ export const DatePicker: React.FC<DatePickerProps> = ({
     </Popover>
   );
 
-  if (fieldProps) {
-    return <Field {...fieldProps}>{body}</Field>;
-  }
-  return body;
+  return (
+    <Field
+      rightSection={
+        <View>
+          <Calendar1 size={16} color={useColor('muted-foreground')} />
+        </View>
+      }
+      {...fieldProps}
+    >
+      {body}
+    </Field>
+  );
 };
 
 DatePicker.displayName = 'DatePicker';

@@ -2,9 +2,46 @@ import * as React from 'react';
 import { Platform } from 'react-native';
 import { Text } from '../base/text';
 import { View } from '../base/view';
-import { cn } from '../../lib/utils/utils';
+import { cva, type VariantProps, cn } from '../../lib/utils/utils';
 
-type FieldProps = {
+// Reusable container variants (moved from input component so other controls can share)
+const fieldContainerVariants = cva(
+  'flex-row items-center gap-2 rounded-input border transition-all border-input overflow-hidden',
+  {
+    variants: {
+      variant: {
+        default: 'bg-background border-input',
+        filled: 'bg-muted border-transparent',
+      },
+      fullWidth: {
+        true: 'w-full',
+        false: '',
+      },
+      invalid: {
+        true: 'border-destructive',
+        false: '',
+      },
+      disabled: {
+        true: 'opacity-50',
+        false: '',
+      },
+      size: {
+        sm: 'h-9',
+        default: 'h-10',
+        lg: 'h-12',
+      },
+    },
+    defaultVariants: {
+      variant: 'default',
+      fullWidth: true,
+      invalid: false,
+      disabled: false,
+      size: 'default',
+    },
+  }
+);
+
+type FieldProps = VariantProps<typeof fieldContainerVariants> & {
   label?: string;
   description?: string;
   error?: string;
@@ -16,9 +53,13 @@ type FieldProps = {
   labelClassName?: string;
   descriptionClassName?: string;
   errorClassName?: string;
-  containerClassName?: string; // input container row (receives variants from control)
+  containerClassName?: string; // extra classes for the interactive row
   focusClassName?: string; // optional override applied when focused
   children?: React.ReactNode; // actual input row content
+  leftSection?: React.ReactNode;
+  rightSection?: React.ReactNode;
+  leftSectionClassName?: string;
+  rightSectionClassName?: string;
 };
 
 const Field = ({
@@ -36,6 +77,13 @@ const Field = ({
   containerClassName,
   focusClassName,
   children,
+  variant,
+  fullWidth,
+  size,
+  leftSection,
+  rightSection,
+  leftSectionClassName,
+  rightSectionClassName,
 }: FieldProps) => {
   const isInvalid = Boolean(invalid ?? error);
 
@@ -67,14 +115,30 @@ const Field = ({
 
       <View
         className={cn(
+          fieldContainerVariants({
+            variant,
+            fullWidth,
+            size,
+            invalid: isInvalid,
+            disabled,
+          }),
           containerClassName,
-          isInvalid && 'border-destructive',
           focused &&
             !disabled &&
             (focusClassName ?? (Platform.OS === 'web' ? focusRingWeb : focusBorderNative))
         )}
       >
+        {leftSection ? (
+          <View className={cn('text-muted-foreground z-10 pl-2', leftSectionClassName)}>
+            {leftSection}
+          </View>
+        ) : null}
         {children}
+        {rightSection ? (
+          <View className={cn('text-muted-foreground z-10 pr-2', rightSectionClassName)}>
+            {rightSection}
+          </View>
+        ) : null}
       </View>
 
       {error ? (
@@ -86,5 +150,5 @@ const Field = ({
 
 Field.displayName = 'Field';
 
-export { Field };
+export { Field, fieldContainerVariants };
 export type { FieldProps };

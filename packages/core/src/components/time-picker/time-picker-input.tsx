@@ -5,6 +5,8 @@ import { Field, type FieldProps } from '../field/field';
 import { TimePicker, type TimePickerProps, type TimeValue } from './time-picker';
 import { Text } from '../base/text';
 import { cn } from '../../lib/utils/utils';
+import { ChevronDown, Clock } from 'lucide-react-native';
+import { useColor } from '../../lib/hooks/useColor';
 
 export interface TimePickerInputProps
   extends Omit<React.ComponentProps<typeof Pressable>, 'onChange' | 'children'> {
@@ -83,7 +85,7 @@ export const TimePickerInput: React.FC<TimePickerInputProps> = ({
         pressableProps.onPress?.(e as any);
       }}
       className={cn(
-        'flex-row items-center justify-between rounded-md border border-input bg-background px-3 py-2 min-h-10',
+        'flex-row items-center justify-between rounded-input flex-1 px-2 py-2 min-h-10',
         disabled && 'opacity-50',
         triggerClassName
       )}
@@ -94,7 +96,6 @@ export const TimePickerInput: React.FC<TimePickerInputProps> = ({
       >
         {displayText}
       </Text>
-      <Text className="ml-2 text-xs text-muted-foreground">▾</Text>
     </Pressable>
   );
 
@@ -112,7 +113,7 @@ export const TimePickerInput: React.FC<TimePickerInputProps> = ({
   const body = (
     <Popover
       ref={popoverRef}
-      placement="bottom-start"
+      placement="bottom"
       content={
         <View style={{ width: popoverWidth }} className={cn('p-2', popoverContentClassName)}>
           {wheel}
@@ -127,8 +128,18 @@ export const TimePickerInput: React.FC<TimePickerInputProps> = ({
     </Popover>
   );
 
-  if (fieldProps) return <Field {...fieldProps}>{body}</Field>;
-  return body;
+  return (
+    <Field
+      rightSection={
+        <View>
+          <Clock size={16} color={useColor('muted-foreground')} />
+        </View>
+      }
+      {...fieldProps}
+    >
+      {body}
+    </Field>
+  );
 };
 
 TimePickerInput.displayName = 'TimePickerInput';
