@@ -3,8 +3,8 @@ import WheelPickerBase from '@quidone/react-native-wheel-picker';
 import { Platform } from 'react-native';
 import { View } from '../base/view';
 import { Text } from '../base/text';
-import { Pressable } from '../base/pressable';
 import { cn } from '../../lib/utils/utils';
+import { Pressable } from '../base/pressable';
 import { ChevronDown, ChevronUp } from 'lucide-react-native';
 import { useColor } from '../../lib/hooks/useColor';
 
@@ -164,9 +164,8 @@ export const WheelPicker = React.forwardRef<any, WheelPickerProps>(
 
     React.useEffect(() => () => debounceTimer.current && clearTimeout(debounceTimer.current), []);
 
-    // Manual increment / decrement (used by web chevron buttons)
+    // Arrow button logic (web only)
     const getVisualBaseIndex = React.useCallback(() => {
-      // Prefer the most recent derived index (even mid-scroll)
       if (lastDerivedIndexRef.current != null) return lastDerivedIndexRef.current;
       return displayIndex ?? index;
     }, [displayIndex, index]);
@@ -174,13 +173,11 @@ export const WheelPicker = React.forwardRef<any, WheelPickerProps>(
     const adjustIndex = React.useCallback(
       (delta: number) => {
         if (!options.length || delta === 0) return;
-        // Cancel any pending debounce since we're forcing a commit
         if (debounceTimer.current) clearTimeout(debounceTimer.current);
         const base = getVisualBaseIndex();
         let next = base + delta;
         if (next < 0) next = 0;
         else if (next >= options.length) next = options.length - 1;
-        // Reset scrolling state so future jitter isn't ignored
         scrollingRef.current = false;
         freezeUntilRef.current = 0;
         lastDerivedIndexRef.current = next;
@@ -194,7 +191,17 @@ export const WheelPicker = React.forwardRef<any, WheelPickerProps>(
 
     const handleDecrement = React.useCallback(() => adjustIndex(-1), [adjustIndex]);
     const handleIncrement = React.useCallback(() => adjustIndex(1), [adjustIndex]);
+
     const mutedForeground = useColor('muted-foreground');
+
+    const renderOverlay = () => (
+      <View
+        pointerEvents="none"
+        className={cn('absolute left-0 right-0 border-y border-border', overlayClassName)}
+        style={{ top: (pickerHeight - itemHeight) / 2, height: itemHeight }}
+      />
+    );
+
     return (
       <View
         className={cn('relative items-stretch', containerClassName)}
@@ -208,25 +215,34 @@ export const WheelPicker = React.forwardRef<any, WheelPickerProps>(
           enableScrollByTapOnItem={enableScrollByTapOnItem}
           onValueChanged={handleValueChanged}
           onValueChanging={handleValueChanging}
-          renderItem={(params) => {
+          renderItem={(params: any) => {
             const i = params?.index ?? params?.item?.value ?? 0;
             const active = i === displayIndex;
+            if (renderItem) {
+              const node = renderItem(options[i], active, i);
+              // Ensure we always return an element; wrap primitives
+              if (node === null || node === undefined || typeof node === 'boolean') {
+                return <Text />;
+              }
+              if (
+                typeof node === 'string' ||
+                typeof node === 'number' ||
+                typeof node === 'bigint'
+              ) {
+                return <Text>{String(node)}</Text>;
+              }
+              return node as React.ReactElement;
+            }
             return (
-              <>
-                {renderItem ? (
-                  renderItem(options[i], active, i)
-                ) : (
-                  <Text
-                    className={cn(
-                      'text-sm text-foreground text-center mt-2',
-                      itemClassName,
-                      active && activeItemClassName
-                    )}
-                  >
-                    {options[i] + ''}
-                  </Text>
+              <Text
+                className={cn(
+                  'text-sm text-foreground text-center mt-2',
+                  itemClassName,
+                  active && activeItemClassName
                 )}
-              </>
+              >
+                {options[i] + ''}
+              </Text>
             );
           }}
           {...rest}
@@ -237,10 +253,7 @@ export const WheelPicker = React.forwardRef<any, WheelPickerProps>(
               accessibilityRole="button"
               accessibilityLabel="Previous"
               onPress={handleDecrement}
-              className={cn(
-                'absolute top-1 left-1/2 -translate-x-1/2 z-10 p-1 rounded-md hover:bg-accent',
-                overlayClassName
-              )}
+              className="absolute top-1 left-1/2 -translate-x-1/2 z-10 p-1"
             >
               <ChevronUp size={16} color={mutedForeground} />
             </Pressable>
@@ -248,10 +261,7 @@ export const WheelPicker = React.forwardRef<any, WheelPickerProps>(
               accessibilityRole="button"
               accessibilityLabel="Next"
               onPress={handleIncrement}
-              className={cn(
-                'absolute bottom-1 left-1/2 -translate-x-1/2 z-10 p-1 rounded-md hover:bg-accent',
-                overlayClassName
-              )}
+              className="absolute bottom-1 left-1/2 -translate-x-1/2 z-10 p-1"
             >
               <ChevronDown size={16} color={mutedForeground} />
             </Pressable>
