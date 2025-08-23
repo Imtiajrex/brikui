@@ -23,8 +23,8 @@ import {
   ModalProps,
   BackHandler,
 } from 'react-native';
-import { Svg, Path } from 'react-native-svg';
 import { useTheme } from '../../contexts/ThemeProvider';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
@@ -46,12 +46,6 @@ interface ContentLayout {
 interface Position {
   top: number;
   left: number;
-}
-
-interface PopoverArrowProps {
-  placement: PlacementType;
-  arrowSize: number;
-  arrowColor: string;
 }
 
 interface PopoverProps extends Omit<ModalProps, 'visible' | 'children'> {
@@ -79,22 +73,6 @@ interface PopoverRef {
   toggle: () => void;
   isVisible: boolean;
 }
-
-// Arrow component for the popover
-const PopoverArrow: React.FC<PopoverArrowProps> = ({ placement, arrowSize, arrowColor }) => {
-  const arrowPaths: Record<PlacementType, string> = {
-    top: `M0,${arrowSize} L${arrowSize},0 L${arrowSize * 2},${arrowSize} Z`,
-    bottom: `M0,0 L${arrowSize},${arrowSize} L${arrowSize * 2},0 Z`,
-    left: `M${arrowSize},0 L0,${arrowSize} L${arrowSize},${arrowSize * 2} Z`,
-    right: `M0,0 L${arrowSize},${arrowSize} L0,${arrowSize * 2} Z`,
-  };
-
-  return (
-    <Svg width={arrowSize * 2} height={arrowSize * 2} style={styles.arrow}>
-      <Path d={arrowPaths[placement]} fill={arrowColor} />
-    </Svg>
-  );
-};
 
 const Popover = forwardRef<PopoverRef, PopoverProps>(
   (
@@ -207,13 +185,13 @@ const Popover = forwardRef<PopoverRef, PopoverProps>(
 
       return { top, left };
     }, [triggerLayout, contentLayout, placement, offset, arrowSize, showArrow]);
-
+    const safeInsets = useSafeAreaInsets();
     // Measure trigger element
     const measureTrigger = useCallback((): void => {
       if (triggerRef.current) {
         triggerRef.current.measureInWindow(
           (x: number, y: number, width: number, height: number) => {
-            setTriggerLayout({ pageX: x, pageY: y, width, height });
+            setTriggerLayout({ pageX: x, pageY: y + safeInsets.top * 2.1, width, height });
           }
         );
       }
@@ -294,7 +272,6 @@ const Popover = forwardRef<PopoverRef, PopoverProps>(
           <Modal
             visible={isVisible}
             transparent
-            statusBarTranslucent
             animationType={animationType}
             onRequestClose={hide}
             {...props}
