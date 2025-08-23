@@ -3,7 +3,6 @@ import { View } from '../base/view';
 import { Text } from '../base/text';
 import { WheelPicker } from '../wheel-picker/wheel-picker';
 import { cn } from '../../lib/utils/utils';
-import { Field, type FieldProps } from '../field/field';
 
 export interface TimeValue {
   hours: number; // 0-23
@@ -28,7 +27,6 @@ export interface TimePickerProps {
   wheelClassName?: string; // each wheel wrapper
   wheelWidth?: number; // fixed width for wheel container
   gap?: number; // horizontal gap between wheels (default 12)
-  fieldProps?: Omit<FieldProps, 'children'>; // optional Field integration
   hourWheelProps?: Partial<React.ComponentProps<typeof WheelPicker>>;
   minuteWheelProps?: Partial<React.ComponentProps<typeof WheelPicker>>;
   meridiemWheelProps?: Partial<React.ComponentProps<typeof WheelPicker>>;
@@ -54,7 +52,6 @@ export const TimePicker: React.FC<TimePickerProps> = ({
   wheelClassName,
   wheelWidth = 72,
   gap = 12,
-  fieldProps,
   hourWheelProps,
   minuteWheelProps,
   meridiemWheelProps,
@@ -263,7 +260,6 @@ export const TimePicker: React.FC<TimePickerProps> = ({
     </View>
   );
 
-  if (fieldProps) return <Field {...fieldProps}>{wheels}</Field>;
   return wheels;
 };
 
