@@ -33,8 +33,9 @@ export function SelectRootInner<T>(props: AnySelectProps<T>) {
     indicator,
     matchTriggerWidth = true,
     multiple = false,
+    renderTrigger,
     ...rest
-  } = props as any;
+  } = props;
   const isMulti = multiple === true;
   const isControlled = value !== undefined;
   const [internalSingle, setInternalSingle] = React.useState<T | undefined>(
@@ -56,6 +57,7 @@ export function SelectRootInner<T>(props: AnySelectProps<T>) {
   const selectedSet = React.useMemo(() => new Set<T>(selectedArray), [selectedArray]);
   const popoverRef = React.useRef<PopoverRef>(null);
   const [triggerWidth, setTriggerWidth] = React.useState<number | undefined>(undefined);
+  const [isOpen, setIsOpen] = React.useState(false);
 
   const setSelectedSingle = React.useCallback(
     (val: T) => {
@@ -133,6 +135,46 @@ export function SelectRootInner<T>(props: AnySelectProps<T>) {
     </View>
   );
 
+  const defaultTrigger = (
+    <Pressable className="flex-1">
+      <SelectTrigger
+        placeholder={placeholder}
+        className={className}
+        style={style}
+        matchTriggerWidth={matchTriggerWidth}
+        multiple={isMulti}
+        selectedLabels={
+          isMulti
+            ? options.filter((o: any) => selectedSet.has(o.value)).map((o: any) => o.label)
+            : undefined
+        }
+        {...rest}
+      />
+    </Pressable>
+  );
+
+  const trigger = renderTrigger
+    ? renderTrigger({
+        open: () => popoverRef.current?.show(),
+        close: () => popoverRef.current?.hide(),
+        toggle: () => popoverRef.current?.toggle(),
+        isOpen,
+        multiple: isMulti,
+        selected: selected as any,
+        selectedValues: isMulti ? selectedArray : undefined,
+        placeholder,
+        disabled,
+        displayValue: isMulti
+          ? options
+              .filter((o: any) => selectedSet.has(o.value))
+              .map((o: any) => o.label)
+              .join(', ')
+          : (options.find((o: any) => o.value === selected)?.label as string) || '',
+        popoverRef: popoverRef as any,
+        setTriggerWidth,
+      })
+    : defaultTrigger;
+
   const body = (
     <Popover
       ref={popoverRef}
@@ -143,34 +185,38 @@ export function SelectRootInner<T>(props: AnySelectProps<T>) {
       contentClassName={popoverContentClassName}
       arrowSize={6}
       disabled={!!disabled}
+      onOpen={() => setIsOpen(true)}
+      onClose={() => setIsOpen(false)}
     >
-      <Pressable className="flex-1">
-        <SelectTrigger
-          placeholder={placeholder}
-          className={className}
-          style={style}
-          matchTriggerWidth={matchTriggerWidth}
-          multiple={isMulti}
-          selectedLabels={
-            isMulti
-              ? options.filter((o: any) => selectedSet.has(o.value)).map((o: any) => o.label)
-              : undefined
-          }
-          {...rest}
-        />
-      </Pressable>
+      {trigger as any}
     </Popover>
+  );
+
+  const mergedFieldProps = React.useMemo(
+    () =>
+      renderTrigger
+        ? {
+            ...fieldProps,
+            containerClassName: cn(
+              'border-none rounded-none bg-transparent h-auto',
+              fieldProps?.containerClassName
+            ),
+          }
+        : fieldProps,
+    [fieldProps, renderTrigger]
   );
 
   return (
     <SelectCtx.Provider value={ctxValue}>
       <Field
         rightSection={
-          <View>
-            <ChevronDown size={16} color={useColor('muted-foreground')} />
-          </View>
+          !renderTrigger ? (
+            <View>
+              <ChevronDown size={16} color={useColor('muted-foreground')} />
+            </View>
+          ) : null
         }
-        {...fieldProps}
+        {...mergedFieldProps}
       >
         {body}
       </Field>

@@ -28,6 +28,19 @@ export interface TimePickerInputProps
     'value' | 'defaultValue' | 'onChange' | 'format' | 'minuteStep' | 'disabled' | 'fieldProps'
   >;
   formatDisplay?: (value: TimeValue | undefined, opts: { format: 12 | 24 }) => string;
+  /**
+   * Custom trigger renderer. Receives helpers to control the popover and current value/display text.
+   * If provided, replaces the default Pressable trigger.
+   */
+  renderTrigger?: (ctx: {
+    open: () => void;
+    close: () => void;
+    toggle: () => void;
+    isOpen: boolean;
+    value: TimeValue | undefined;
+    display: string;
+    disabled?: boolean;
+  }) => React.ReactElement;
 }
 
 export const TimePickerInput: React.FC<TimePickerInputProps> = ({
@@ -47,12 +60,14 @@ export const TimePickerInput: React.FC<TimePickerInputProps> = ({
   timePickerProps,
   style,
   formatDisplay,
+  renderTrigger,
   ...pressableProps
 }) => {
   const isControlled = value !== undefined;
   const [internal, setInternal] = React.useState<TimeValue | undefined>(defaultValue);
   const current = isControlled ? value : internal;
   const popoverRef = React.useRef<PopoverRef>(null);
+  const [isOpen, setIsOpen] = React.useState(false);
 
   const handleChange = React.useCallback(
     (val: TimeValue) => {
@@ -74,7 +89,7 @@ export const TimePickerInput: React.FC<TimePickerInputProps> = ({
     return `${displayHour}:${m} ${meridiem}`;
   }, [current, placeholder, format, formatDisplay]);
 
-  const trigger = (
+  const defaultTrigger = (
     <Pressable
       disabled={disabled}
       style={style}
@@ -98,6 +113,18 @@ export const TimePickerInput: React.FC<TimePickerInputProps> = ({
       </Text>
     </Pressable>
   );
+
+  const trigger = renderTrigger
+    ? renderTrigger({
+        open: () => popoverRef.current?.show(),
+        close: () => popoverRef.current?.hide(),
+        toggle: () => popoverRef.current?.toggle(),
+        isOpen,
+        value: current,
+        display: displayText,
+        disabled,
+      })
+    : defaultTrigger;
 
   const wheel = (
     <TimePicker
@@ -123,19 +150,37 @@ export const TimePickerInput: React.FC<TimePickerInputProps> = ({
       openOnPress={false}
       arrowSize={6}
       disabled={disabled}
+      onOpen={() => setIsOpen(true)}
+      onClose={() => setIsOpen(false)}
     >
       {trigger}
     </Popover>
   );
 
+  const mergedFieldProps = React.useMemo(
+    () =>
+      renderTrigger
+        ? {
+            ...fieldProps,
+            containerClassName: cn(
+              'border-none rounded-none bg-transparent h-auto',
+              fieldProps?.containerClassName
+            ),
+          }
+        : fieldProps,
+    [fieldProps]
+  );
+
   return (
     <Field
       rightSection={
-        <View>
-          <Clock size={16} color={useColor('muted-foreground')} />
-        </View>
+        !renderTrigger ? (
+          <View>
+            <Clock size={16} color={useColor('muted-foreground')} />
+          </View>
+        ) : null
       }
-      {...fieldProps}
+      {...mergedFieldProps}
     >
       {body}
     </Field>

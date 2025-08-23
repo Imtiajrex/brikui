@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { ScrollView } from 'react-native';
+import { Pressable, ScrollView } from 'react-native';
 import { View, Text, TimePickerInput } from 'brikui';
-
+import { Clock } from 'lucide-react-native';
 export default function TimePickerInputExamples() {
   const [timeSingle, setTimeSingle] = React.useState<
     { hours: number; minutes: number } | undefined
@@ -35,7 +35,7 @@ export default function TimePickerInputExamples() {
           format={24}
           value={time24}
           onChange={setTime24}
-          fieldProps={{ label: '24h Time', description: 'Controlled 24h mode' }}
+          fieldProps={{ label: '24h Time', description: 'Controlled 24h mode', variant: 'filled' }}
           placeholder="Select time"
           minuteStep={5}
         />
@@ -52,6 +52,17 @@ export default function TimePickerInputExamples() {
           fieldProps={{ label: 'Disabled AM', description: 'Only PM selectable' }}
           timePickerProps={{ disableAM: true }}
           placeholder="Select time"
+          renderTrigger={(props) => (
+            <Pressable
+              onPress={() => {
+                props.open();
+              }}
+              className="flex flex-row items-center gap-2"
+            >
+              <View className="text-sm p-3 rounded-xl bg-muted">{props.value?.hours}</View>
+              <Clock size={20} color="black" />
+            </Pressable>
+          )}
         />
       </View>
     </ScrollView>

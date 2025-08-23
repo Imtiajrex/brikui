@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ScrollView } from 'react-native';
-import { View, Text, Button, Select, MultiSelect } from 'brikui';
+import { View, Text, Button, Select, MultiSelect, Pressable } from 'brikui';
 
 const frameworks = [
   { label: 'React', value: 'react' },
@@ -34,6 +34,11 @@ export default function SelectExamples() {
             label: 'Framework',
             description: 'Select your primary framework',
           }}
+          renderTrigger={(props) => (
+            <Pressable onPress={props.open} className="p-4 rounded-xl  bg-muted">
+              <Text>{props.displayValue || props.placeholder}</Text>
+            </Pressable>
+          )}
         />
       </View>
 

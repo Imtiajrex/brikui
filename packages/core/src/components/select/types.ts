@@ -24,6 +24,20 @@ export interface BaseSelectCommon<T = any> {
   // Multi-select display helpers (also accepted by single but unused)
   maxTagCount?: number;
   renderMultipleLabel?: (labels: string[]) => string;
+  renderTrigger?: (props: {
+    open: () => void;
+    close: () => void;
+    toggle: () => void;
+    isOpen: boolean;
+    multiple: boolean;
+    selected: any;
+    selectedValues: any;
+    placeholder: string;
+    disabled: boolean;
+    displayValue: string;
+    popoverRef: any;
+    setTriggerWidth: (w: number) => void;
+  }) => React.ReactNode;
 }
 
 export interface SelectProps<T = any>

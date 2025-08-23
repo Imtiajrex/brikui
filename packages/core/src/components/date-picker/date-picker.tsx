@@ -54,6 +54,24 @@ export interface DatePickerProps
   popoverContentClassName?: string;
   /** Fixed width for the popover (default 320) */
   popoverWidth?: number;
+  /**
+   * Custom trigger renderer. When provided, replaces the default Pressable trigger.
+   * Useful for integrating with custom UI (icon buttons, chips, etc.).
+   * Field container styling (border/rounded/background) will be stripped (border-none rounded-none bg-transparent).
+   */
+  renderTrigger?: (ctx: {
+    open: () => void;
+    close: () => void;
+    toggle: () => void;
+    isOpen: boolean;
+    mode: 'single' | 'range' | 'multiple';
+    date?: DateType;
+    startDate?: DateType;
+    endDate?: DateType;
+    dates?: DateType[];
+    display: string;
+    disabled?: boolean;
+  }) => React.ReactElement;
 }
 
 export const DatePicker: React.FC<DatePickerProps> = ({
@@ -76,6 +94,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   popoverContentClassName,
   popoverWidth = 320,
   style,
+  renderTrigger,
   ...pressableProps
 }) => {
   const isSingle = mode === 'single';
@@ -98,6 +117,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   const currentMulti = isControlledMulti ? values : internalMulti;
 
   const popoverRef = React.useRef<PopoverRef>(null);
+  const [isOpen, setIsOpen] = React.useState(false);
 
   // Honor explicit closeOnSelect (default false for all modes)
   const shouldCloseOnSelect = closeOnSelect;
@@ -178,7 +198,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
     mode,
   ]);
 
-  const trigger = (
+  const defaultTrigger = (
     <Pressable
       disabled={disabled}
       style={style}
@@ -209,6 +229,22 @@ export const DatePicker: React.FC<DatePickerProps> = ({
     </Pressable>
   );
 
+  const trigger = renderTrigger
+    ? renderTrigger({
+        open: () => popoverRef.current?.show(),
+        close: () => popoverRef.current?.hide(),
+        toggle: () => popoverRef.current?.toggle(),
+        isOpen,
+        mode,
+        date: currentSingle,
+        startDate: currentRange?.startDate,
+        endDate: currentRange?.endDate,
+        dates: currentMulti,
+        display: displayText,
+        disabled,
+      })
+    : defaultTrigger;
+
   const calendar = (
     <Calendar
       mode={mode as any}
@@ -234,19 +270,37 @@ export const DatePicker: React.FC<DatePickerProps> = ({
       openOnPress={false}
       arrowSize={6}
       disabled={disabled}
+      onOpen={() => setIsOpen(true)}
+      onClose={() => setIsOpen(false)}
     >
       {trigger}
     </Popover>
   );
 
+  const mergedFieldProps = React.useMemo(
+    () =>
+      renderTrigger
+        ? {
+            ...fieldProps,
+            containerClassName: cn(
+              'border-none rounded-none bg-transparent h-auto',
+              fieldProps?.containerClassName
+            ),
+          }
+        : fieldProps,
+    [fieldProps, renderTrigger]
+  );
+
   return (
     <Field
       rightSection={
-        <View>
-          <Calendar1 size={16} color={useColor('muted-foreground')} />
-        </View>
+        !renderTrigger ? (
+          <View>
+            <Calendar1 size={16} color={useColor('muted-foreground')} />
+          </View>
+        ) : null
       }
-      {...fieldProps}
+      {...mergedFieldProps}
     >
       {body}
     </Field>
