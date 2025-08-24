@@ -78,7 +78,7 @@ const Input = React.forwardRef<React.ComponentRef<typeof RNTextInput>, InputProp
         rightSection={rightSection}
         leftSectionClassName={leftSectionClassName}
         rightSectionClassName={rightSectionClassName}
-        containerClassName={undefined}
+        {...props}
       >
         <RNTextInput
           ref={ref}
