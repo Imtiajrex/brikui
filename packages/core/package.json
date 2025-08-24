@@ -1,7 +1,7 @@
 {
   "private": false,
   "name": "brikui",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "Brik UI",
   "author": "Imtiaj Bin Aoual <imtiajbinaoual@gmail.com>",
   "license": "MIT",
@@ -16,14 +16,14 @@
     "@tsconfig/recommended": "^1.0.3",
     "dom-helpers": "^5.2.1",
     "nativewind": "^4.1.21",
-    "react-hook-form": "^7.53.2",
     "react-native": "0.79.5",
     "react-native-gesture-handler": "^2.24.0",
     "react-native-reanimated": "~3.17.5",
     "react-native-safe-area-context": "5.4.0",
     "tsup": "^8.5.0",
     "typescript": "^5.9.2",
-    "@shopify/flash-list": "^1.7.6"
+    "@shopify/flash-list": "^1.7.6",
+    "react-hook-form": "^7.53.2"
   },
   "dependencies": {
     "@miblanchard/react-native-slider": "^2.6.0",
