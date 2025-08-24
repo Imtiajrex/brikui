@@ -3,7 +3,7 @@ import { forwardRef, ReactNode, useEffect, useRef, useState, useImperativeHandle
 import ActionSheet, { ActionSheetProps, ActionSheetRef } from 'react-native-actions-sheet';
 import { useColor } from '../../lib/hooks/useColor';
 import { cn } from '../../lib/utils/utils';
-import { Text, View, View } from '../base';
+import { Text, View } from '../base';
 import { useTheme } from '../../contexts/ThemeProvider';
 
 remapProps(ActionSheet, {
