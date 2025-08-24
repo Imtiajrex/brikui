@@ -3,13 +3,14 @@ import { TextInput as RNTextInput } from 'react-native';
 import { View } from '../base/view';
 import { type VariantProps, cn } from '../../lib/utils/utils';
 import { useColor } from '../../lib/hooks/useColor';
-import { Field, fieldContainerVariants } from '../field';
+import { Field, fieldContainerVariants, FieldProps } from '../field';
 
 // Alias to preserve previous API name; now delegates to fieldContainerVariants
 const inputVariants = fieldContainerVariants;
 
 type InputProps = Omit<React.ComponentPropsWithoutRef<typeof RNTextInput>, 'editable'> &
-  VariantProps<typeof inputVariants> & {
+  VariantProps<typeof inputVariants> &
+  FieldProps & {
     label?: string;
     description?: string;
     error?: string;
