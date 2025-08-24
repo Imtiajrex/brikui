@@ -1,9 +1,10 @@
-import { remapProps } from 'nativewind';
+import { remapProps, vars } from 'nativewind';
 import { forwardRef, ReactNode, useEffect, useRef, useState, useImperativeHandle } from 'react';
 import ActionSheet, { ActionSheetProps, ActionSheetRef } from 'react-native-actions-sheet';
 import { useColor } from '../../lib/hooks/useColor';
 import { cn } from '../../lib/utils/utils';
-import { Text, View } from '../base';
+import { Text, View, View } from '../base';
+import { useTheme } from '../../contexts/ThemeProvider';
 
 remapProps(ActionSheet, {
   containerClassName: 'containerStyle',
@@ -50,29 +51,35 @@ export const BottomSheet = forwardRef<BottomSheet, BottomSheetProps>((props, ref
     if (!isControlled) setUncontrolledOpen(false);
     onOpenChange?.(false);
   };
+  const currentTheme = useTheme();
 
   useImperativeHandle(ref, () => (internalRef.current as ActionSheetRef) ?? ({} as ActionSheetRef));
 
   return (
-    <ActionSheet
-      ref={internalRef}
-      onOpen={handleOpen}
-      onClose={handleClose}
-      gestureEnabled
-      containerClassName={cn('bg-background', containerClassName)}
-      containerStyle={{
-        backgroundColor: useColor('background'),
-      }}
-      {...rest}
-    >
-      <View className={cn('bg-background px-4 pb-4 pt-2 gap-2', contentClassName)}>
-        {title ? (
-          <Text className={cn('text-center text-base font-medium mb-1', titleClassName)}>
-            {title}
-          </Text>
-        ) : null}
-        {children}
-      </View>
-    </ActionSheet>
+    <View className="absolute w-0 h-0" style={vars(currentTheme)}>
+      <ActionSheet
+        ref={internalRef}
+        onOpen={handleOpen}
+        onClose={handleClose}
+        gestureEnabled
+        containerClassName={cn('bg-background', containerClassName)}
+        containerStyle={{
+          backgroundColor: useColor('background'),
+        }}
+        {...rest}
+      >
+        <View
+          style={vars(currentTheme)}
+          className={cn('bg-background px-4 pb-4 pt-2 gap-2', contentClassName)}
+        >
+          {title ? (
+            <Text className={cn('text-center text-base font-medium mb-1', titleClassName)}>
+              {title}
+            </Text>
+          ) : null}
+          {children}
+        </View>
+      </ActionSheet>
+    </View>
   );
 });
