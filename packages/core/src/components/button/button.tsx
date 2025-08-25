@@ -106,11 +106,7 @@ const Button = React.forwardRef<React.ComponentRef<typeof Pressable>, ButtonProp
         ) : (
           <>
             {left}
-            {typeof children === 'string' || typeof children === 'number' ? (
-              <Text className={textClasses}>{children}</Text>
-            ) : (
-              children
-            )}
+            {children}
             {right}
           </>
         )}
