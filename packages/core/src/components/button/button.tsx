@@ -97,7 +97,7 @@ const Button = React.forwardRef<React.ComponentRef<typeof Pressable>, ButtonProp
       <Pressable
         ref={ref}
         accessibilityRole="button"
-        className={cn(buttonVariants({ variant, size, fullWidth }), className)}
+        className={cn(buttonVariants({ variant, size, fullWidth }), className, textClasses)}
         disabled={isLoading || disabled}
         {...props}
       >
