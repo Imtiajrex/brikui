@@ -26,10 +26,10 @@ export const ThemeProvider = ({ children, themes }: ThemeProviderProps) => {
   return (
     <ThemeContext.Provider value={{ theme: colorScheme!, currentTheme }}>
       <View style={vars(currentTheme)} className="flex-1">
-        {children}
         <PortalHost />
         <GlobalAlertDialog />
         <GlobalActionSheet.Global />
+        {children}
       </View>
     </ThemeContext.Provider>
   );

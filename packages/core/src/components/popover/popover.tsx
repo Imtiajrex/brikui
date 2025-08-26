@@ -106,7 +106,18 @@ const Popover = forwardRef<PopoverRef, PopoverProps>(
 
     const popoverBody = (
       <TouchableWithoutFeedback onPress={hide}>
-        <View style={[styles.overlay, overlayStyle, vars(currentTheme)]} pointerEvents="box-none">
+        <View
+          style={[
+            renderInPortal
+              ? {
+                  position: 'absolute',
+                }
+              : {},
+            styles.overlay,
+            overlayStyle,
+            vars(currentTheme),
+          ]}
+        >
           <TouchableWithoutFeedback onPress={() => {}}>
             <View
               style={[

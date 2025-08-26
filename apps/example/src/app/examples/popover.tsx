@@ -14,6 +14,7 @@ const Trigger: React.FC<{ label: string; placement: any }> = ({ label, placement
     onOpen={() => console.log('Opened ->', placement)}
     onClose={() => console.log('Closed ->', placement)}
     matchTriggerWidth
+    renderInPortal
   >
     <Pressable className="px-3 py-2 w-full m-1 rounded-lg bg-blue-500/80">
       <Text className="text-white text-xs">{label}</Text>
