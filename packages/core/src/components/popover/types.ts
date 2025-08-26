@@ -42,6 +42,14 @@ export interface PopoverProps extends Omit<ModalProps, 'visible' | 'children'> {
    * This is useful for components like Select where the dropdown should align to the trigger.
    */
   matchTriggerWidth?: boolean;
+  /**
+   * Render popover using a Portal instead of a Modal. Requires a <PortalHost/> mounted.
+   */
+  renderInPortal?: boolean;
+  /** Optional host name for the portal (defaults to internal default host). */
+  portalHostName?: string;
+  /** Optional specific portal name (auto-generated if omitted). */
+  portalName?: string;
 }
 
 export interface PopoverRef {

@@ -12,6 +12,8 @@ import { useTheme } from '../../contexts/ThemeProvider';
 import { Arrow } from './Arrow';
 import { usePopover } from './usePopover';
 import { PopoverProps, PopoverRef } from './types';
+import { Portal } from '../portal';
+import { useRef } from 'react';
 
 const Popover = forwardRef<PopoverRef, PopoverProps>(
   (
@@ -34,6 +36,9 @@ const Popover = forwardRef<PopoverRef, PopoverProps>(
       overlayStyle,
       animationType = 'fade',
       matchTriggerWidth = false,
+      renderInPortal = false,
+      portalHostName,
+      portalName,
       ...props
     },
     ref
@@ -95,48 +100,62 @@ const Popover = forwardRef<PopoverRef, PopoverProps>(
     });
     const currentTheme = useTheme();
 
+    const internalPortalNameRef = useRef(
+      portalName || `popover-${Math.random().toString(36).slice(2)}`
+    );
+
+    const popoverBody = (
+      <TouchableWithoutFeedback onPress={hide}>
+        <View style={[styles.overlay, overlayStyle, vars(currentTheme)]} pointerEvents="box-none">
+          <TouchableWithoutFeedback onPress={() => {}}>
+            <View
+              style={[
+                styles.content,
+                {
+                  top: popoverPosition.top,
+                  left: popoverPosition.left,
+                  width: matchTriggerWidth && triggerLayout ? triggerLayout.width : undefined,
+                },
+                contentStyle,
+              ]}
+              className="bg-card rounded-popover p-3 border border-border"
+              onLayout={handleContentLayout}
+            >
+              {showArrow && (
+                <Arrow
+                  placement={actualPlacement}
+                  size={arrowSize}
+                  color={arrowColor}
+                  contentLayout={contentLayout}
+                />
+              )}
+              {content}
+            </View>
+          </TouchableWithoutFeedback>
+        </View>
+      </TouchableWithoutFeedback>
+    );
+
     return (
       <>
         {triggerElement}
+        {isVisible && renderInPortal && (
+          <Portal name={internalPortalNameRef.current} hostName={portalHostName}>
+            {popoverBody}
+          </Portal>
+        )}
         <View className="absolute w-0 h-0">
-          <Modal
-            visible={isVisible}
-            transparent
-            animationType={animationType}
-            onRequestClose={hide}
-            {...props}
-          >
-            <TouchableWithoutFeedback onPress={hide}>
-              <View style={[styles.overlay, overlayStyle, vars(currentTheme)]}>
-                <TouchableWithoutFeedback onPress={() => {}}>
-                  <View
-                    style={[
-                      styles.content,
-                      {
-                        top: popoverPosition.top,
-                        left: popoverPosition.left,
-                        // If matching trigger width, use triggerLayout width (minus borders if desired)
-                        width: matchTriggerWidth && triggerLayout ? triggerLayout.width : undefined,
-                      },
-                      contentStyle,
-                    ]}
-                    className="bg-card rounded-popover p-3 border border-border"
-                    onLayout={handleContentLayout}
-                  >
-                    {showArrow && (
-                      <Arrow
-                        placement={actualPlacement}
-                        size={arrowSize}
-                        color={arrowColor}
-                        contentLayout={contentLayout}
-                      />
-                    )}
-                    {content}
-                  </View>
-                </TouchableWithoutFeedback>
-              </View>
-            </TouchableWithoutFeedback>
-          </Modal>
+          {!renderInPortal && (
+            <Modal
+              visible={isVisible}
+              transparent
+              animationType={animationType}
+              onRequestClose={hide}
+              {...props}
+            >
+              {popoverBody}
+            </Modal>
+          )}
         </View>
       </>
     );
