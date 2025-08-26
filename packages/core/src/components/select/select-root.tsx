@@ -129,11 +129,7 @@ export function SelectRootInner<T>(props: AnySelectProps<T>) {
 
   const list = <SelectList style={{ maxHeight }} />;
 
-  const content = (
-    <View style={matchTriggerWidth && triggerWidth ? { width: triggerWidth * 0.9 } : undefined}>
-      {list}
-    </View>
-  );
+  const content = <View>{list}</View>;
 
   const defaultTrigger = (
     <Pressable className="flex-1">
@@ -141,7 +137,6 @@ export function SelectRootInner<T>(props: AnySelectProps<T>) {
         placeholder={placeholder}
         className={className}
         style={style}
-        matchTriggerWidth={matchTriggerWidth}
         multiple={isMulti}
         selectedLabels={
           isMulti
@@ -187,6 +182,7 @@ export function SelectRootInner<T>(props: AnySelectProps<T>) {
       disabled={!!disabled}
       onOpen={() => setIsOpen(true)}
       onClose={() => setIsOpen(false)}
+      matchTriggerWidth={matchTriggerWidth}
     >
       {trigger as any}
     </Popover>

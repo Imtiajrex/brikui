@@ -22,7 +22,7 @@ const Popover = forwardRef<PopoverRef, PopoverProps>(
       openOnPress = true,
       arrowSize = 6,
       arrowColor = '#FFFFFF',
-      showArrow = true,
+      showArrow = false,
       offset = 0,
       disabled = false,
       onOpen,
@@ -33,6 +33,7 @@ const Popover = forwardRef<PopoverRef, PopoverProps>(
       contentStyle,
       overlayStyle,
       animationType = 'fade',
+      matchTriggerWidth = false,
       ...props
     },
     ref
@@ -41,6 +42,7 @@ const Popover = forwardRef<PopoverRef, PopoverProps>(
       isVisible,
       actualPlacement,
       popoverPosition,
+      triggerLayout,
       triggerRef,
       show,
       hide,
@@ -113,6 +115,8 @@ const Popover = forwardRef<PopoverRef, PopoverProps>(
                       {
                         top: popoverPosition.top,
                         left: popoverPosition.left,
+                        // If matching trigger width, use triggerLayout width (minus borders if desired)
+                        width: matchTriggerWidth && triggerLayout ? triggerLayout.width : undefined,
                       },
                       contentStyle,
                     ]}

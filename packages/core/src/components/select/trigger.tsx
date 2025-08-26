@@ -7,7 +7,6 @@ import { useSelectContext } from './context';
 export interface SelectTriggerProps extends React.ComponentProps<typeof Pressable> {
   placeholder?: string;
   className?: string;
-  matchTriggerWidth?: boolean;
   style?: ViewStyle;
   multiple?: boolean;
   selectedLabels?: string[]; // for multi
@@ -19,7 +18,6 @@ export const SelectTrigger = React.forwardRef<View, SelectTriggerProps>(
     {
       placeholder,
       className,
-      matchTriggerWidth = true,
       style,
       multiple,
       selectedLabels,
@@ -52,9 +50,6 @@ export const SelectTrigger = React.forwardRef<View, SelectTriggerProps>(
           className
         )}
         style={style}
-        onLayout={(e) => {
-          if (matchTriggerWidth) setTriggerWidth(e.nativeEvent.layout.width);
-        }}
         onPress={() => popoverRef.current?.show()}
         accessibilityRole="button"
         {...rest}

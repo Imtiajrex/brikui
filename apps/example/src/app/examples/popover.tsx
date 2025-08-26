@@ -3,9 +3,6 @@ import { Popover, Pressable, Text, View } from 'brikui';
 import { ScrollView } from 'react-native';
 
 const placementsPrimary = ['top', 'bottom', 'left', 'right'] as const;
-const placementsCorners = ['top-start', 'top-end', 'bottom-start', 'bottom-end'] as const;
-const placementsSideVariants = ['left-start', 'left-end', 'right-start', 'right-end'] as const;
-
 const Trigger: React.FC<{ label: string; placement: any }> = ({ label, placement }) => (
   <Popover
     placement={placement}
@@ -16,8 +13,9 @@ const Trigger: React.FC<{ label: string; placement: any }> = ({ label, placement
     }
     onOpen={() => console.log('Opened ->', placement)}
     onClose={() => console.log('Closed ->', placement)}
+    matchTriggerWidth
   >
-    <Pressable className="px-3 py-2 m-1 rounded-lg bg-blue-500/80">
+    <Pressable className="px-3 py-2 w-full m-1 rounded-lg bg-blue-500/80">
       <Text className="text-white text-xs">{label}</Text>
     </Pressable>
   </Popover>
@@ -26,7 +24,7 @@ const Trigger: React.FC<{ label: string; placement: any }> = ({ label, placement
 const Section: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
   <View className="mb-6">
     <Text className="font-semibold mb-2 text-base">{title}</Text>
-    <View className="flex-row flex-wrap items-center">{children}</View>
+    <View className="flex-col gap-2 flex-wrap items-center">{children}</View>
   </View>
 );
 
@@ -37,12 +35,6 @@ const MyComponent: React.FC = () => {
 
       <Section title="Primary (top / bottom / left / right)">
         {placementsPrimary.map((p) => (
-          <Trigger key={p} label={p} placement={p} />
-        ))}
-      </Section>
-
-      <Section title="Corners (start / end)">
-        {placementsCorners.map((p) => (
           <Trigger key={p} label={p} placement={p} />
         ))}
       </Section>

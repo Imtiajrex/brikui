@@ -34,6 +34,7 @@ export default function SelectExamples() {
             label: 'Framework',
             description: 'Select your primary framework',
           }}
+          matchTriggerWidth={false}
           renderTrigger={(props) => (
             <Pressable onPress={props.open} className="p-4 rounded-xl  bg-muted">
               <Text>{props.displayValue || props.placeholder}</Text>
