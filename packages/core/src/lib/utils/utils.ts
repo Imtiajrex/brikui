@@ -2,18 +2,19 @@ import { type ClassValue, clsx } from 'clsx';
 
 import { cva, type VariantProps } from 'class-variance-authority';
 import { type StringToBoolean } from 'class-variance-authority/dist/types';
-import { extendTailwindMerge } from 'tailwind-merge';
 
-const twMerge = extendTailwindMerge({
-  extend: {
-    classGroups: {
-      rounded: [{ rounded: ['input', 'radius', 'popover'] }],
-    },
-  },
+import { createTailwindMerge, getDefaultConfig } from 'tailwind-merge';
+const customTwMerge = createTailwindMerge(() => {
+  const config = getDefaultConfig() as any;
+  // Add or modify the 'rounded' class group to include your custom classes
+  config.classGroups['rounded'] = [
+    { rounded: ['full', 'lg', 'md', 'sm', 'xl', '2xl', '3xl', 'none', 'input', 'radius'] },
+  ] as any;
+  return config;
 });
 
 export function mergeClasses(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
+  return customTwMerge(clsx(inputs));
 }
 
 type ConfigSchema = Record<string, Record<string, ClassValue>>;
