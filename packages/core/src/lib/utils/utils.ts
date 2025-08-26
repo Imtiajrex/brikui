@@ -1,8 +1,16 @@
 import { type ClassValue, clsx } from 'clsx';
-import { twMerge } from 'tailwind-merge';
 
 import { cva, type VariantProps } from 'class-variance-authority';
 import { type StringToBoolean } from 'class-variance-authority/dist/types';
+import { extendTailwindMerge } from 'tailwind-merge';
+
+const twMerge = extendTailwindMerge({
+  extend: {
+    classGroups: {
+      rounded: [{ rounded: ['input', 'radius', 'popover'] }],
+    },
+  },
+});
 
 export function mergeClasses(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
