@@ -93,9 +93,9 @@ const Badge = React.forwardRef<View, BadgeProps>((props, ref) => {
       )}
       {...rest}
     >
-      {variant === 'dot' ? <Dot className={dotClassName} /> : leftSection}
-      <Text>{children}</Text>
-      {rightSection}
+      {variant === 'dot' ? <Dot className={dotClassName} /> : renderNode(leftSection)}
+      {renderNode(children)}
+      {renderNode(rightSection)}
     </View>
   );
 });
