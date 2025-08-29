@@ -4,6 +4,7 @@ import { Text } from '../base/text';
 import { Pressable } from '../base/pressable';
 import { cn, cva, type VariantProps } from '../../lib/utils/utils';
 import { X } from '../../lib/icons/X';
+import { renderNode } from '../../lib/utils/renderNode';
 
 type BaseProps = React.ComponentPropsWithoutRef<typeof View>;
 
@@ -110,13 +111,7 @@ export const Alert = React.forwardRef<View, AlertProps>((props, ref) => {
             title
           )
         ) : null}
-        {children ? (
-          typeof children === 'string' || typeof children === 'number' ? (
-            <Text className="text-xs leading-snug text-foreground/80">{children}</Text>
-          ) : (
-            children
-          )
-        ) : null}
+        {renderNode(children)}
       </View>
       {withCloseButton ? (
         <Pressable

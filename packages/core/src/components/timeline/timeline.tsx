@@ -3,6 +3,7 @@ import { View } from '../base/view';
 import { Text } from '../base/text';
 import { Pressable, PressableProps } from '../base/pressable';
 import { cn } from '../../lib/utils/utils';
+import { renderNode } from '../../lib/utils/renderNode';
 
 interface TimelineContextValue {
   active: number;
@@ -131,19 +132,14 @@ export const TimelineItem = React.forwardRef<
       </View>
       <View
         className={cn(
-          'flex-1 pb-0',
+          'flex-1 pb-0 ',
           !isLast && `pb-${Math.max(0, Math.round(_gap / 4) * 4)}`,
           contentClassName
         )}
         style={{ paddingTop: contentOffset }}
       >
-        {title &&
-          (typeof title === 'string' ? <Text className="font-semibold mb-1">{title}</Text> : title)}
-        {typeof children === 'string' ? (
-          <Text className="text-xs text-foreground/70 leading-snug">{children}</Text>
-        ) : (
-          children
-        )}
+        {renderNode(title, 'text-sm font-medium')}
+        {renderNode(children, 'text-xs text-muted-foreground leading-snug')}
       </View>
     </View>
   );

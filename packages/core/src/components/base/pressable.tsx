@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { Pressable as RNPressable, PressableStateCallbackType } from 'react-native';
-import { cn } from '../../lib/utils/utils';
-import { TextClassContext, useTextClass } from './text';
-import { renderNode } from '../../lib/utils/renderNode';
+import { PressableStateCallbackType, Pressable as RNPressable } from 'react-native';
 import { useExtractTextClasses } from '../../lib/hooks/useExtractTextClasses';
+import { renderNode } from '../../lib/utils/renderNode';
+import { cn } from '../../lib/utils/utils';
+import { TextClassContext } from './text';
 
 export type PressableProps = React.ComponentPropsWithoutRef<typeof RNPressable> & {
   asChild?: boolean; // reserved for future Slot support
