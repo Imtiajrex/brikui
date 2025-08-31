@@ -54,7 +54,6 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
-    "@babel/plugin-proposal-export-namespace-from": "^7.18.9",
     "@types/react": "~19.0.14",
     "typescript": "^5.9.2"
   },

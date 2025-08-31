@@ -1,5 +1,5 @@
 import React from 'react';
-import { Popover, Pressable, Text, View } from 'brikui';
+import { Input, Popover, Pressable, Text, View } from 'brikui';
 import { ScrollView } from 'react-native';
 
 const placementsPrimary = ['top', 'bottom', 'left', 'right'] as const;
@@ -39,6 +39,17 @@ const MyComponent: React.FC = () => {
           <Trigger key={p} label={p} placement={p} />
         ))}
       </Section>
+      <Popover
+        content={
+          <View className="p-4 bg-muted rounded-xl">
+            <View className="p-2">Search</View>
+          </View>
+        }
+      >
+        <Pressable>
+          <Input placeholder="Enter your search" />
+        </Pressable>
+      </Popover>
     </ScrollView>
   );
 };

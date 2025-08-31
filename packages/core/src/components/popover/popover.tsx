@@ -7,6 +7,7 @@ import {
   TouchableWithoutFeedback,
   View,
   BackHandler,
+  useWindowDimensions,
 } from 'react-native';
 import { useTheme } from '../../contexts/ThemeProvider';
 import { Arrow } from './Arrow';
@@ -14,7 +15,7 @@ import { usePopover } from './usePopover';
 import { PopoverProps, PopoverRef } from './types';
 import { Portal } from '../portal';
 import { useRef } from 'react';
-
+import Animated, { LinearTransition } from 'react-native-reanimated';
 const Popover = forwardRef<PopoverRef, PopoverProps>(
   (
     {
@@ -103,7 +104,7 @@ const Popover = forwardRef<PopoverRef, PopoverProps>(
     const internalPortalNameRef = useRef(
       portalName || `popover-${Math.random().toString(36).slice(2)}`
     );
-
+    const dimensions = useWindowDimensions();
     const popoverBody = (
       <TouchableWithoutFeedback onPress={hide}>
         <View
@@ -111,6 +112,11 @@ const Popover = forwardRef<PopoverRef, PopoverProps>(
             renderInPortal
               ? {
                   position: 'absolute',
+                  flex: 1,
+                  top: 0,
+                  left: 0,
+                  height: dimensions.height,
+                  width: dimensions.width,
                 }
               : {},
             styles.overlay,
@@ -118,8 +124,13 @@ const Popover = forwardRef<PopoverRef, PopoverProps>(
             vars(currentTheme),
           ]}
         >
-          <TouchableWithoutFeedback onPress={() => {}}>
-            <View
+          <TouchableWithoutFeedback
+            onPress={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+            }}
+          >
+            <Animated.View
               style={[
                 styles.content,
                 {
@@ -131,6 +142,8 @@ const Popover = forwardRef<PopoverRef, PopoverProps>(
               ]}
               className="bg-card rounded-popover p-3 border border-border"
               onLayout={handleContentLayout}
+              entering={LinearTransition.springify(20)}
+              exiting={LinearTransition.springify(20)}
             >
               {showArrow && (
                 <Arrow
@@ -141,7 +154,7 @@ const Popover = forwardRef<PopoverRef, PopoverProps>(
                 />
               )}
               {content}
-            </View>
+            </Animated.View>
           </TouchableWithoutFeedback>
         </View>
       </TouchableWithoutFeedback>
@@ -150,9 +163,9 @@ const Popover = forwardRef<PopoverRef, PopoverProps>(
     return (
       <>
         {triggerElement}
-        {isVisible && renderInPortal && (
+        {renderInPortal && (
           <Portal name={internalPortalNameRef.current} hostName={portalHostName}>
-            {popoverBody}
+            {isVisible && <>{popoverBody}</>}
           </Portal>
         )}
         <View className="absolute w-0 h-0">
