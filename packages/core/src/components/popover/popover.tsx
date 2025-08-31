@@ -15,7 +15,7 @@ import { usePopover } from './usePopover';
 import { PopoverProps, PopoverRef } from './types';
 import { Portal } from '../portal';
 import { useRef } from 'react';
-import Animated, { LinearTransition } from 'react-native-reanimated';
+import Animated, { FadeIn, FadeOut, LinearTransition } from 'react-native-reanimated';
 const Popover = forwardRef<PopoverRef, PopoverProps>(
   (
     {
@@ -107,7 +107,7 @@ const Popover = forwardRef<PopoverRef, PopoverProps>(
     const dimensions = useWindowDimensions();
     const popoverBody = (
       <TouchableWithoutFeedback onPress={hide}>
-        <View
+        <Animated.View
           style={[
             renderInPortal
               ? {
@@ -124,6 +124,8 @@ const Popover = forwardRef<PopoverRef, PopoverProps>(
             overlayStyle,
             vars(currentTheme),
           ]}
+          entering={FadeIn.springify(20)}
+          exiting={FadeOut.springify(20)}
         >
           <TouchableWithoutFeedback
             onPress={(e) => {
@@ -143,8 +145,8 @@ const Popover = forwardRef<PopoverRef, PopoverProps>(
               ]}
               className="bg-card rounded-popover p-3 border border-border"
               onLayout={handleContentLayout}
-              entering={LinearTransition.springify(20)}
-              exiting={LinearTransition.springify(20)}
+              entering={FadeIn.springify(20)}
+              exiting={FadeOut.springify(20)}
             >
               {showArrow && (
                 <Arrow
@@ -157,7 +159,7 @@ const Popover = forwardRef<PopoverRef, PopoverProps>(
               {content}
             </Animated.View>
           </TouchableWithoutFeedback>
-        </View>
+        </Animated.View>
       </TouchableWithoutFeedback>
     );
 
