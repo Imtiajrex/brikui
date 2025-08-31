@@ -117,6 +117,7 @@ const Popover = forwardRef<PopoverRef, PopoverProps>(
                   left: 0,
                   height: dimensions.height,
                   width: dimensions.width,
+                  zIndex: 999,
                 }
               : {},
             styles.overlay,
