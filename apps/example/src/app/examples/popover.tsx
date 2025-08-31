@@ -45,6 +45,7 @@ const MyComponent: React.FC = () => {
             <View className="p-2">Search</View>
           </View>
         }
+        renderInPortal
       >
         <Pressable>
           <Input placeholder="Enter your search" />
