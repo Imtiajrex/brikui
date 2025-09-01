@@ -22,6 +22,7 @@ export interface Position {
 
 export interface PopoverProps extends Omit<ModalProps, 'visible' | 'children'> {
   children: ReactElement;
+  overlayClassName?: string;
   content: ReactNode;
   placement?: PlacementType;
   openOnPress?: boolean;

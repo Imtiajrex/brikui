@@ -16,6 +16,7 @@ import { PopoverProps, PopoverRef } from './types';
 import { Portal } from '../portal';
 import { useRef } from 'react';
 import Animated, { FadeIn, FadeOut, LinearTransition } from 'react-native-reanimated';
+import { cn } from '../../lib/utils/utils';
 const Popover = forwardRef<PopoverRef, PopoverProps>(
   (
     {
@@ -40,6 +41,7 @@ const Popover = forwardRef<PopoverRef, PopoverProps>(
       renderInPortal = false,
       portalHostName,
       portalName,
+      overlayClassName,
       ...props
     },
     ref
@@ -124,6 +126,7 @@ const Popover = forwardRef<PopoverRef, PopoverProps>(
             overlayStyle,
             vars(currentTheme),
           ]}
+          className={overlayClassName}
           entering={FadeIn.springify(20)}
           exiting={FadeOut.springify(20)}
         >
@@ -143,7 +146,7 @@ const Popover = forwardRef<PopoverRef, PopoverProps>(
                 },
                 contentStyle,
               ]}
-              className="bg-card rounded-popover p-3 border border-border"
+              className={cn('bg-card rounded-popover p-3 border border-border', contentClassName)}
               onLayout={handleContentLayout}
               entering={FadeIn.springify(20)}
               exiting={FadeOut.springify(20)}
