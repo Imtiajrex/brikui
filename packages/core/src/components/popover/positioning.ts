@@ -12,6 +12,11 @@ export interface ComputePositionArgs {
   showArrow: boolean;
   margin?: number;
   setActualPlacement?: (p: PlacementType) => void;
+  /**
+   * When true (default) we avoid screen edges via flipping and clamping.
+   * When false we return the raw calculated position without adjustments.
+   */
+  avoidScreenEdges?: boolean;
 }
 
 export const computePopoverPosition = ({
@@ -23,6 +28,7 @@ export const computePopoverPosition = ({
   showArrow,
   margin = 16,
   setActualPlacement,
+  avoidScreenEdges = true,
 }: ComputePositionArgs): Position => {
   if (!triggerLayout || !contentLayout) return { top: 0, left: 0 };
 
@@ -57,31 +63,33 @@ export const computePopoverPosition = ({
       left = pageX + (triggerWidth - contentWidth) / 2;
   }
 
-  // Vertical adjustments
-  if (finalPlacement === 'bottom' && top + contentHeight > SCREEN_HEIGHT - margin) {
-    finalPlacement = 'top';
-    top = pageY - contentHeight - offset - arrowGap;
-  }
-  if (finalPlacement === 'top' && top < margin) {
-    finalPlacement = 'bottom';
-    top = pageY + triggerHeight + offset + arrowGap;
-  }
+  if (avoidScreenEdges) {
+    // Vertical adjustments
+    if (finalPlacement === 'bottom' && top + contentHeight > SCREEN_HEIGHT - margin) {
+      finalPlacement = 'top';
+      top = pageY - contentHeight - offset - arrowGap;
+    }
+    if (finalPlacement === 'top' && top < margin) {
+      finalPlacement = 'bottom';
+      top = pageY + triggerHeight + offset + arrowGap;
+    }
 
-  // Horizontal adjustments
-  if (finalPlacement === 'right' && left + contentWidth > SCREEN_WIDTH - margin) {
-    finalPlacement = 'left';
-    left = pageX - contentWidth - offset - arrowGap;
-  }
-  if (finalPlacement === 'left' && left < margin) {
-    finalPlacement = 'right';
-    left = pageX + triggerWidth + offset + arrowGap;
-  }
+    // Horizontal adjustments
+    if (finalPlacement === 'right' && left + contentWidth > SCREEN_WIDTH - margin) {
+      finalPlacement = 'left';
+      left = pageX - contentWidth - offset - arrowGap;
+    }
+    if (finalPlacement === 'left' && left < margin) {
+      finalPlacement = 'right';
+      left = pageX + triggerWidth + offset + arrowGap;
+    }
 
-  // Clamp within screen
-  if (left < margin) left = margin;
-  if (left + contentWidth > SCREEN_WIDTH - margin) left = SCREEN_WIDTH - contentWidth - margin;
-  if (top < margin) top = margin;
-  if (top + contentHeight > SCREEN_HEIGHT - margin) top = SCREEN_HEIGHT - contentHeight - margin;
+    // Clamp within screen
+    if (left < margin) left = margin;
+    if (left + contentWidth > SCREEN_WIDTH - margin) left = SCREEN_WIDTH - contentWidth - margin;
+    if (top < margin) top = margin;
+    if (top + contentHeight > SCREEN_HEIGHT - margin) top = SCREEN_HEIGHT - contentHeight - margin;
+  }
 
   setActualPlacement?.(finalPlacement);
   return { top, left };

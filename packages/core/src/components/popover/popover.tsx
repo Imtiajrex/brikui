@@ -42,6 +42,7 @@ const Popover = forwardRef<PopoverRef, PopoverProps>(
       portalHostName,
       portalName,
       overlayClassName,
+      avoidScreenEdges = true,
       ...props
     },
     ref
@@ -65,6 +66,7 @@ const Popover = forwardRef<PopoverRef, PopoverProps>(
       disabled,
       onOpen,
       onClose,
+      avoidScreenEdges,
     });
 
     // Expose methods via ref

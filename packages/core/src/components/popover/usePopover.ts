@@ -12,6 +12,10 @@ export interface UsePopoverOptions {
   disabled?: boolean;
   onOpen?: () => void;
   onClose?: () => void;
+  /**
+   * When true (default) the popover will avoid screen edges (flip + clamp).
+   */
+  avoidScreenEdges?: boolean;
 }
 
 export const usePopover = ({
@@ -22,6 +26,7 @@ export const usePopover = ({
   disabled,
   onOpen,
   onClose,
+  avoidScreenEdges = true,
 }: UsePopoverOptions) => {
   const [isVisible, setIsVisible] = useState(false);
   const [triggerLayout, setTriggerLayout] = useState<TriggerLayout | null>(null);
@@ -70,8 +75,9 @@ export const usePopover = ({
         arrowSize,
         showArrow,
         setActualPlacement,
+        avoidScreenEdges,
       }),
-    [triggerLayout, contentLayout, placement, offset, arrowSize, showArrow]
+    [triggerLayout, contentLayout, placement, offset, arrowSize, showArrow, avoidScreenEdges]
   );
 
   const api: PopoverRef = {

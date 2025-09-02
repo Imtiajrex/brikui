@@ -39,6 +39,12 @@ export interface PopoverProps extends Omit<ModalProps, 'visible' | 'children'> {
   contentStyle?: ViewStyle;
   overlayStyle?: ViewStyle;
   /**
+   * When true (default) the popover will attempt to stay within the screen bounds
+   * by flipping placement when necessary and clamping x/y coordinates.
+   * Set to false to allow the popover to overflow / ignore screen edges.
+   */
+  avoidScreenEdges?: boolean;
+  /**
    * When true, the popover content width will automatically match the trigger's width.
    * This is useful for components like Select where the dropdown should align to the trigger.
    */
