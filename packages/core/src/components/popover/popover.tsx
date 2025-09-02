@@ -51,7 +51,10 @@ const Popover = forwardRef<PopoverRef, PopoverProps>(
     // Hover timing constants (tweak if needed or later expose as props)
     const hoverOpenDelay = 50; // ms
     const hoverCloseDelay = 120; // ms
-    const hoverTimersRef = useRef<{ open?: any; close?: any }>({});
+    const hoverTimersRef = useRef<{
+      open?: ReturnType<typeof setTimeout>;
+      close?: ReturnType<typeof setTimeout>;
+    }>({});
     const hoverStateRef = useRef<{ overTrigger: boolean; overContent: boolean }>({
       overTrigger: false,
       overContent: false,
@@ -103,38 +106,21 @@ const Popover = forwardRef<PopoverRef, PopoverProps>(
     }, [isVisible, hide]);
 
     const hoverHandlers: any = {};
-    const clearHoverTimers = () => {
-      if (hoverTimersRef.current.open) {
-        clearTimeout(hoverTimersRef.current.open);
-        hoverTimersRef.current.open = undefined;
-      }
-      if (hoverTimersRef.current.close) {
-        clearTimeout(hoverTimersRef.current.close);
-        hoverTimersRef.current.close = undefined;
-      }
-    };
 
     const scheduleShow = () => {
-      clearHoverTimers();
-      hoverTimersRef.current.open = setTimeout(() => {
-        show();
-      }, hoverOpenDelay);
+      show();
     };
 
     const scheduleHideIfNeeded = () => {
-      clearTimeout(hoverTimersRef.current.close);
-      hoverTimersRef.current.close = setTimeout(() => {
-        const { overTrigger, overContent } = hoverStateRef.current;
-        if (!overTrigger && !overContent) hide();
-      }, hoverCloseDelay);
+      hide();
     };
 
     if (openOnHover) {
-      hoverHandlers.onMouseEnter = (e: any) => {
+      hoverHandlers.onPointerEnter = (e: any) => {
         hoverStateRef.current.overTrigger = true;
         scheduleShow();
-        if (typeof (children.props as any).onMouseEnter === 'function') {
-          (children.props as any).onMouseEnter(e);
+        if (typeof (children.props as any).onPointerEnter === 'function') {
+          (children.props as any).onPointerEnter(e);
         }
       };
     }
@@ -154,7 +140,6 @@ const Popover = forwardRef<PopoverRef, PopoverProps>(
       <View
         ref={triggerRef}
         {...(Platform.OS === 'web' ? hoverHandlers : {})}
-        // Ensure wrapper doesn't disrupt layout
         style={{ display: 'inline-flex' }}
       >
         {baseChild}
@@ -205,7 +190,6 @@ const Popover = forwardRef<PopoverRef, PopoverProps>(
               }}
               {...({
                 onPointerEnter: () => {
-                  console.log('enter over');
                   hoverStateRef.current.overTrigger = true;
                   scheduleShow();
                 },
@@ -235,16 +219,16 @@ const Popover = forwardRef<PopoverRef, PopoverProps>(
               className={cn('bg-card rounded-popover p-3 border border-border', contentClassName)}
               onLayout={handleContentLayout}
               {...(openOnHover && Platform.OS === 'web'
-                ? {
-                    onMouseEnter: () => {
+                ? ({
+                    onPointerEnter: () => {
                       hoverStateRef.current.overContent = true;
-                      if (!isVisible) scheduleShow();
+                      scheduleShow();
                     },
-                    onMouseLeave: () => {
+                    onPointerLeave: () => {
                       hoverStateRef.current.overContent = false;
                       scheduleHideIfNeeded();
                     },
-                  }
+                  } as any)
                 : ({} as any))}
               entering={FadeIn.springify(20)}
               exiting={FadeOut.springify(20)}
