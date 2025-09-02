@@ -24,6 +24,7 @@ const Popover = forwardRef<PopoverRef, PopoverProps>(
       content,
       placement = 'bottom',
       openOnPress = true,
+      openOnHover = false,
       arrowSize = 6,
       arrowColor = '#FFFFFF',
       showArrow = false,
@@ -47,6 +48,14 @@ const Popover = forwardRef<PopoverRef, PopoverProps>(
     },
     ref
   ) => {
+    // Hover timing constants (tweak if needed or later expose as props)
+    const hoverOpenDelay = 50; // ms
+    const hoverCloseDelay = 120; // ms
+    const hoverTimersRef = useRef<{ open?: any; close?: any }>({});
+    const hoverStateRef = useRef<{ overTrigger: boolean; overContent: boolean }>({
+      overTrigger: false,
+      overContent: false,
+    });
     const {
       isVisible,
       actualPlacement,
@@ -93,16 +102,66 @@ const Popover = forwardRef<PopoverRef, PopoverProps>(
       }
     }, [isVisible, hide]);
 
-    const triggerElement = React.cloneElement(children, {
-      ref: triggerRef,
+    const hoverHandlers: any = {};
+    const clearHoverTimers = () => {
+      if (hoverTimersRef.current.open) {
+        clearTimeout(hoverTimersRef.current.open);
+        hoverTimersRef.current.open = undefined;
+      }
+      if (hoverTimersRef.current.close) {
+        clearTimeout(hoverTimersRef.current.close);
+        hoverTimersRef.current.close = undefined;
+      }
+    };
+
+    const scheduleShow = () => {
+      clearHoverTimers();
+      hoverTimersRef.current.open = setTimeout(() => {
+        show();
+      }, hoverOpenDelay);
+    };
+
+    const scheduleHideIfNeeded = () => {
+      clearTimeout(hoverTimersRef.current.close);
+      hoverTimersRef.current.close = setTimeout(() => {
+        const { overTrigger, overContent } = hoverStateRef.current;
+        if (!overTrigger && !overContent) hide();
+      }, hoverCloseDelay);
+    };
+
+    if (openOnHover) {
+      hoverHandlers.onMouseEnter = (e: any) => {
+        hoverStateRef.current.overTrigger = true;
+        scheduleShow();
+        if (typeof (children.props as any).onMouseEnter === 'function') {
+          (children.props as any).onMouseEnter(e);
+        }
+      };
+    }
+
+    const baseChild = React.cloneElement(children, {
+      ref: openOnHover ? undefined : triggerRef,
       onPress: (e: any) => {
-        if (openOnPress) toggle();
+        if (openOnPress && !openOnHover) toggle();
         if (typeof (children.props as any).onPress === 'function') {
           (children.props as any).onPress(e);
         }
       },
       ...(children.props as any),
     });
+
+    const triggerElement = openOnHover ? (
+      <View
+        ref={triggerRef}
+        {...(Platform.OS === 'web' ? hoverHandlers : {})}
+        // Ensure wrapper doesn't disrupt layout
+        style={{ display: 'inline-flex' }}
+      >
+        {baseChild}
+      </View>
+    ) : (
+      baseChild
+    );
     const currentTheme = useTheme();
 
     const internalPortalNameRef = useRef(
@@ -129,9 +188,34 @@ const Popover = forwardRef<PopoverRef, PopoverProps>(
             vars(currentTheme),
           ]}
           className={overlayClassName}
+          layout={LinearTransition}
           entering={FadeIn.springify(20)}
           exiting={FadeOut.springify(20)}
         >
+          {openOnHover && Platform.OS === 'web' && triggerLayout && (
+            <View
+              // Hover sentinel replicating trigger bounds to keep hover state stable when content appears in portal
+              style={{
+                position: 'absolute',
+                top: triggerLayout.pageY,
+                left: triggerLayout.pageX,
+                width: triggerLayout.width,
+                height: triggerLayout.height,
+                backgroundColor: 'transparent',
+              }}
+              {...({
+                onPointerEnter: () => {
+                  console.log('enter over');
+                  hoverStateRef.current.overTrigger = true;
+                  scheduleShow();
+                },
+                onPointerLeave: () => {
+                  hoverStateRef.current.overTrigger = false;
+                  scheduleHideIfNeeded();
+                },
+              } as any)}
+            />
+          )}
           <TouchableWithoutFeedback
             onPress={(e) => {
               e.preventDefault();
@@ -150,6 +234,18 @@ const Popover = forwardRef<PopoverRef, PopoverProps>(
               ]}
               className={cn('bg-card rounded-popover p-3 border border-border', contentClassName)}
               onLayout={handleContentLayout}
+              {...(openOnHover && Platform.OS === 'web'
+                ? {
+                    onMouseEnter: () => {
+                      hoverStateRef.current.overContent = true;
+                      if (!isVisible) scheduleShow();
+                    },
+                    onMouseLeave: () => {
+                      hoverStateRef.current.overContent = false;
+                      scheduleHideIfNeeded();
+                    },
+                  }
+                : ({} as any))}
               entering={FadeIn.springify(20)}
               exiting={FadeOut.springify(20)}
             >

@@ -13,7 +13,6 @@ const Trigger: React.FC<{ label: string; placement: any }> = ({ label, placement
     }
     onOpen={() => console.log('Opened ->', placement)}
     onClose={() => console.log('Closed ->', placement)}
-    matchTriggerWidth
     renderInPortal
   >
     <Pressable className="px-3 py-2 w-full m-1 rounded-lg bg-blue-500/80">
@@ -45,11 +44,25 @@ const MyComponent: React.FC = () => {
             <View className="p-2">Search</View>
           </View>
         }
+        avoidScreenEdges={false}
         renderInPortal
       >
         <Pressable>
           <Input placeholder="Enter your search" />
         </Pressable>
+      </Popover>
+      <Popover
+        content={
+          <View className="p-4 bg-muted rounded-xl">
+            <View className="p-2">Search</View>
+          </View>
+        }
+        avoidScreenEdges
+        placement="bottom"
+        openOnHover
+        renderInPortal
+      >
+        <Pressable className="p-4 bg-red-400">Hello World</Pressable>
       </Popover>
     </ScrollView>
   );

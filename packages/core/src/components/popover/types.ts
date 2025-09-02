@@ -26,6 +26,11 @@ export interface PopoverProps extends Omit<ModalProps, 'visible' | 'children'> {
   content: ReactNode;
   placement?: PlacementType;
   openOnPress?: boolean;
+  /**
+   * When true, the popover opens on hover (mouse enter) and closes on mouse leave.
+   * Only effective on platforms that support hover (e.g., web). Defaults to false.
+   */
+  openOnHover?: boolean;
   arrowSize?: number;
   arrowColor?: string;
   showArrow?: boolean;
