@@ -48,17 +48,6 @@ const Popover = forwardRef<PopoverRef, PopoverProps>(
     },
     ref
   ) => {
-    // Hover timing constants (tweak if needed or later expose as props)
-    const hoverOpenDelay = 50; // ms
-    const hoverCloseDelay = 120; // ms
-    const hoverTimersRef = useRef<{
-      open?: ReturnType<typeof setTimeout>;
-      close?: ReturnType<typeof setTimeout>;
-    }>({});
-    const hoverStateRef = useRef<{ overTrigger: boolean; overContent: boolean }>({
-      overTrigger: false,
-      overContent: false,
-    });
     const {
       isVisible,
       actualPlacement,
@@ -107,18 +96,9 @@ const Popover = forwardRef<PopoverRef, PopoverProps>(
 
     const hoverHandlers: any = {};
 
-    const scheduleShow = () => {
-      show();
-    };
-
-    const scheduleHideIfNeeded = () => {
-      hide();
-    };
-
     if (openOnHover) {
       hoverHandlers.onPointerEnter = (e: any) => {
-        hoverStateRef.current.overTrigger = true;
-        scheduleShow();
+        show();
         if (typeof (children.props as any).onPointerEnter === 'function') {
           (children.props as any).onPointerEnter(e);
         }
@@ -179,7 +159,6 @@ const Popover = forwardRef<PopoverRef, PopoverProps>(
         >
           {openOnHover && Platform.OS === 'web' && triggerLayout && (
             <View
-              // Hover sentinel replicating trigger bounds to keep hover state stable when content appears in portal
               style={{
                 position: 'absolute',
                 top: triggerLayout.pageY,
@@ -188,16 +167,14 @@ const Popover = forwardRef<PopoverRef, PopoverProps>(
                 height: triggerLayout.height,
                 backgroundColor: 'transparent',
               }}
-              {...({
+              {...{
                 onPointerEnter: () => {
-                  hoverStateRef.current.overTrigger = true;
-                  scheduleShow();
+                  show();
                 },
                 onPointerLeave: () => {
-                  hoverStateRef.current.overTrigger = false;
-                  scheduleHideIfNeeded();
+                  hide();
                 },
-              } as any)}
+              }}
             />
           )}
           <TouchableWithoutFeedback
@@ -218,18 +195,6 @@ const Popover = forwardRef<PopoverRef, PopoverProps>(
               ]}
               className={cn('bg-card rounded-popover p-3 border border-border', contentClassName)}
               onLayout={handleContentLayout}
-              {...(openOnHover && Platform.OS === 'web'
-                ? ({
-                    onPointerEnter: () => {
-                      hoverStateRef.current.overContent = true;
-                      scheduleShow();
-                    },
-                    onPointerLeave: () => {
-                      hoverStateRef.current.overContent = false;
-                      scheduleHideIfNeeded();
-                    },
-                  } as any)
-                : ({} as any))}
               entering={FadeIn.springify(20)}
               exiting={FadeOut.springify(20)}
             >
