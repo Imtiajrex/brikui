@@ -3,6 +3,7 @@ import { View } from '../base/view';
 import { Pressable } from '../base/pressable';
 import { Text } from '../base/text';
 import { cva, cn, type VariantProps } from '../../lib/utils/utils';
+import { renderNode } from '../../lib/utils/renderNode';
 
 type Item = string | { label: React.ReactNode; value: string; disabled?: boolean };
 
@@ -74,6 +75,7 @@ type SegmentedControlProps = Omit<BaseProps, 'onLayout'> &
     className?: string; // container
     itemClassName?: string;
     labelClassName?: string;
+    itemActiveClassName?: string;
   };
 
 const normalize = (item: Item): { label: React.ReactNode; value: string; disabled?: boolean } =>
@@ -93,6 +95,7 @@ const SegmentedControl = React.forwardRef<View, SegmentedControlProps>((props, r
     orientation = 'horizontal',
     size = 'md',
     radius,
+    itemActiveClassName,
     ...rest
   } = props;
 
@@ -135,7 +138,8 @@ const SegmentedControl = React.forwardRef<View, SegmentedControlProps>((props, r
               itemVariants({ size, selected, disabled }),
               !withItemBorders && 'rounded-md',
               itemClassName,
-              withItemBorders && 'border-border'
+              withItemBorders && 'border-border',
+              selected && itemActiveClassName
             )}
             style={[
               borderStyle as any,
@@ -143,11 +147,7 @@ const SegmentedControl = React.forwardRef<View, SegmentedControlProps>((props, r
               isVertical ? { width: '100%' } : null,
             ]}
           >
-            {typeof label === 'string' || typeof label === 'number' ? (
-              <Text className={cn(labelVariants({ selected }), labelClassName)}>{label}</Text>
-            ) : (
-              label
-            )}
+            {renderNode(label, cn(labelVariants({ selected }), labelClassName))}
           </Pressable>
         );
       })}
