@@ -33,6 +33,8 @@ export interface DialogProps {
   onPrimaryAction?: () => void;
   /** Text for default cancel button */
   cancelText?: string;
+  bodyClassName?: string; // additional class name for body container
+  contentWrapperClassName?: string; // additional class name for content wrapper
 }
 
 export const Dialog = React.forwardRef<DialogHandle, DialogProps>(
@@ -43,6 +45,7 @@ export const Dialog = React.forwardRef<DialogHandle, DialogProps>(
       header,
       footer,
       children,
+      contentWrapperClassName,
       disableBackdropClose,
       animationDuration,
       overlayClassName,
@@ -53,6 +56,7 @@ export const Dialog = React.forwardRef<DialogHandle, DialogProps>(
       primaryActionText = 'Save changes',
       onPrimaryAction,
       cancelText = 'Cancel',
+      bodyClassName,
     },
     ref
   ) => {
@@ -103,6 +107,7 @@ export const Dialog = React.forwardRef<DialogHandle, DialogProps>(
         overlayClassName={overlayClassName}
         containerClassName={containerClassName}
         contentClassName={cn('gap-6', contentClassName)}
+        contentWrapperClassName={contentWrapperClassName}
         onOpenChange={onOpenChange}
       >
         <View className="w-full">
@@ -119,7 +124,7 @@ export const Dialog = React.forwardRef<DialogHandle, DialogProps>(
           )}
         </View>
         {/* Body */}
-        {children && <View className="w-full gap-4">{children}</View>}
+        {children && <View className={cn('w-full gap-4 flex-1', bodyClassName)}>{children}</View>}
         {/* Footer */}
         {footer ? <View className="w-full">{footer}</View> : defaultFooter}
       </Modal>

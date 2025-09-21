@@ -21,6 +21,7 @@ export interface ModalProps {
   containerClassName?: string;
   contentClassName?: string;
   onOpenChange?: (open: boolean) => void;
+  contentWrapperClassName?: string; // additional class name for content wrapper
 }
 
 export interface ModalHandle {
@@ -61,6 +62,7 @@ export const Modal = React.forwardRef<ModalHandle, ModalProps>(
       overlayClassName,
       containerClassName,
       contentClassName,
+      contentWrapperClassName,
       onOpenChange,
     },
     ref
@@ -119,7 +121,10 @@ export const Modal = React.forwardRef<ModalHandle, ModalProps>(
             {/* Centered content */}
             <Animated.View
               style={contentWrapperStyle}
-              className="flex-1 items-center justify-center z-10 px-4"
+              className={cn(
+                'flex-1 items-center justify-center z-10 px-4',
+                contentWrapperClassName
+              )}
             >
               <View
                 className={cn(

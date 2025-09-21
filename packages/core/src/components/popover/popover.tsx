@@ -17,6 +17,7 @@ import { Portal } from '../portal';
 import { useRef } from 'react';
 import Animated, { FadeIn, FadeOut, LinearTransition } from 'react-native-reanimated';
 import { cn } from '../../lib/utils/utils';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 const Popover = forwardRef<PopoverRef, PopoverProps>(
   (
     {
@@ -114,7 +115,7 @@ const Popover = forwardRef<PopoverRef, PopoverProps>(
     const scheduleHideIfNeeded = () => {
       hide();
     };
-
+    const safeInsets = useSafeAreaInsets();
     if (openOnHover) {
       hoverHandlers.onPointerEnter = (e: any) => {
         hoverStateRef.current.overTrigger = true;
@@ -182,7 +183,7 @@ const Popover = forwardRef<PopoverRef, PopoverProps>(
               // Hover sentinel replicating trigger bounds to keep hover state stable when content appears in portal
               style={{
                 position: 'absolute',
-                top: triggerLayout.pageY,
+                top: triggerLayout.pageY - 1.8 * safeInsets.top,
                 left: triggerLayout.pageX,
                 width: triggerLayout.width,
                 height: triggerLayout.height,
@@ -210,7 +211,7 @@ const Popover = forwardRef<PopoverRef, PopoverProps>(
               style={[
                 styles.content,
                 {
-                  top: popoverPosition.top,
+                  top: popoverPosition.top - 1.8 * safeInsets.top,
                   left: popoverPosition.left,
                   width: matchTriggerWidth && triggerLayout ? triggerLayout.width : undefined,
                 },
