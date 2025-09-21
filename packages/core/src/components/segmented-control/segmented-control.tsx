@@ -37,7 +37,7 @@ const itemVariants = cva('items-center justify-center', {
       lg: 'px-4 h-11',
     },
     selected: {
-      true: 'bg-primary',
+      true: 'bg-card',
       false: '',
     },
     disabled: {
@@ -52,14 +52,8 @@ const itemVariants = cva('items-center justify-center', {
   },
 });
 
-const labelVariants = cva('text-sm', {
-  variants: {
-    selected: {
-      true: 'text-primary-foreground',
-      false: 'text-foreground',
-    },
-  },
-  defaultVariants: { selected: false },
+const labelVariants = cva('text-sm text-foreground', {
+  variants: {},
 });
 
 type BaseProps = React.ComponentPropsWithoutRef<typeof View>;
@@ -147,7 +141,7 @@ const SegmentedControl = React.forwardRef<View, SegmentedControlProps>((props, r
               isVertical ? { width: '100%' } : null,
             ]}
           >
-            {renderNode(label, cn(labelVariants({ selected }), labelClassName))}
+            {renderNode(label, cn(labelVariants(), labelClassName))}
           </Pressable>
         );
       })}
