@@ -9,6 +9,13 @@ export function renderNode(node: React.ReactNode, className?: string): React.Rea
   if (typeof node === 'string' || typeof node === 'number') {
     return <RNText className={cn('leading-none', className)}>{node}</RNText>;
   }
+
+  // check if fragment
+  if (React.isValidElement(node) && node.type === React.Fragment) {
+    return React.Children.map((node.props as any)?.children, (child, i) => (
+      <React.Fragment key={i}>{renderNode(child, className)}</React.Fragment>
+    ));
+  }
   if (Array.isArray(node)) {
     return node.map((n, i) => <React.Fragment key={i}>{renderNode(n, className)}</React.Fragment>);
   }
