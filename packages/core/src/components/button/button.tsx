@@ -8,7 +8,7 @@ import { useColor } from '../../lib/hooks/useColor';
 
 // Button container variants (theme-token based)
 const buttonVariants = cva(
-  'group flex flex-row items-center justify-center rounded-radius  active:translate-y-0.5 disabled:opacity-50 transition-all hover:brightness-90 active:brightness-80 overflow-hidden',
+  'group flex flex-row items-center justify-center rounded-radius  active:translate-y-0.5 transition-all hover:brightness-90 active:brightness-80 overflow-hidden',
   {
     variants: {
       variant: {
