@@ -86,11 +86,13 @@ export const Calendar = React.forwardRef<any, CalendarProps>(
             ...defaultStyles.month_selector_label,
             color: useColor('primary'),
             fontWeight: 'bold',
+            textDecorationLine: 'underline',
           },
           year_selector_label: {
             ...defaultStyles.year_selector_label,
             color: useColor('primary'),
             fontWeight: 'bold',
+            textDecorationLine: 'underline',
           },
           ...stylesProp,
         }}
