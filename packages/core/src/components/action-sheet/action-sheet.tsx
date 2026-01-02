@@ -2,7 +2,10 @@ import * as React from 'react';
 import { View } from '../base/view';
 import { Text } from '../base/text';
 import { Pressable } from '../base/pressable';
-import { Modal, type ModalHandle } from '../modal/modal';
+import {
+  BottomSheet as BottomSheetComponent,
+  type BottomSheet as BottomSheetHandle,
+} from '../bottom-sheet';
 import { cn } from '../../lib/utils/utils';
 import { Separator } from '../separator';
 
@@ -61,7 +64,7 @@ export const ActionSheet = React.forwardRef<ActionSheetHandle, ActionSheetProps>
     },
     ref
   ) => {
-    const modalRef = React.useRef<ModalHandle>(null);
+    const sheetRef = React.useRef<BottomSheetHandle>(null);
     const isControlled = controlledOpen !== undefined;
     const [internalOpen, setInternalOpen] = React.useState(false);
     const open = isControlled ? controlledOpen! : internalOpen;
@@ -76,8 +79,8 @@ export const ActionSheet = React.forwardRef<ActionSheetHandle, ActionSheetProps>
 
     React.useEffect(() => {
       if (isControlled) {
-        if (controlledOpen) modalRef.current?.open();
-        else modalRef.current?.close();
+        if (controlledOpen) sheetRef.current?.show();
+        else sheetRef.current?.hide();
       }
     }, [controlledOpen, isControlled]);
 
@@ -85,11 +88,11 @@ export const ActionSheet = React.forwardRef<ActionSheetHandle, ActionSheetProps>
       ref,
       () => ({
         show: () => {
-          modalRef.current?.open();
+          sheetRef.current?.show();
           setOpen(true);
         },
         hide: () => {
-          modalRef.current?.close();
+          sheetRef.current?.hide();
           setOpen(false);
         },
       }),
@@ -99,21 +102,31 @@ export const ActionSheet = React.forwardRef<ActionSheetHandle, ActionSheetProps>
     const handleActionPress = (action: ActionSheetAction) => {
       action.onPress?.();
       setOpen(false);
-      modalRef.current?.close();
+      sheetRef.current?.hide();
     };
 
     const handleCancel = () => {
       onCancel?.();
       setOpen(false);
-      modalRef.current?.close();
+      sheetRef.current?.hide();
     };
 
     return (
-      <Modal
-        ref={modalRef}
+      <BottomSheetComponent
+        ref={sheetRef}
+        open={open}
         onOpenChange={(v) => setOpen(v)}
-        contentClassName={cn('bg-transparent p-0 border-none shadow-none', contentClassName)}
-        overlayClassName="justify-end"
+        contentClassName={cn('gap-2 rounded-xl', contentClassName)}
+        disableElevation
+        gestureEnabled
+        indicatorStyle={{ display: 'none' }}
+        containerStyle={{
+          paddingHorizontal: 12,
+          height: '40%',
+          backgroundColor: 'transparent',
+          paddingBottom: 30,
+          bottom: 20,
+        }}
       >
         <View className="w-full gap-2">
           <View className="bg-card rounded-xl overflow-hidden">
@@ -182,7 +195,7 @@ export const ActionSheet = React.forwardRef<ActionSheetHandle, ActionSheetProps>
             </Text>
           </Pressable>
         </View>
-      </Modal>
+      </BottomSheetComponent>
     );
   }
 );
