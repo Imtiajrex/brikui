@@ -33,7 +33,7 @@ function CalendarWeekdaysRow({ firstDayOfWeekIndex, locale }: CalendarWeekdaysRo
 
   return (
     <View className="border-border border-t pt-2">
-      <View className="flex-row">
+      <View className="flex-row flex">
         {labels.map((d, index) => (
           <View key={`weekday-${index}`} className="flex-1 items-center justify-center">
             <Text className="text-muted-foreground text-sm font-medium">{d}</Text>

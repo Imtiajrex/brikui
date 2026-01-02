@@ -101,14 +101,14 @@ function Calendar({
       />
 
       <View className="mt-3 relative">
-        <View className={cn(safeVisibleMonths > 1 && 'flex-row gap-4')}>
+        <View className={cn('flex', safeVisibleMonths > 1 && 'flex flex-row gap-4')}>
           {monthsToRender.map((m) => (
             <View
               key={`${m.getFullYear()}-${m.getMonth()}`}
               className={cn(safeVisibleMonths > 1 && 'flex-1')}
             >
               {safeVisibleMonths > 1 && (
-                <Text variant="small" className="mb-1 text-center font-semibold">
+                <Text className="mb-1 text-center font-semibold">
                   {MONTHS[m.getMonth()]} {m.getFullYear()}
                 </Text>
               )}

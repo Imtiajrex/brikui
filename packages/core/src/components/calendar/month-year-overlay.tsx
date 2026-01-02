@@ -29,9 +29,12 @@ function MonthYearOverlay({
   if (!open) return null;
 
   return (
-    <View className={cn('h-full w-full bg-card flex-1 gap-2', 'absolute inset-0 z-10')}>
+    <View className={cn('h-full w-full bg-card flex-1 gap-2 flex', 'absolute inset-0 z-10')}>
       <View
-        className={cn('flex-1 flex-row gap-2 w-full mx-auto', monthYearPickerContainerClassName)}
+        className={cn(
+          'flex-1 flex flex-row gap-2 w-full mx-auto',
+          monthYearPickerContainerClassName
+        )}
       >
         <WheelPicker
           items={months}

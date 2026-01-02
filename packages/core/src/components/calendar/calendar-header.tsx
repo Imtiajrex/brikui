@@ -30,7 +30,7 @@ function CalendarHeader({
   const headerYear = displayMonth.getFullYear();
 
   return (
-    <View className="flex-row items-center justify-between">
+    <View className="flex-row flex items-center justify-between">
       <Button
         variant="ghost"
         size="icon"

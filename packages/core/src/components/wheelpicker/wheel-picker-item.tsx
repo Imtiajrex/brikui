@@ -23,7 +23,7 @@ export function WheelPickerItem<TValue>({
   return (
     <Pressable
       disabled={item.disabled}
-      className={cn('flex-row items-center justify-center  ', item.disabled && 'opacity-50')}
+      className={cn('flex flex-row items-center justify-center  ', item.disabled && 'opacity-50')}
       style={{ height: itemHeight }}
       onPress={() => onPress(index)}
     >

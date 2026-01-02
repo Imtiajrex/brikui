@@ -247,7 +247,7 @@ const WheelPickerList = React.forwardRef<
 
     return (
       <View
-        className={cn('relative overflow-hidden', className)}
+        className={cn('relative overflow-hidden flex', className)}
         style={{ height: viewportHeight }}
       >
         <View

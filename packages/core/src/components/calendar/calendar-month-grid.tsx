@@ -34,7 +34,7 @@ function CalendarMonthGrid({
   return (
     <View className="mt-2">
       {grid.map((week, weekIndex) => (
-        <View key={`week-${weekIndex}`} className="flex-row">
+        <View key={`week-${weekIndex}`} className="flex flex-row">
           {week.map((day, dayIndex) => {
             const outside = !isSameMonth(day, displayMonth);
             const dayDisabled = outside || Boolean(disabled?.(day));
