@@ -6,12 +6,12 @@ import Animated, {
   withSequence,
   withTiming,
 } from 'react-native-reanimated';
+import { withUniwind } from 'uniwind';
 import { cn } from '../lib/utils/utils';
-import { View } from './base';
 
 const duration = 1000;
 
-const AnimatedView = Animated.createAnimatedComponent(View);
+const AnimatedView = withUniwind(Animated.View);
 function Skeleton({
   className,
   ...props
@@ -30,7 +30,7 @@ function Skeleton({
   }));
 
   return (
-    <Animated.View
+    <AnimatedView
       style={style}
       className={cn('rounded-md bg-muted dark:bg-muted', className)}
       {...props}
