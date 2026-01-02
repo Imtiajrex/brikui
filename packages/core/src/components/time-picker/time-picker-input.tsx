@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Pressable, View } from 'react-native';
 import { Popover, type PopoverRef } from '../popover/popover';
 import { Field, type FieldProps } from '../field/field';
 import { TimePicker, type TimePickerProps, type TimeValue } from './time-picker';
@@ -7,6 +6,7 @@ import { Text } from '../base/text';
 import { cn } from '../../lib/utils/utils';
 import { ChevronDown, Clock } from 'lucide-react-native';
 import { useColor } from '../../lib/hooks/useColor';
+import { Pressable, View } from '../base';
 
 export interface TimePickerInputProps
   extends Omit<React.ComponentProps<typeof Pressable>, 'onChange' | 'children'> {
@@ -133,6 +133,15 @@ export const TimePickerInput: React.FC<TimePickerInputProps> = ({
       format={format}
       minuteStep={minuteStep}
       disabled={disabled}
+      hourWheelProps={{
+        overlayBgColorClassName: 'bg-card/50',
+      }}
+      minuteWheelProps={{
+        overlayBgColorClassName: 'bg-card/50',
+      }}
+      meridiemWheelProps={{
+        overlayBgColorClassName: 'bg-card/50',
+      }}
       {...timePickerProps}
     />
   );
@@ -140,18 +149,16 @@ export const TimePickerInput: React.FC<TimePickerInputProps> = ({
   const body = (
     <Popover
       ref={popoverRef}
-      placement="bottom"
       content={
         <View style={{ width: popoverWidth }} className={cn('p-2', popoverContentClassName)}>
           {wheel}
         </View>
       }
       className={popoverClassName}
-      openOnPress={false}
-      arrowSize={6}
-      disabled={disabled}
-      onOpen={() => setIsOpen(true)}
-      onClose={() => setIsOpen(false)}
+      triggerProps={{
+        asChild: true,
+        className: 'flex-1',
+      }}
     >
       {trigger}
     </Popover>

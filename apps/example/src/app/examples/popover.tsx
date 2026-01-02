@@ -54,10 +54,6 @@ const MyComponent: React.FC = () => {
             <View className="p-2">Search</View>
           </View>
         }
-        avoidScreenEdges
-        placement="bottom"
-        openOnHover
-        renderInPortal
       >
         <Pressable className="p-4 bg-red-400">Hello World</Pressable>
       </Popover>

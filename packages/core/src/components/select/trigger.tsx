@@ -50,7 +50,7 @@ export const SelectTrigger = React.forwardRef<View, SelectTriggerProps>(
           className
         )}
         style={style}
-        onPress={() => popoverRef.current?.show()}
+        onPress={() => popoverRef.current?.open()}
         accessibilityRole="button"
         {...rest}
       >

@@ -1,14 +1,15 @@
 import * as React from 'react';
-import { Pressable, View } from 'react-native';
 import { Text } from '../base/text';
+import { Pressable } from '../base/pressable';
+import { View } from '../base/view';
 import { Popover, type PopoverRef } from '../popover/popover';
 import { Calendar, type CalendarProps } from '../calendar/calendar';
 import { Field, type FieldProps } from '../field/field';
 import { cn } from '../../lib/utils/utils';
-import type { DateType } from 'react-native-ui-datepicker';
 import { Calendar1 } from 'lucide-react-native';
 import { useColor } from '../../lib/hooks/useColor';
 
+type DateType = any; // TODO: improve with date-fns or dayjs types
 export interface DatePickerProps
   extends Omit<React.ComponentProps<typeof Pressable>, 'onChange' | 'children'> {
   mode?: 'single' | 'range' | 'multiple';
@@ -247,12 +248,9 @@ export const DatePicker: React.FC<DatePickerProps> = ({
 
   const calendar = (
     <Calendar
-      mode={mode as any}
       value={isSingle ? (currentSingle as any) : undefined}
-      rangeValue={isRange ? (currentRange as any) : undefined}
-      values={isMulti ? (currentMulti as any) : undefined}
       onValueChange={handleChange as any}
-      showOutsideDays
+      className={`border-none`}
       {...calendarProps}
     />
   );
@@ -260,18 +258,8 @@ export const DatePicker: React.FC<DatePickerProps> = ({
   const body = (
     <Popover
       ref={popoverRef}
-      placement="bottom"
-      content={
-        <View style={{ width: popoverWidth }} className={cn('p-1', popoverContentClassName)}>
-          {calendar}
-        </View>
-      }
+      content={<View className={cn('', popoverContentClassName)}>{calendar}</View>}
       className={popoverClassName}
-      openOnPress={false}
-      arrowSize={6}
-      disabled={disabled}
-      onOpen={() => setIsOpen(true)}
-      onClose={() => setIsOpen(false)}
     >
       {trigger}
     </Popover>

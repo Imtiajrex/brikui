@@ -144,7 +144,7 @@ const WheelPickerList = React.forwardRef<
         }
         onIndexChange(nextIndex, userInitiated);
       },
-      [triggerHaptic, onIndexChange]
+      [triggerHaptic]
     );
 
     const onScrollEnd = React.useCallback(

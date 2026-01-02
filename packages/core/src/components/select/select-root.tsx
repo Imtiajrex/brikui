@@ -63,7 +63,7 @@ export function SelectRootInner<T>(props: AnySelectProps<T>) {
     (val: T) => {
       if (!isControlled) setInternalSingle(val);
       (onChange as any)?.(val);
-      if (!isMulti) popoverRef.current?.hide();
+      if (!isMulti) popoverRef.current?.close();
     },
     [isControlled, onChange, isMulti]
   );
@@ -150,9 +150,9 @@ export function SelectRootInner<T>(props: AnySelectProps<T>) {
 
   const trigger = renderTrigger
     ? renderTrigger({
-        open: () => popoverRef.current?.show(),
-        close: () => popoverRef.current?.hide(),
-        toggle: () => popoverRef.current?.toggle(),
+        open: () => popoverRef.current?.open(),
+        close: () => popoverRef.current?.close(),
+        toggle: () => popoverRef.current?.open(),
         isOpen,
         multiple: isMulti,
         selected: selected as any,
@@ -173,9 +173,7 @@ export function SelectRootInner<T>(props: AnySelectProps<T>) {
   const body = (
     <Popover
       ref={popoverRef}
-      placement="bottom"
       content={content}
-      openOnPress={false}
       className={popoverClassName}
       contentClassName={popoverContentClassName}
       arrowSize={6}

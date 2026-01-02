@@ -1,17 +1,19 @@
 import * as React from 'react';
 import { Platform } from 'react-native';
-import { Pressable } from '../base/pressable';
-import { View } from '../base/view';
-import { Text } from '../base/text';
 import Animated, {
-  Layout,
   LinearTransition,
   interpolate,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
-import { cva, cn, type VariantProps } from '../../lib/utils/utils';
+import { cn, cva, type VariantProps } from '../../lib/utils/utils';
+import { Pressable } from '../base/pressable';
+import { Text } from '../base/text';
+import { View } from '../base/view';
+
+const AnimatedText = Animated.createAnimatedComponent(Text);
+const AnimatedView = Animated.createAnimatedComponent(View);
 
 const trackVariants = cva(
   'relative rounded-full border transition-colors justify-center overflow-hidden',
@@ -154,7 +156,7 @@ const Switch = React.forwardRef<React.ComponentRef<typeof Pressable>, SwitchProp
           style={{ width: w, height: h, padding: pad, borderRadius: h / 2 }}
         >
           {offLabel ? (
-            <Animated.Text
+            <AnimatedText
               className={cn(
                 'text-[10px] absolute right-1.5 text-primary',
                 labelSizeClass,
@@ -163,10 +165,10 @@ const Switch = React.forwardRef<React.ComponentRef<typeof Pressable>, SwitchProp
               style={offLabelAnimatedStyle}
             >
               {offLabel}
-            </Animated.Text>
+            </AnimatedText>
           ) : null}
           {onLabel ? (
-            <Animated.Text
+            <AnimatedText
               className={cn(
                 'text-[10px] absolute left-1.5 text-background',
                 labelSizeClass,
@@ -175,10 +177,10 @@ const Switch = React.forwardRef<React.ComponentRef<typeof Pressable>, SwitchProp
               style={onLabelAnimatedStyle}
             >
               {onLabel}
-            </Animated.Text>
+            </AnimatedText>
           ) : null}
 
-          <Animated.View
+          <AnimatedView
             className={cn('bg-background', thumbVariants({ size }), thumbClassName)}
             style={{
               width: thumb,

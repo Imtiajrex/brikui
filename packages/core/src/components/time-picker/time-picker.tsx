@@ -58,7 +58,7 @@ const useTimeValue = (
         });
       }
     },
-    [defaultValue, isControlled, value]
+    [defaultValue, isControlled, onChange, value]
   );
 
   return { current, updateValue };
@@ -181,7 +181,7 @@ const useMeridiemNormalization = (
 
 export const TimePicker: React.FC<TimePickerProps> = ({
   value,
-  defaultValue = { hours: 0, minutes: 0 },
+  defaultValue,
   onChange,
   format = 12,
   minuteStep = 1,
@@ -201,7 +201,12 @@ export const TimePicker: React.FC<TimePickerProps> = ({
   minuteWheelProps,
   meridiemWheelProps,
 }) => {
-  const { current, updateValue } = useTimeValue(value, defaultValue, onChange);
+  const resolvedDefaultValue = React.useMemo(
+    () => defaultValue ?? { hours: 0, minutes: 0 },
+    [defaultValue?.hours, defaultValue?.minutes]
+  );
+
+  const { current, updateValue } = useTimeValue(value, resolvedDefaultValue, onChange);
   const { disabledHoursSet, disabledMinutesSet } = useDisabledSets(disabledHours, disabledMinutes);
   const meridiem: 'AM' | 'PM' = current.hours >= 12 ? 'PM' : 'AM';
 
@@ -215,6 +220,32 @@ export const TimePicker: React.FC<TimePickerProps> = ({
   const meridiemIndex = useMeridiemIndex(meridiemItems, meridiem);
 
   useMeridiemNormalization(format, meridiem, disableAM, disablePM, updateValue);
+
+  React.useEffect(() => {
+    if (hourIndex !== -1 || !hourItems.length) return;
+    updateValue((prev) => ({ ...prev, hours: hourItems[0].hour24 }));
+  }, [hourIndex, hourItems, updateValue]);
+
+  React.useEffect(() => {
+    if (minuteIndex !== -1 || !minuteItems.length) return;
+    updateValue((prev) => ({ ...prev, minutes: minuteItems[0].minute }));
+  }, [minuteIndex, minuteItems, updateValue]);
+
+  React.useEffect(() => {
+    if (format !== 12) return;
+    if (meridiemIndex !== -1 || !meridiemItems.length) return;
+    const targetMeridiem = meridiemItems[0].meridiem;
+    updateValue((prev) => {
+      if (targetMeridiem === 'AM') {
+        return prev.hours >= 12 ? { ...prev, hours: prev.hours - 12 } : prev;
+      }
+      return prev.hours < 12 ? { ...prev, hours: prev.hours + 12 } : prev;
+    });
+  }, [format, meridiemIndex, meridiemItems, updateValue]);
+
+  const safeHourIndex = hourIndex < 0 ? 0 : hourIndex;
+  const safeMinuteIndex = minuteIndex < 0 ? 0 : minuteIndex;
+  const safeMeridiemIndex = meridiemIndex < 0 ? 0 : meridiemIndex;
 
   // Handlers for wheel commits
   const handleHourChange = React.useCallback(
@@ -299,22 +330,20 @@ export const TimePicker: React.FC<TimePickerProps> = ({
   );
 
   const wheels = (
-    <View className={cn('flex-row items-stretch', className)} style={{ columnGap: gap }}>
+    <View className={cn('flex-row justify-center', className)} style={{ columnGap: gap }}>
       <View style={{ width: wheelWidth }} className={cn(wheelClassName)}>
         <WheelPicker
           items={hourOptions}
-          value={Math.max(0, hourIndex)}
+          value={safeHourIndex}
           onValueChange={handleHourChange}
-          disabled={disabled}
           {...hourWheelProps}
         />
       </View>
       <View style={{ width: wheelWidth }} className={cn(wheelClassName)}>
         <WheelPicker
           items={minuteOptions}
-          value={Math.max(0, minuteIndex)}
+          value={safeMinuteIndex}
           onValueChange={handleMinuteChange}
-          disabled={disabled}
           {...minuteWheelProps}
         />
       </View>
@@ -322,9 +351,8 @@ export const TimePicker: React.FC<TimePickerProps> = ({
         <View style={{ width: wheelWidth * 0.75 }} className={cn(wheelClassName)}>
           <WheelPicker
             items={meridiemOptions}
-            value={Math.max(0, meridiemIndex)}
+            value={safeMeridiemIndex}
             onValueChange={handleMeridiemChange}
-            disabled={disabled}
             {...meridiemWheelProps}
           />
         </View>

@@ -39,43 +39,6 @@ type UIPopoverProps =
       triggerProps?: { onPress?: (event: unknown) => void };
     } & { children: React.ReactNode });
 
-const DefaultFloatingSheetContent = () => (
-  <View
-    style={{
-      borderRadius: 20,
-      backgroundColor: 'white',
-      alignItems: 'center',
-      height: '100%',
-    }}
-  >
-    <View
-      style={{
-        width: 120,
-        height: 6,
-        backgroundColor: '#f0f0f0',
-        borderRadius: 10,
-        marginTop: 5,
-      }}
-    />
-    <View
-      style={{
-        alignItems: 'center',
-        justifyContent: 'center',
-        flex: 1,
-      }}
-    >
-      <Text
-        style={{
-          color: 'black',
-          fontSize: 30,
-        }}
-      >
-        Floating Sheet Example
-      </Text>
-    </View>
-  </View>
-);
-
 const FloatingSheet = ({
   content,
   sheetProps,
@@ -121,34 +84,40 @@ const FloatingSheet = ({
         }}
         {...sheetProps}
       >
-        {content ?? <DefaultFloatingSheetContent />}
+        {content}
       </ActionSheet>
     </>
   );
 };
 
-const Popover = (props: React.PropsWithChildren<UIPopoverProps>) => {
-  if (props.type === 'floating-sheet') {
+const Popover = React.forwardRef<PopoverRef, React.PropsWithChildren<UIPopoverProps>>(
+  (props, ref) => {
+    if (props.type === 'floating-sheet') {
+      React.useImperativeHandle(ref, () => null as any);
+
+      return (
+        <FloatingSheet
+          content={props.content}
+          sheetProps={props.sheetProps}
+          triggerProps={props.triggerProps}
+        >
+          {props.children}
+        </FloatingSheet>
+      );
+    }
+
+    const { content, children, contentProps, triggerProps, ...rootProps } = props;
+
     return (
-      <FloatingSheet
-        content={props.content}
-        sheetProps={props.sheetProps}
-        triggerProps={props.triggerProps}
-      >
-        {props.children}
-      </FloatingSheet>
+      <PopoverRoot {...rootProps}>
+        <PopoverTrigger ref={ref} {...triggerProps}>
+          {children}
+        </PopoverTrigger>
+        <PopoverContent {...contentProps}>{content}</PopoverContent>
+      </PopoverRoot>
     );
   }
-
-  const { content, children, contentProps, triggerProps, ...rootProps } = props;
-
-  return (
-    <PopoverRoot {...rootProps}>
-      <PopoverTrigger {...triggerProps}>{children}</PopoverTrigger>
-      <PopoverContent {...contentProps}>{content}</PopoverContent>
-    </PopoverRoot>
-  );
-};
+);
 
 Popover.displayName = 'Popover';
 

@@ -158,7 +158,7 @@ const Progress = React.forwardRef<React.ComponentRef<typeof View>, ProgressProps
             />
           </View>
           {showValueLabel && !indeterminate ? (
-            <Text className="text-xs text-muted-foreground min-w-[32px] text-right">
+            <Text className="text-xs text-muted-foreground min-w-8 text-right">
               {valueFormatter(clamped, max)}
             </Text>
           ) : null}

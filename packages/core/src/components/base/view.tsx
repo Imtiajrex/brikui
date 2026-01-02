@@ -6,19 +6,27 @@ import { renderNode } from '../../lib/utils/renderNode';
 import { useExtractTextClasses } from '../../lib/hooks/useExtractTextClasses';
 
 export type ViewProps = React.ComponentPropsWithoutRef<typeof RNView> & {
+  className?: string;
   asChild?: boolean; // reserved for future Slot support parity
   children?: React.ReactNode;
 };
 export type View = React.ComponentRef<typeof RNView>;
+
+type RNViewWithClassName = React.ForwardRefExoticComponent<
+  React.PropsWithoutRef<React.ComponentPropsWithoutRef<typeof RNView> & { className?: string }> &
+    React.RefAttributes<React.ComponentRef<typeof RNView>>
+>;
+
+const BaseView = RNView as unknown as RNViewWithClassName;
 
 const View = React.forwardRef<React.ComponentRef<typeof RNView>, ViewProps>(
   ({ className, children, ...rest }, ref) => {
     const parent = useExtractTextClasses(className);
     return (
       <TextClassContext.Provider value={parent}>
-        <RNView ref={ref} className={cn(className)} {...rest}>
+        <BaseView ref={ref} className={cn(className)} {...rest}>
           {renderNode(children)}
-        </RNView>
+        </BaseView>
       </TextClassContext.Provider>
     );
   }
