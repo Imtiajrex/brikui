@@ -8,7 +8,7 @@ import { Field, type FieldProps } from '../field/field';
 import { cn } from '../../lib/utils/utils';
 import { Calendar1 } from 'lucide-react-native';
 import { useColor } from '../../lib/hooks/useColor';
-import { Platform } from 'react-native';
+import { Platform, useWindowDimensions } from 'react-native';
 type DateType = any; // TODO: improve with date-fns or dayjs types
 export interface DatePickerProps
   extends Omit<React.ComponentProps<typeof Pressable>, 'onChange' | 'children'> {
@@ -254,11 +254,13 @@ export const DatePicker: React.FC<DatePickerProps> = ({
       {...calendarProps}
     />
   );
+  const dimension = useWindowDimensions();
+  const shouldRenderAsPopover = Platform.OS === 'web' && dimension.width >= 640;
 
   const body = (
     <View className="flex-1">
       <Popover
-        type={Platform.OS === 'web' ? 'popover' : 'floating-sheet'}
+        type={shouldRenderAsPopover ? 'popover' : 'floating-sheet'}
         ref={popoverRef}
         content={<View className={cn('', popoverContentClassName)}>{calendar}</View>}
         className={cn('flex-1  ', popoverClassName)}

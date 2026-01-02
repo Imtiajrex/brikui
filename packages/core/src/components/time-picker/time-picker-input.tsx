@@ -7,7 +7,7 @@ import { cn } from '../../lib/utils/utils';
 import { ChevronDown, Clock } from 'lucide-react-native';
 import { useColor } from '../../lib/hooks/useColor';
 import { Pressable, View } from '../base';
-import { Platform } from 'react-native';
+import { Platform, useWindowDimensions } from 'react-native';
 export interface TimePickerInputProps
   extends Omit<React.ComponentProps<typeof Pressable>, 'onChange' | 'children'> {
   value?: TimeValue; // controlled "HH:mm"
@@ -146,6 +146,8 @@ export const TimePickerInput: React.FC<TimePickerInputProps> = ({
       {...timePickerProps}
     />
   );
+  const dimension = useWindowDimensions();
+  const shouldRenderAsPopover = Platform.OS === 'web' && dimension.width >= 640;
 
   const body = (
     <Popover
@@ -153,11 +155,17 @@ export const TimePickerInput: React.FC<TimePickerInputProps> = ({
       content={
         <View
           className={cn(
-            'w-full bg-card rounded-4xl native:pt-8 native:pb-4 native:mt-16',
+            'w-full bg-card rounded-4xl',
+            !shouldRenderAsPopover && 'pb-4 pt-8 mt-16',
             popoverContentClassName
           )}
         >
-          <Text className="web:hidden text-center text-muted-foreground pb-2 border-b border-border">
+          <Text
+            className={cn(
+              ' text-center text-muted-foreground pb-2 border-b border-border hidden w-full',
+              !shouldRenderAsPopover && 'flex items-center justify-center'
+            )}
+          >
             Select Time
           </Text>
           {wheel}
@@ -168,7 +176,7 @@ export const TimePickerInput: React.FC<TimePickerInputProps> = ({
       }}
       className={cn('flex-1', popoverClassName)}
       contentProps={{}}
-      type={Platform.OS === 'web' ? 'popover' : 'floating-sheet'}
+      type={shouldRenderAsPopover ? 'popover' : 'floating-sheet'}
     >
       {trigger}
     </Popover>
