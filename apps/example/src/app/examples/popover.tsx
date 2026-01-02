@@ -5,19 +5,16 @@ import { ScrollView } from 'react-native';
 const placementsPrimary = ['top', 'bottom', 'left', 'right'] as const;
 const Trigger: React.FC<{ label: string; placement: any }> = ({ label, placement }) => (
   <Popover
-    placement={placement}
     content={
       <View>
         <Text className="text-xs">Placement: {label}</Text>
       </View>
     }
-    onOpen={() => console.log('Opened ->', placement)}
-    onClose={() => console.log('Closed ->', placement)}
-    renderInPortal
+    type="popover"
   >
-    <Pressable className="px-3 py-2 w-full m-1 rounded-lg bg-blue-500/80">
+    <View className="px-3 py-2 w-full m-1 rounded-lg bg-blue-500/80">
       <Text className="text-white text-xs">{label}</Text>
-    </Pressable>
+    </View>
   </Popover>
 );
 

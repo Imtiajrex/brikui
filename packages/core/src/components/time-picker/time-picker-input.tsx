@@ -73,7 +73,7 @@ export const TimePickerInput: React.FC<TimePickerInputProps> = ({
     (val: TimeValue) => {
       if (!isControlled) setInternal(val);
       onChange?.(val);
-      if (closeOnSelect) popoverRef.current?.hide();
+      if (closeOnSelect) popoverRef.current?.close();
     },
     [isControlled, onChange, closeOnSelect]
   );
@@ -96,7 +96,7 @@ export const TimePickerInput: React.FC<TimePickerInputProps> = ({
       {...pressableProps}
       accessibilityRole="button"
       onPress={(e) => {
-        if (!disabled) popoverRef.current?.toggle();
+        if (!disabled) popoverRef.current?.open();
         pressableProps.onPress?.(e as any);
       }}
       className={cn(
@@ -116,9 +116,9 @@ export const TimePickerInput: React.FC<TimePickerInputProps> = ({
 
   const trigger = renderTrigger
     ? renderTrigger({
-        open: () => popoverRef.current?.show(),
-        close: () => popoverRef.current?.hide(),
-        toggle: () => popoverRef.current?.toggle(),
+        open: () => popoverRef.current?.open(),
+        close: () => popoverRef.current?.close(),
+        toggle: () => popoverRef.current?.open(),
         isOpen,
         value: current,
         display: displayText,

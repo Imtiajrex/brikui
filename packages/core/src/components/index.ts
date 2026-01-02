@@ -25,7 +25,7 @@ export * from './select';
 export * from './bottom-sheet';
 export * from './action-sheet';
 export * from './calendar/calendar';
-export * from './wheel-picker/wheel-picker';
+export * from './wheelpicker/wheelpicker';
 export * from './date-picker/date-picker';
 export * from './time-picker/time-picker';
 export * from './time-picker/time-picker-input';

@@ -10,37 +10,14 @@ export default function WheelExample() {
     <ScrollView contentContainerClassName="p-4 gap-8" className="flex-1" nestedScrollEnabled>
       <View className="gap-3">
         <Text className="text-lg font-semibold">Basic</Text>
-        <WheelPicker options={options} value={index} onChange={(i) => setIndex(i)} />
-        <Text className="text-sm text-muted-foreground">Selected: {options[index]}</Text>
-      </View>
-
-      <View className="gap-3">
-        <Text className="text-lg font-semibold">Custom Render</Text>
         <WheelPicker
-          options={options}
-          value={index}
-          onChange={(i) => setIndex(i)}
-          renderItem={(val, active) => (
-            <Text className={active ? 'text-primary font-bold text-base' : 'text-foreground/50'}>
-              {val}
-            </Text>
-          )}
-          height={200}
-          itemHeight={40}
+          items={options.map((option) => ({ label: option, value: option }))}
+          value={options[index]}
+          onValueChange={(value, index) => {
+            setIndex(index);
+          }}
         />
-      </View>
-
-      <View className="gap-3">
-        <Text className="text-lg font-semibold">Uncontrolled</Text>
-        <WheelPicker options={options} defaultValue={2} />
-      </View>
-
-      <View className="gap-3">
-        <Text className="text-lg font-semibold">Programmatic</Text>
-        <Button size="sm" onPress={() => setIndex((p) => (p + 1) % options.length)}>
-          Next
-        </Button>
-        <WheelPicker options={options} value={index} onChange={(i) => setIndex(i)} />
+        <Text className="text-sm text-muted-foreground">Selected: {options[index]}</Text>
       </View>
     </ScrollView>
   );

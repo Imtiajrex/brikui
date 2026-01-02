@@ -1,9 +1,7 @@
-import { themes } from '@/constants/theme';
 import { DefaultTheme, ThemeProvider as NavigationThemeProvider } from '@react-navigation/native';
-import { ThemeProvider, useColor, useColorScheme, PortalHost, AlertDialog } from 'brikui';
+import { useColor, useColorScheme } from 'brikui';
+import { ThemeProvider } from 'brikui/src/contexts/ThemeProvider';
 import { Stack } from 'expo-router';
-import { colorScheme } from 'nativewind';
-import { useEffect } from 'react';
 import { LogBox, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import 'react-native-reanimated';
@@ -29,37 +27,31 @@ LogBox.ignoreLogs([
 export default function Layout() {
   return (
     <GestureHandlerRootView>
-      <ThemeProvider themes={themes}>
-        <Root />
-      </ThemeProvider>
+      <Root />
     </GestureHandlerRootView>
   );
 }
 const Root = () => {
-  useEffect(() => {
-    colorScheme.set('light');
-  }, []);
   return (
     <View className="light flex-1 bg-background">
-      <NavigationThemeProvider
-        value={{
-          ...DefaultTheme,
-          colors: {
-            background: useColor('background'),
-            border: useColor('border'),
-            card: useColor('card'),
-            primary: useColor('primary'),
-            text: useColor('foreground'),
-            notification: useColor('foreground'),
-          },
-          dark: useColorScheme().colorScheme === 'dark',
-        }}
-      >
-        <Stack />
-      </NavigationThemeProvider>
-      {/* Global overlay hosts */}
-      <PortalHost />
-      <AlertDialog.Global />
+      <ThemeProvider>
+        <NavigationThemeProvider
+          value={{
+            ...DefaultTheme,
+            colors: {
+              background: useColor('background'),
+              border: useColor('border'),
+              card: useColor('card'),
+              primary: useColor('primary'),
+              text: useColor('foreground'),
+              notification: useColor('foreground'),
+            },
+            dark: useColorScheme().colorScheme === 'dark',
+          }}
+        >
+          <Stack />
+        </NavigationThemeProvider>
+      </ThemeProvider>
     </View>
   );
 };

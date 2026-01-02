@@ -13,8 +13,8 @@ export default function Index() {
             router.push(`/examples/${component.title.toLowerCase()}`);
           }}
         >
-          <Text className="text-lg font-semibold">{component.title}</Text>
-          <Text className="text-gray-600">{component.description}</Text>
+          <Text className="text-lg font-semibold text-foreground">{component.title}</Text>
+          <Text className="text-muted-foreground">{component.description}</Text>
         </Pressable>
       ))}
     </ScrollView>

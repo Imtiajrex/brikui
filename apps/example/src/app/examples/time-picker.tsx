@@ -18,26 +18,11 @@ export default function TimePickerExamples() {
 
       <View className="gap-3">
         <Text className="text-lg font-semibold">12h Controlled</Text>
-        <TimePicker format={12} value={time12} onChange={(v) => setTime12(v)} />
+        <TimePicker format={12} value={time12} onChange={setTime12} />
         <Text className="text-xs text-muted-foreground">
           Value: {time12.hours % 12 === 0 ? 12 : time12.hours % 12}:
           {time12.minutes.toString().padStart(2, '0')} {time12.hours >= 12 ? 'PM' : 'AM'}
         </Text>
-      </View>
-
-      <View className="gap-3">
-        <Text className="text-lg font-semibold">Minute Step & Disabled</Text>
-        <TimePicker
-          format={12}
-          minuteStep={5}
-          disabledMinutes={[15, 20, 25]}
-          disabledHours={[0, 1, 2, 3, 4]}
-        />
-      </View>
-
-      <View className="gap-3">
-        <Text className="text-lg font-semibold">Disable AM</Text>
-        <TimePicker format={12} disableAM defaultValue={{ hours: 15, minutes: 0 }} />
       </View>
     </ScrollView>
   );

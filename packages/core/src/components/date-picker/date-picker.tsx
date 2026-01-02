@@ -132,7 +132,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
       if (isSingle) {
         if (!isControlledSingle) setInternalSingle(payload.date);
         onChange?.({ date: payload.date });
-        if (shouldCloseOnSelect) popoverRef.current?.hide();
+        if (shouldCloseOnSelect) popoverRef.current?.close();
       } else if (isRange) {
         if (!isControlledRange)
           setInternalRange({ startDate: payload.startDate, endDate: payload.endDate });
@@ -142,12 +142,12 @@ export const DatePicker: React.FC<DatePickerProps> = ({
           payload.startDate &&
           payload.endDate // close only when both selected
         ) {
-          popoverRef.current?.hide();
+          popoverRef.current?.close();
         }
       } else if (isMulti) {
         if (!isControlledMulti) setInternalMulti(payload.dates);
         onChange?.({ dates: payload.dates });
-        if (shouldCloseOnSelect) popoverRef.current?.hide();
+        if (shouldCloseOnSelect) popoverRef.current?.close();
       }
     },
     [
@@ -205,7 +205,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({
       {...pressableProps}
       accessibilityRole="button"
       onPress={(e) => {
-        if (!disabled) popoverRef.current?.toggle();
+        if (!disabled) popoverRef.current?.open();
         pressableProps.onPress?.(e as any);
       }}
       className={cn(
@@ -231,9 +231,9 @@ export const DatePicker: React.FC<DatePickerProps> = ({
 
   const trigger = renderTrigger
     ? renderTrigger({
-        open: () => popoverRef.current?.show(),
-        close: () => popoverRef.current?.hide(),
-        toggle: () => popoverRef.current?.toggle(),
+        open: () => popoverRef.current?.open(),
+        close: () => popoverRef.current?.close(),
+        toggle: () => {},
         isOpen,
         mode,
         date: currentSingle,

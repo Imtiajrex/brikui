@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Dimensions, Modal as RNModal } from 'react-native';
+import { Modal as RNModal } from 'react-native';
 import Animated, {
   runOnJS,
   useAnimatedStyle,
@@ -9,8 +9,6 @@ import Animated, {
 import { cn } from '../../lib/utils/utils';
 import { Pressable } from '../base/pressable';
 import { View } from '../base/view';
-import { vars } from 'nativewind';
-import { useTheme } from '../../contexts/ThemeProvider';
 
 // Imperative-only Modal (no compound/composable API)
 export interface ModalProps {
@@ -67,7 +65,6 @@ export const Modal = React.forwardRef<ModalHandle, ModalProps>(
     },
     ref
   ) => {
-    const theme = useTheme();
     const [open, setOpen] = React.useState(false);
     const { visible, overlayStyle, contentWrapperStyle } = useModalAnimation(
       open,
@@ -107,10 +104,7 @@ export const Modal = React.forwardRef<ModalHandle, ModalProps>(
           onRequestClose={handleRequestClose}
           statusBarTranslucent
         >
-          <View
-            style={[vars(theme)]}
-            className={cn('flex-1 flex flex-col gap-4', containerClassName)}
-          >
+          <View className={cn('flex-1 flex flex-col gap-4', containerClassName)}>
             <Pressable
               onPress={handleBackdropPress}
               className={cn(

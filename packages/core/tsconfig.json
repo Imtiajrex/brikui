@@ -2,13 +2,11 @@
   "compilerOptions": {
     "strict": true,
     "jsx": "react-jsx",
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "moduleResolution": "bundler",
+    "module": "es2022",
+    "lib": ["ES2024"],
+    "types": ["./uniwind-types.d.ts"]
   },
-  "include": [
-    "./src/**/*.ts",
-    "./src/**/*.tsx",
-    "nativewind-env.d.ts",
-    "src/contexts/ThemeProvider.tsx",
-    "plugin.ts"
-  ]
+  "include": ["./src/**/*.ts", "./src/**/*.tsx", "./uniwind-types.d.ts"]
 }

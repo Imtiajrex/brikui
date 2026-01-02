@@ -1,122 +1,146 @@
 import * as React from 'react';
-import DateTimePicker, { type DateType, useDefaultStyles } from 'react-native-ui-datepicker';
-import { useColorScheme } from 'nativewind';
+import { View } from 'react-native';
+
+import { MonthYearOverlay } from './month-year-overlay';
+import { MONTHS } from './constants';
+import { CalendarHeader } from './calendar-header';
+import { CalendarMonthGrid } from './calendar-month-grid';
+import { CalendarWeekdaysRow } from './calendar-weekdays-row';
+import { addMonths, startOfDay, startOfMonth } from './date-utils';
+import { useControllableState } from './use-controllable-state';
+import { useCalendarShell } from './use-calendar-shell';
+import type { CalendarProps } from './types';
 import { cn } from '../../lib/utils/utils';
-import { ArrowLeft, ArrowRight, ChevronRight } from 'lucide-react-native';
-import { useColor } from '../../lib/hooks/useColor';
+import { Text } from '../base';
 
-export interface CalendarSingleChange {
-  date?: DateType;
-}
-export interface CalendarRangeChange {
-  startDate?: DateType;
-  endDate?: DateType;
-}
-export interface CalendarMultiChange {
-  dates?: DateType[];
-}
+export type { CalendarProps };
 
-type BaseProps = Omit<
-  React.ComponentProps<typeof DateTimePicker>,
-  'onChange' | 'date' | 'dates'
-> & {
-  /** Controlled single date */
-  value?: DateType;
-  /** Controlled range (start, end) */
-  rangeValue?: { startDate?: DateType; endDate?: DateType };
-  /** Controlled multiple */
-  values?: DateType[];
-  /** Uncontrolled default single date */
-  defaultValue?: DateType;
-  /** Callback unified across modes */
-  onValueChange?: (
-    payload: CalendarSingleChange & CalendarRangeChange & CalendarMultiChange
-  ) => void;
-  containerClassName?: string;
-};
+function Calendar({
+  value,
+  defaultValue,
+  onValueChange,
+  month,
+  defaultMonth,
+  onMonthChange,
+  fromYear,
+  toYear,
+  visibleMonths,
+  firstDayOfWeek,
+  pageBehavior,
+  disabled,
+  isDateUnavailable,
+  className,
+  monthYearPickerContainerClassName,
+}: CalendarProps) {
+  const today = React.useMemo(() => startOfDay(new Date()), []);
+  const [selectedDate, setSelectedDate] = useControllableState<Date | undefined>({
+    value,
+    defaultValue,
+    onChange: onValueChange,
+  });
 
-export interface CalendarProps extends BaseProps {}
+  const initialMonth = React.useMemo(() => {
+    const basis = defaultMonth ?? selectedDate ?? today;
+    return startOfMonth(basis);
+  }, [defaultMonth, selectedDate, today]);
 
-export const Calendar = React.forwardRef<any, CalendarProps>(
-  (
-    {
-      mode = 'single',
-      value,
-      rangeValue,
-      values,
-      defaultValue,
-      onValueChange,
-      containerClassName,
-      styles: stylesProp,
-      ...rest
+  const {
+    displayMonth,
+    setDisplayMonth,
+    locale,
+    firstDayOfWeekIndex,
+    safeVisibleMonths,
+    pageStep,
+    monthsToRender,
+    years,
+    months,
+    canGoPrev,
+    canGoNext,
+    pickerOpen,
+    setPickerOpen,
+    onMonthWheel,
+    onYearWheel,
+  } = useCalendarShell({
+    initialMonth,
+    month,
+    onMonthChange,
+    fromYear,
+    toYear,
+    visibleMonths,
+    firstDayOfWeek,
+    pageBehavior,
+  });
+
+  const headerMonthIndex = displayMonth.getMonth();
+  const headerYear = displayMonth.getFullYear();
+
+  const onSelectDay = React.useCallback(
+    (day: Date) => {
+      if (disabled?.(day)) return;
+      if (isDateUnavailable?.(day)) return;
+      setSelectedDate(day);
     },
-    ref
-  ) => {
-    const { colorScheme } = useColorScheme();
-    const defaultStyles = useDefaultStyles(colorScheme);
+    [disabled, isDateUnavailable, setSelectedDate]
+  );
 
-    const [internalSingle, setInternalSingle] = React.useState<DateType | undefined>(defaultValue);
-    const [internalRange, setInternalRange] = React.useState<{
-      startDate?: DateType;
-      endDate?: DateType;
-    }>({});
-    const [internalMulti, setInternalMulti] = React.useState<DateType[] | undefined>(undefined);
-
-    const controlledSingle = value !== undefined;
-    const controlledRange = !!rangeValue;
-    const controlledMulti = !!values;
-
-    const pickerProps: any = {};
-    if (mode === 'single') {
-      pickerProps.date = controlledSingle ? value : internalSingle;
-    } else if (mode === 'range') {
-      pickerProps.startDate = controlledRange ? rangeValue?.startDate : internalRange.startDate;
-      pickerProps.endDate = controlledRange ? rangeValue?.endDate : internalRange.endDate;
-    } else if (mode === 'multiple') {
-      pickerProps.dates = controlledMulti ? values : internalMulti;
-    }
-
-    return (
-      <DateTimePicker
-        ref={ref}
-        mode={mode as any}
-        styles={{
-          ...defaultStyles,
-          month_selector_label: {
-            ...defaultStyles.month_selector_label,
-            color: useColor('primary'),
-            fontWeight: 'bold',
-            textDecorationLine: 'underline',
-          },
-          year_selector_label: {
-            ...defaultStyles.year_selector_label,
-            color: useColor('primary'),
-            fontWeight: 'bold',
-            textDecorationLine: 'underline',
-          },
-          ...stylesProp,
-        }}
-        components={{
-          IconNext: <ArrowRight size={20} color={useColor('muted-foreground')} />,
-          IconPrev: <ArrowLeft size={20} color={useColor('muted-foreground')} />,
-        }}
-        className={cn(containerClassName)}
-        {...pickerProps}
-        onChange={(payload: any) => {
-          if (mode === 'single') {
-            if (!controlledSingle) setInternalSingle(payload.date);
-          } else if (mode === 'range') {
-            if (!controlledRange)
-              setInternalRange({ startDate: payload.startDate, endDate: payload.endDate });
-          } else if (mode === 'multiple') {
-            if (!controlledMulti) setInternalMulti(payload.dates);
-          }
-          onValueChange?.(payload);
-        }}
-        {...rest}
+  return (
+    <View
+      className={cn(
+        'bg-card border-border rounded-xl border p-4 shadow-sm shadow-black/5',
+        className
+      )}
+    >
+      <CalendarHeader
+        displayMonth={displayMonth}
+        pickerOpen={pickerOpen}
+        onTogglePicker={() => setPickerOpen((o) => !o)}
+        canGoPrev={canGoPrev}
+        canGoNext={canGoNext}
+        onPrev={() => setDisplayMonth(addMonths(displayMonth, -pageStep))}
+        onNext={() => setDisplayMonth(addMonths(displayMonth, pageStep))}
       />
-    );
-  }
-);
 
-Calendar.displayName = 'Calendar';
+      <View className="mt-3 relative">
+        <View className={cn(safeVisibleMonths > 1 && 'flex-row gap-4')}>
+          {monthsToRender.map((m) => (
+            <View
+              key={`${m.getFullYear()}-${m.getMonth()}`}
+              className={cn(safeVisibleMonths > 1 && 'flex-1')}
+            >
+              {safeVisibleMonths > 1 && (
+                <Text variant="small" className="mb-1 text-center font-semibold">
+                  {MONTHS[m.getMonth()]} {m.getFullYear()}
+                </Text>
+              )}
+              <CalendarWeekdaysRow firstDayOfWeekIndex={firstDayOfWeekIndex} locale={locale} />
+
+              <CalendarMonthGrid
+                displayMonth={m}
+                firstDayOfWeekIndex={firstDayOfWeekIndex}
+                selectedDate={selectedDate}
+                today={today}
+                disabled={disabled}
+                isDateUnavailable={isDateUnavailable}
+                pickerOpen={pickerOpen}
+                onSelectDay={onSelectDay}
+              />
+            </View>
+          ))}
+        </View>
+
+        <MonthYearOverlay
+          open={pickerOpen}
+          months={months}
+          years={years}
+          monthIndex={headerMonthIndex}
+          year={headerYear}
+          onMonthChange={onMonthWheel}
+          onYearChange={onYearWheel}
+          monthYearPickerContainerClassName={monthYearPickerContainerClassName}
+        />
+      </View>
+    </View>
+  );
+}
+
+export { Calendar };
