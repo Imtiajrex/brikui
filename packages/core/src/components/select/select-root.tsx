@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View } from 'react-native';
-import { Popover, type PopoverRef } from '../popover/popover';
+import { Popover, type PopoverRef } from '../popover';
 import { Field } from '../field/field';
 import { cn } from '../../lib/utils/utils';
 import { SelectCtx } from './context';
@@ -175,12 +175,9 @@ export function SelectRootInner<T>(props: AnySelectProps<T>) {
       ref={popoverRef}
       content={content}
       className={popoverClassName}
-      contentClassName={popoverContentClassName}
-      arrowSize={6}
-      disabled={!!disabled}
-      onOpen={() => setIsOpen(true)}
-      onClose={() => setIsOpen(false)}
-      matchTriggerWidth={matchTriggerWidth}
+      contentProps={{
+        className: popoverContentClassName,
+      }}
     >
       {trigger as any}
     </Popover>

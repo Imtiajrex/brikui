@@ -1,7 +1,7 @@
 import { ViewStyle, Pressable } from 'react-native';
 import * as React from 'react';
 import { FieldProps } from '../field/field';
-import { PopoverRef } from '../popover/popover';
+import { PopoverRef } from '../popover';
 
 export interface SelectOption<T = any> {
   label: string;

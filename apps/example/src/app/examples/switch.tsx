@@ -6,7 +6,7 @@ export default function SwitchExamples() {
   const [isOn, setIsOn] = useState(true);
 
   return (
-    <ScrollView contentContainerClassName="p-4 gap-6" className="flex-1">
+    <ScrollView contentContainerClassName="p-4 gap-6 items-center" className="flex-1">
       <View className="gap-4 items-center">
         <Switch size="xs" onCheckedChange={setIsOn} checked={isOn} />
         <Switch size="sm" />

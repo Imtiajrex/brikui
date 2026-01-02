@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Text } from '../base/text';
 import { Pressable } from '../base/pressable';
 import { View } from '../base/view';
-import { Popover, type PopoverRef } from '../popover/popover';
+import { Popover, PopoverRef } from '../popover';
 import { Calendar, type CalendarProps } from '../calendar/calendar';
 import { Field, type FieldProps } from '../field/field';
 import { cn } from '../../lib/utils/utils';

@@ -64,9 +64,4 @@ export interface PopoverProps extends Omit<ModalProps, 'visible' | 'children'> {
   portalName?: string;
 }
 
-export interface PopoverRef {
-  show: () => void;
-  hide: () => void;
-  toggle: () => void;
-  isVisible: boolean;
-}
+export { PopoverRef } from '../../primitives/popover';

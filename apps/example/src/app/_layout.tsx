@@ -32,8 +32,9 @@ export default function Layout() {
   );
 }
 const Root = () => {
+  const classes = 'whitespace-nowrap font-medium transition-colors text-primary-foreground text-sm';
   return (
-    <View className="light flex-1 bg-background">
+    <View className=" flex-1 bg-background">
       <ThemeProvider>
         <NavigationThemeProvider
           value={{

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Popover, type PopoverRef } from '../popover/popover';
+import { Popover, type PopoverRef } from '../popover';
 import { Field, type FieldProps } from '../field/field';
 import { TimePicker, type TimePickerProps, type TimeValue } from './time-picker';
 import { Text } from '../base/text';

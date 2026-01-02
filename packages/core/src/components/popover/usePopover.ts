@@ -80,11 +80,9 @@ export const usePopover = ({
     [triggerLayout, contentLayout, placement, offset, arrowSize, showArrow, avoidScreenEdges]
   );
 
-  const api: PopoverRef = {
-    show,
-    hide,
-    toggle,
-    isVisible,
+  const api: Partial<PopoverRef> = {
+    open: show,
+    close: hide,
   };
 
   return {

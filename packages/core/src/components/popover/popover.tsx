@@ -8,7 +8,6 @@ import {
   PopoverTrigger,
   PopoverRef,
 } from '../../primitives/popover';
-export { PopoverRef };
 
 type UIPopoverContentProps = Omit<
   React.ComponentPropsWithoutRef<typeof PopoverContent>,

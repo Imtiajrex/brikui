@@ -6,7 +6,6 @@ export * from './password-input';
 export * from './pin-input';
 export * from './textarea';
 export * from './switch';
-export * from './slider';
 export * from './range-slider';
 export * from './segmented-control';
 export * from './badge';

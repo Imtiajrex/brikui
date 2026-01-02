@@ -3,7 +3,7 @@ import { ScrollView, Text, View } from 'react-native';
 import { Pressable } from 'react-native';
 export default function Index() {
   return (
-    <ScrollView contentContainerClassName="pt-safe px-4 web:pt-12 pb-24 max-w-2xl mx-auto w-full">
+    <ScrollView contentContainerClassName="pt-safe px-4 web:pt-12 pb-24 max-w-2xl mx-auto w-full dark:bg-background bg-muted">
       <Header />
       {components.map((component) => (
         <Pressable
@@ -61,10 +61,6 @@ const components = [
   {
     title: 'PinInput',
     description: 'A segmented PIN/OTP input',
-  },
-  {
-    title: 'Slider',
-    description: 'A reanimated powered slider',
   },
   {
     title: 'Range-Slider',
