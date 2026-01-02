@@ -130,7 +130,7 @@ const List = React.forwardRef<LegendListRef, LegendListProps<any>>(function List
     if (!list) return;
 
     const node = list.getScrollableNode?.() as any;
-    const el: HTMLElement | null =
+    const el: any | null =
       node && typeof node === 'object' && 'style' in node ? (node as HTMLElement) : null;
     if (!el) return;
 

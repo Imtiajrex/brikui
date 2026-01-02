@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Popover, type PopoverRef } from '../popover';
 import { Field, type FieldProps } from '../field/field';
-import { TimePicker, type TimePickerProps, type TimeValue } from './time-picker';
+import { TimePicker, type TimePickerProps, type TimeValue, parseTimeValue } from './time-picker';
 import { Text } from '../base/text';
 import { cn } from '../../lib/utils/utils';
 import { ChevronDown, Clock } from 'lucide-react-native';
@@ -10,7 +10,7 @@ import { Pressable, View } from '../base';
 import { Platform } from 'react-native';
 export interface TimePickerInputProps
   extends Omit<React.ComponentProps<typeof Pressable>, 'onChange' | 'children'> {
-  value?: TimeValue; // controlled (24h)
+  value?: TimeValue; // controlled "HH:mm"
   defaultValue?: TimeValue; // uncontrolled
   onChange?: (value: TimeValue) => void;
   format?: 12 | 24;
@@ -81,12 +81,12 @@ export const TimePickerInput: React.FC<TimePickerInputProps> = ({
   const displayText = React.useMemo(() => {
     if (formatDisplay) return formatDisplay(current, { format });
     if (!current) return placeholder;
-    const h = current.hours;
-    const m = current.minutes.toString().padStart(2, '0');
-    if (format === 24) return `${h.toString().padStart(2, '0')}:${m}`;
-    const meridiem = h >= 12 ? 'PM' : 'AM';
-    const displayHour = h % 12 === 0 ? 12 : h % 12;
-    return `${displayHour}:${m} ${meridiem}`;
+    const { hours, minutes } = parseTimeValue(current);
+    const minuteDisplay = minutes.toString().padStart(2, '0');
+    if (format === 24) return `${hours.toString().padStart(2, '0')}:${minuteDisplay}`;
+    const meridiem = hours >= 12 ? 'PM' : 'AM';
+    const displayHour = hours % 12 === 0 ? 12 : hours % 12;
+    return `${displayHour}:${minuteDisplay} ${meridiem}`;
   }, [current, placeholder, format, formatDisplay]);
 
   const defaultTrigger = (
@@ -96,7 +96,8 @@ export const TimePickerInput: React.FC<TimePickerInputProps> = ({
       {...pressableProps}
       accessibilityRole="button"
       onPress={(e) => {
-        if (disabled !== false) popoverRef.current?.open();
+        if (disabled) return;
+        popoverRef.current?.open();
         pressableProps.onPress?.(e as any);
       }}
       className={cn(

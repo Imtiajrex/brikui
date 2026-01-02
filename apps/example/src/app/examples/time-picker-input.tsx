@@ -1,15 +1,12 @@
 import * as React from 'react';
 import { Pressable, ScrollView } from 'react-native';
-import { View, Text, TimePickerInput } from 'brikui';
+import { View, Text, TimePickerInput, parseTimeValue } from 'brikui';
 import { Clock } from 'lucide-react-native';
 export default function TimePickerInputExamples() {
-  const [timeSingle, setTimeSingle] = React.useState<
-    { hours: number; minutes: number } | undefined
-  >(undefined);
-  const [time24, setTime24] = React.useState<{ hours: number; minutes: number }>({
-    hours: 14,
-    minutes: 45,
-  });
+  const [timeSingle, setTimeSingle] = React.useState<string | undefined>(undefined);
+  const [time24, setTime24] = React.useState<string>('14:45');
+  const parsedSingle = timeSingle ? parseTimeValue(timeSingle) : undefined;
+  const parsed24 = parseTimeValue(time24);
 
   return (
     <ScrollView contentContainerClassName="p-4 gap-10 flex" className="flex-1">
@@ -22,10 +19,14 @@ export default function TimePickerInputExamples() {
         />
         <Text className="text-xs text-muted-foreground">
           Value:{' '}
-          {timeSingle
-            ? `${timeSingle.hours % 12 === 0 ? 12 : timeSingle.hours % 12}:${timeSingle.minutes
-                .toString()
-                .padStart(2, '0')} ${timeSingle.hours >= 12 ? 'PM' : 'AM'}`
+          {parsedSingle
+            ? (() => {
+                const meridiem = parsedSingle.hours >= 12 ? 'PM' : 'AM';
+                const displayHour = parsedSingle.hours % 12 === 0 ? 12 : parsedSingle.hours % 12;
+                return `${displayHour}:${parsedSingle.minutes
+                  .toString()
+                  .padStart(2, '0')} ${meridiem}`;
+              })()
             : 'none'}
         </Text>
       </View>
@@ -40,8 +41,8 @@ export default function TimePickerInputExamples() {
           minuteStep={5}
         />
         <Text className="text-xs text-muted-foreground">
-          Value: {time24.hours.toString().padStart(2, '0')}:
-          {time24.minutes.toString().padStart(2, '0')}
+          Value: {parsed24.hours.toString().padStart(2, '0')}:
+          {parsed24.minutes.toString().padStart(2, '0')}
         </Text>
       </View>
 
@@ -59,7 +60,9 @@ export default function TimePickerInputExamples() {
               }}
               className="flex flex-row items-center gap-2"
             >
-              <View className="text-sm p-3 rounded-xl bg-muted">{props.value?.hours}</View>
+              <View className="text-sm p-3 rounded-xl bg-muted">
+                {props.value ? parseTimeValue(props.value).hours : '--'}
+              </View>
               <Clock size={20} color="black" />
             </Pressable>
           )}
