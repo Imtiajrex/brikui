@@ -4,7 +4,7 @@ import { Button, AlertDialog } from 'brikui';
 
 export default function GlobalAlertDialogExamples() {
   return (
-    <ScrollView contentContainerClassName="p-4 gap-8" className="flex-1">
+    <ScrollView contentContainerClassName="p-4 gap-8 flex" className="flex-1">
       <View className="gap-4">
         <Text className="text-lg font-semibold">Global AlertDialog.show()</Text>
         <Button

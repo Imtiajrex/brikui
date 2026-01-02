@@ -7,7 +7,7 @@ import { cn } from '../../lib/utils/utils';
 import { ChevronDown, Clock } from 'lucide-react-native';
 import { useColor } from '../../lib/hooks/useColor';
 import { Pressable, View } from '../base';
-
+import { Platform } from 'react-native';
 export interface TimePickerInputProps
   extends Omit<React.ComponentProps<typeof Pressable>, 'onChange' | 'children'> {
   value?: TimeValue; // controlled (24h)
@@ -96,11 +96,11 @@ export const TimePickerInput: React.FC<TimePickerInputProps> = ({
       {...pressableProps}
       accessibilityRole="button"
       onPress={(e) => {
-        if (!disabled) popoverRef.current?.open();
+        if (disabled !== false) popoverRef.current?.open();
         pressableProps.onPress?.(e as any);
       }}
       className={cn(
-        'flex-row items-center justify-between rounded-input flex-1 px-2 py-2 min-h-10',
+        'flex-row items-center cursor-pointer justify-between rounded-input flex-1 px-2 py-2 min-h-10',
         disabled && 'opacity-50',
         triggerClassName
       )}
@@ -150,15 +150,24 @@ export const TimePickerInput: React.FC<TimePickerInputProps> = ({
     <Popover
       ref={popoverRef}
       content={
-        <View style={{ width: popoverWidth }} className={cn('p-2', popoverContentClassName)}>
+        <View
+          className={cn(
+            'w-full bg-card rounded-4xl native:pt-8 native:pb-4 native:mt-16',
+            popoverContentClassName
+          )}
+        >
+          <Text className="web:hidden text-center text-muted-foreground pb-2 border-b border-border">
+            Select Time
+          </Text>
           {wheel}
         </View>
       }
-      className={popoverClassName}
-      triggerProps={{
-        asChild: true,
-        className: 'flex-1',
+      sheetProps={{
+        gestureEnabled: false,
       }}
+      className={cn('flex-1', popoverClassName)}
+      contentProps={{}}
+      type={Platform.OS === 'web' ? 'popover' : 'floating-sheet'}
     >
       {trigger}
     </Popover>

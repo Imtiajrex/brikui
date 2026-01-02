@@ -27,7 +27,7 @@ const Section: React.FC<{ title: string; children: React.ReactNode }> = ({ title
 
 const MyComponent: React.FC = () => {
   return (
-    <ScrollView className="flex-1 p-4" contentContainerStyle={{ paddingBottom: 40 }}>
+    <ScrollView className="flex-1 p-4 flex gap-2" contentContainerStyle={{ paddingBottom: 40 }}>
       <Text className="text-xl font-bold mb-4">Popover Placements</Text>
 
       <Section title="Primary (top / bottom / left / right)">
@@ -41,8 +41,6 @@ const MyComponent: React.FC = () => {
             <View className="p-2">Search</View>
           </View>
         }
-        avoidScreenEdges={false}
-        renderInPortal
       >
         <Pressable>
           <Input placeholder="Enter your search" />

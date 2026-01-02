@@ -12,7 +12,7 @@ export default function TimePickerInputExamples() {
   });
 
   return (
-    <ScrollView contentContainerClassName="p-4 gap-10" className="flex-1">
+    <ScrollView contentContainerClassName="p-4 gap-10 flex" className="flex-1">
       <View className="gap-3">
         <TimePickerInput
           value={timeSingle}

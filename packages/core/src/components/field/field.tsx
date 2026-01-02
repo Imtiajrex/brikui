@@ -95,7 +95,7 @@ const Field = ({
   return (
     <View className={cn('w-full flex flex-col gap-1.5', className)}>
       {label ? (
-        <View className="flex-row items-center gap-1">
+        <View className="flex-row flex items-center gap-1">
           <Text className={cn('text-sm font-medium text-foreground leading-none', labelClassName)}>
             {label}
           </Text>

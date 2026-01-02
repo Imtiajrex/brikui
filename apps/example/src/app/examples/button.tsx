@@ -7,7 +7,7 @@ export default function ButtonExamples() {
   const [loading, setLoading] = useState(false);
 
   return (
-    <ScrollView contentContainerClassName="p-4 gap-6" className="flex-1">
+    <ScrollView contentContainerClassName="p-4 gap-6 flex" className="flex-1">
       <View className="gap-3">
         <Button>Default</Button>
         <Button variant="secondary">Secondary</Button>

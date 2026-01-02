@@ -137,11 +137,11 @@ const Progress = React.forwardRef<React.ComponentRef<typeof View>, ProgressProps
         descriptionClassName={descriptionClassName}
         errorClassName={errorClassName}
         containerClassName={cn(
-          'flex-row items-center gap-2 border-none p-0 h-auto',
+          'flex-row flex items-center gap-2 border-none p-0 h-auto',
           showValueLabel && 'pr-2'
         )}
       >
-        <View className={cn('flex-row items-center gap-2 w-full')}>
+        <View className={cn('flex-row flex items-center gap-2 w-full')}>
           <View
             ref={ref}
             accessibilityRole="progressbar"

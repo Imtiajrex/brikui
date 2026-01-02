@@ -6,7 +6,7 @@ export default function BadgeExamples() {
   return (
     <ScrollView contentContainerClassName="pt-safe px-4 web:pt-12 pb-24 gap-6">
       <Text className="text-lg font-semibold">Badge Variants</Text>
-      <View className="flex-row flex-wrap gap-3 items-center">
+      <View className="flex flex-row flex-wrap gap-3 items-center">
         <Badge variant="default">DEFAULT</Badge>
         <Badge variant="filled">FILLED</Badge>
         <Badge variant="accent">LIGHT</Badge>

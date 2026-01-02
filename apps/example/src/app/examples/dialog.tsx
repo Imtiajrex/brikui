@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
-import { ScrollView, View, Text } from 'react-native';
-import { Button, Dialog, Input } from 'brikui';
+import { ScrollView } from 'react-native';
+import { Button, Dialog, Input, View, Text } from 'brikui';
 
 export default function DialogExamples() {
   const basicRef = useRef<{ open: () => void; close: () => void }>(null);
@@ -8,7 +8,7 @@ export default function DialogExamples() {
   const customRef = useRef<{ open: () => void; close: () => void }>(null);
 
   return (
-    <ScrollView contentContainerClassName="p-4 gap-10" className="flex-1">
+    <ScrollView contentContainerClassName="flex p-4 gap-10" className="flex-1">
       {/* Basic Dialog */}
       <View className="gap-3">
         <Text className="text-lg font-semibold">Basic Dialog</Text>
@@ -35,13 +35,13 @@ export default function DialogExamples() {
           primaryActionText="Update"
           onPrimaryAction={() => console.log('Form Submitted')}
         >
-          <View className="gap-4 w-full">
+          <View className="gap-4 w-full h-max">
             <View className="gap-2">
-              <Text className="text-sm font-medium">Name</Text>
+              <Text className="text-sm font-medium text-foreground">Name</Text>
               <Input placeholder="John Doe" />
             </View>
             <View className="gap-2">
-              <Text className="text-sm font-medium">Username</Text>
+              <Text className="text-sm font-medium text-foreground">Username</Text>
               <Input placeholder="@johndoe" />
             </View>
           </View>
@@ -56,6 +56,7 @@ export default function DialogExamples() {
         </Button>
         <Dialog
           ref={customRef}
+          contentClassName="w-full "
           header={
             <View className="gap-1">
               <Text className="text-xl font-bold">Billing Plan</Text>
@@ -77,6 +78,7 @@ export default function DialogExamples() {
               </Button>
             </View>
           }
+          containerClassName="w-full"
           showClose
         >
           <View className="gap-3 w-full">

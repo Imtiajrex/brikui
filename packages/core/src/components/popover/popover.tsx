@@ -8,7 +8,7 @@ import {
   PopoverTrigger,
   PopoverRef,
 } from '../../primitives/popover';
-
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 type UIPopoverContentProps = Omit<
   React.ComponentPropsWithoutRef<typeof PopoverContent>,
   'children'
@@ -65,6 +65,7 @@ const FloatingSheet = ({
         });
       })()
     : children;
+  const safeInsets = useSafeAreaInsets();
 
   return (
     <>
@@ -79,7 +80,7 @@ const FloatingSheet = ({
           height: '40%',
           backgroundColor: 'transparent',
           paddingBottom: 30,
-          bottom: 20,
+          bottom: Math.max(safeInsets.bottom, 20),
         }}
         {...sheetProps}
       >

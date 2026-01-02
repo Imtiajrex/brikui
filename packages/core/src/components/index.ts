@@ -17,6 +17,9 @@ export * from './base';
 export * from './timeline';
 export * from './checkbox';
 export * from './progress';
+export * from './range-calendar';
+export * from './wheelpicker';
+export * from './multi-column-wheelpicker';
 // AlertDialog: global version also re-exports base
 export * from './alert-dialog/global-alert-dialog';
 export * from './dialog/dialog';

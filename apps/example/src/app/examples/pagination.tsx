@@ -6,7 +6,7 @@ export default function PaginationExamples() {
   const [page, setPage] = useState(3);
 
   return (
-    <ScrollView contentContainerClassName="p-4 gap-8" className="flex-1">
+    <ScrollView contentContainerClassName="p-4 gap-8 flex" className="flex-1">
       <View className="gap-4">
         <Text className="font-semibold">Uncontrolled</Text>
         <Pagination pageCount={12} />

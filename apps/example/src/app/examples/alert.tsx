@@ -8,7 +8,7 @@ export default function AlertExamples() {
   const [visible, setVisible] = useState(true);
 
   return (
-    <ScrollView contentContainerClassName="p-4 gap-8" className="flex-1">
+    <ScrollView contentContainerClassName="flex p-4 gap-8" className="flex-1">
       <View className="gap-4">
         <Text className="font-semibold">Light variant</Text>
         <Alert title="Primary alert" color="primary">

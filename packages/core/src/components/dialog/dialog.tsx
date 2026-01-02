@@ -110,23 +110,23 @@ export const Dialog = React.forwardRef<DialogHandle, DialogProps>(
         contentWrapperClassName={contentWrapperClassName}
         onOpenChange={onOpenChange}
       >
-        <View className="w-full">
+        {showClose && (
+          <Pressable
+            accessibilityRole="button"
+            onPress={close}
+            className="absolute top-4 right-4 h-8 w-8 items-center justify-center rounded-md active:opacity-70"
+          >
+            <Text className="text-xl leading-none">×</Text>
+          </Pressable>
+        )}
+        <View className="w-full flex">
           {/* Header */}
           <View className="pb-2 pr-6">{header ?? defaultHeader}</View>
-          {showClose && (
-            <Pressable
-              accessibilityRole="button"
-              onPress={close}
-              className="absolute top-3 right-3 h-8 w-8 items-center justify-center rounded-md active:opacity-70"
-            >
-              <Text className="text-xl leading-none">×</Text>
-            </Pressable>
-          )}
         </View>
         {/* Body */}
-        {children && <View className={cn('w-full gap-4 flex-1', bodyClassName)}>{children}</View>}
+        {children && <View className={cn('w-full flex gap-4', bodyClassName)}>{children}</View>}
         {/* Footer */}
-        {footer ? <View className="w-full">{footer}</View> : defaultFooter}
+        {footer ? <View className="w-full flex">{footer}</View> : defaultFooter}
       </Modal>
     );
   }

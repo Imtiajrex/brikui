@@ -8,7 +8,7 @@ export default function BottomSheetExamples() {
   const [controlledOpen, setControlledOpen] = useState(false);
 
   return (
-    <ScrollView contentContainerClassName="p-4 gap-10" className="flex-1">
+    <ScrollView contentContainerClassName="p-4 gap-10 flex" className="flex-1">
       {/* Basic (imperative) */}
       <View className="gap-3">
         <Text className="text-lg font-semibold">Basic (Imperative)</Text>

@@ -9,6 +9,7 @@ import Animated, {
 import { cn } from '../../lib/utils/utils';
 import { Pressable } from '../base/pressable';
 import { View } from '../base/view';
+import { withUniwind } from 'uniwind';
 
 // Imperative-only Modal (no compound/composable API)
 export interface ModalProps {
@@ -51,6 +52,7 @@ const useModalAnimation = (isOpen: boolean, duration = 180) => {
   return { visible, overlayStyle, contentWrapperStyle };
 };
 
+const AnimatedView = withUniwind(Animated.View);
 export const Modal = React.forwardRef<ModalHandle, ModalProps>(
   (
     {
@@ -97,41 +99,44 @@ export const Modal = React.forwardRef<ModalHandle, ModalProps>(
     }, [setIsOpen]);
 
     return (
-      <View className="absolute w-0 h-0">
-        <RNModal
-          transparent
-          visible={visible}
-          onRequestClose={handleRequestClose}
-          statusBarTranslucent
+      <RNModal
+        transparent
+        visible={visible}
+        onRequestClose={handleRequestClose}
+        statusBarTranslucent
+      >
+        <View
+          className={cn(
+            'flex-1 items-center justify-center w-full h-full flex flex-col gap-4',
+            containerClassName
+          )}
         >
-          <View className={cn('flex-1 flex flex-col gap-4', containerClassName)}>
-            <Pressable
-              onPress={handleBackdropPress}
+          <Pressable
+            onPress={handleBackdropPress}
+            className={cn(
+              'flex-1 absolute top-0 left-0 w-full h-full bg-black/20',
+              overlayClassName
+            )}
+          />
+          {/* Centered content */}
+          <AnimatedView
+            style={contentWrapperStyle}
+            className={cn(
+              'flex-1 flex items-center w-full justify-center z-10 px-4',
+              contentWrapperClassName
+            )}
+          >
+            <View
               className={cn(
-                'flex-1 absolute top-0 left-0 w-full h-full bg-black/20',
-                overlayClassName
-              )}
-            />
-            {/* Centered content */}
-            <Animated.View
-              style={contentWrapperStyle}
-              className={cn(
-                'flex-1 items-center justify-center z-10 px-4',
-                contentWrapperClassName
+                'relative bg-card border flex border-border rounded-lg p-6 max-w-md',
+                contentClassName
               )}
             >
-              <View
-                className={cn(
-                  'relative bg-card border border-border rounded-lg p-6 w-[90%] max-w-md',
-                  contentClassName
-                )}
-              >
-                {children}
-              </View>
-            </Animated.View>
-          </View>
-        </RNModal>
-      </View>
+              {children}
+            </View>
+          </AnimatedView>
+        </View>
+      </RNModal>
     );
   }
 );

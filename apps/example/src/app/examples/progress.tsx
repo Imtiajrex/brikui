@@ -6,7 +6,7 @@ export default function ProgressExamples() {
   const [value, setValue] = useState(25);
 
   return (
-    <ScrollView contentContainerClassName="p-4 gap-8" className="flex-1">
+    <ScrollView contentContainerClassName="p-4 gap-8 flex" className="flex-1">
       <View className="gap-4">
         <Progress
           label="Uploading"

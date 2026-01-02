@@ -6,7 +6,7 @@ export default function TextareaExamples() {
   const [value, setValue] = useState('');
 
   return (
-    <ScrollView contentContainerClassName="p-4 gap-6" className="flex-1">
+    <ScrollView contentContainerClassName="p-4 gap-6 flex" className="flex-1">
       <View className="gap-4">
         <Textarea
           label="Description"

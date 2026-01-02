@@ -8,7 +8,7 @@ import { Field, type FieldProps } from '../field/field';
 import { cn } from '../../lib/utils/utils';
 import { Calendar1 } from 'lucide-react-native';
 import { useColor } from '../../lib/hooks/useColor';
-
+import { Platform } from 'react-native';
 type DateType = any; // TODO: improve with date-fns or dayjs types
 export interface DatePickerProps
   extends Omit<React.ComponentProps<typeof Pressable>, 'onChange' | 'children'> {
@@ -206,11 +206,11 @@ export const DatePicker: React.FC<DatePickerProps> = ({
       {...pressableProps}
       accessibilityRole="button"
       onPress={(e) => {
-        if (!disabled) popoverRef.current?.open();
+        if (disabled !== false) popoverRef.current?.open();
         pressableProps.onPress?.(e as any);
       }}
       className={cn(
-        'flex-row items-center flex-1 justify-between rounded-input px-3 py-2 min-h-10',
+        'flex flex-1 cursor-pointer  justify-between rounded-input px-3 py-2 h-full min-h-10',
         disabled && 'opacity-50',
         triggerClassName
       )}
@@ -250,19 +250,27 @@ export const DatePicker: React.FC<DatePickerProps> = ({
     <Calendar
       value={isSingle ? (currentSingle as any) : undefined}
       onValueChange={handleChange as any}
-      className={`border-none`}
+      className={`border-none w-full`}
       {...calendarProps}
     />
   );
 
   const body = (
-    <Popover
-      ref={popoverRef}
-      content={<View className={cn('', popoverContentClassName)}>{calendar}</View>}
-      className={popoverClassName}
-    >
-      {trigger}
-    </Popover>
+    <View className="flex-1">
+      <Popover
+        type={Platform.OS === 'web' ? 'popover' : 'floating-sheet'}
+        ref={popoverRef}
+        content={<View className={cn('', popoverContentClassName)}>{calendar}</View>}
+        className={cn('flex-1  ', popoverClassName)}
+        contentProps={{
+          style: {
+            width: popoverWidth,
+          },
+        }}
+      >
+        {trigger}
+      </Popover>
+    </View>
   );
 
   const mergedFieldProps = React.useMemo(

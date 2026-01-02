@@ -95,7 +95,7 @@ const Input = React.forwardRef<React.ComponentRef<typeof RNTextInput>, InputProp
             onBlur?.(e);
           }}
           className={cn(
-            'flex-1 w-full px-2 h-full text-foreground text-sm',
+            'flex-1 w-full px-2 flex h-full text-foreground text-sm',
             !leftSection && 'rounded-l-input',
             !rightSection && 'rounded-r-input',
             inputClassName

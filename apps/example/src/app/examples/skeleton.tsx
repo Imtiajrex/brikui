@@ -4,7 +4,7 @@ import { Skeleton } from 'brikui';
 
 export default function SkeletonExamples() {
   return (
-    <ScrollView contentContainerClassName="p-4 gap-8" className="flex-1">
+    <ScrollView contentContainerClassName="p-4 gap-8 flex" className="flex-1">
       <View className="gap-4">
         <Skeleton className="h-4 w-1/3" />
         <Skeleton className="h-4 w-2/3" />

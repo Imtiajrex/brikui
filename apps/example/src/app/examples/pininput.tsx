@@ -6,7 +6,7 @@ export default function PinInputExamples() {
   const [value, setValue] = useState('');
 
   return (
-    <ScrollView contentContainerClassName="p-4 gap-8" className="flex-1">
+    <ScrollView contentContainerClassName="p-4 gap-8 flex" className="flex-1">
       <View className="gap-6 items-center">
         <Text className="font-semibold">Basic</Text>
         <PinInput length={4} value={value} onChange={setValue} placeholder="○" />

@@ -8,7 +8,7 @@ export default function AlertDialogExamples() {
   const simpleRef = useRef<AlertDialogHandle>(null);
 
   return (
-    <ScrollView contentContainerClassName="p-4 gap-8" className="flex-1">
+    <ScrollView contentContainerClassName="p-4 gap-8 flex" className="flex-1">
       {/* Basic Alert Dialog */}
       <View className="gap-4">
         <Text className="text-lg font-semibold">Basic Alert Dialog</Text>

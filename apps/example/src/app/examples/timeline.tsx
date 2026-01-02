@@ -4,7 +4,7 @@ import { Timeline, TimelineItem } from 'brikui';
 
 export default function TimelineExamples() {
   return (
-    <ScrollView contentContainerClassName="p-4 gap-8" className="flex-1">
+    <ScrollView contentContainerClassName="flex p-4 gap-8" className="flex-1">
       <View className="gap-4">
         <Text className="font-semibold">Usage</Text>
         <Timeline active={1} bulletSize={24} lineWidth={2} className="gap-0">
